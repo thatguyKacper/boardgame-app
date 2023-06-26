@@ -140,7 +140,7 @@ export class InitialMigration1687361085225 implements MigrationInterface {
       new TableForeignKey({
         columnNames: ['gameId'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'games',
+        referencedTableName: 'boardgames',
       }),
     ]);
 
@@ -176,7 +176,7 @@ export class InitialMigration1687361085225 implements MigrationInterface {
       new TableForeignKey({
         columnNames: ['gameId'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'games',
+        referencedTableName: 'boardgames',
       }),
     ]);
   }
