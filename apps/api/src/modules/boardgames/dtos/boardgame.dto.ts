@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 
-export class GameDto {
+export class BoardgameDto {
   @Expose()
   id: number;
   @Expose()

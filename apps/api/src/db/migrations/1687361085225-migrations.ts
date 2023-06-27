@@ -110,7 +110,7 @@ export class InitialMigration1687361085225 implements MigrationInterface {
 
     await queryRunner.createTable(
       new Table({
-        name: 'users_played_games',
+        name: 'users_played_boardgames',
         columns: [
           {
             name: 'userId',
@@ -118,7 +118,7 @@ export class InitialMigration1687361085225 implements MigrationInterface {
             isNullable: true,
           },
           {
-            name: 'gameId',
+            name: 'boardgameId',
             type: 'int',
             isNullable: true,
           },
@@ -126,19 +126,19 @@ export class InitialMigration1687361085225 implements MigrationInterface {
       }),
     );
 
-    await queryRunner.createPrimaryKey('users_played_games', [
+    await queryRunner.createPrimaryKey('users_played_boardgames', [
       'userId',
-      'gameId',
+      'boardgameId',
     ]);
 
-    await queryRunner.createForeignKeys('users_played_games', [
+    await queryRunner.createForeignKeys('users_played_boardgames', [
       new TableForeignKey({
         columnNames: ['userId'],
         referencedColumnNames: ['id'],
         referencedTableName: 'users',
       }),
       new TableForeignKey({
-        columnNames: ['gameId'],
+        columnNames: ['boardgameId'],
         referencedColumnNames: ['id'],
         referencedTableName: 'boardgames',
       }),
@@ -146,7 +146,7 @@ export class InitialMigration1687361085225 implements MigrationInterface {
 
     await queryRunner.createTable(
       new Table({
-        name: 'users_wanttoplay_games',
+        name: 'users_wanttoplay_boardgames',
         columns: [
           {
             name: 'userId',
@@ -154,7 +154,7 @@ export class InitialMigration1687361085225 implements MigrationInterface {
             isNullable: true,
           },
           {
-            name: 'gameId',
+            name: 'boardgameId',
             type: 'int',
             isNullable: true,
           },
@@ -162,19 +162,19 @@ export class InitialMigration1687361085225 implements MigrationInterface {
       }),
     );
 
-    await queryRunner.createPrimaryKey('users_wanttoplay_games', [
+    await queryRunner.createPrimaryKey('users_wanttoplay_boardgames', [
       'userId',
-      'gameId',
+      'boardgameId',
     ]);
 
-    await queryRunner.createForeignKeys('users_wanttoplay_games', [
+    await queryRunner.createForeignKeys('users_wanttoplay_boardgames', [
       new TableForeignKey({
         columnNames: ['userId'],
         referencedColumnNames: ['id'],
         referencedTableName: 'users',
       }),
       new TableForeignKey({
-        columnNames: ['gameId'],
+        columnNames: ['boardgameId'],
         referencedColumnNames: ['id'],
         referencedTableName: 'boardgames',
       }),

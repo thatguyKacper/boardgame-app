@@ -1,6 +1,6 @@
 import { IsNumber, IsString, Min, Max, IsNotEmpty } from 'class-validator';
 
-export class CreateGameDto {
+export class CreateBoardgameDto {
   @IsString()
   @IsNotEmpty()
   name: string;

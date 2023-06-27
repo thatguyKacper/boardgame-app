@@ -1,11 +1,11 @@
 import { Expose, Type } from 'class-transformer';
-import { Column, Entity, PrimaryColumn, ManyToMany } from 'typeorm';
-import { User } from '../users/user.entity';
-import { UserDto } from '../users/dtos/user.dto';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Users } from '../../users/entities/users.entity';
+import { UserDto } from '../../users/dtos/user.dto';
 
 @Entity()
-export class Game {
-  @PrimaryColumn()
+export class Boardgames {
+  @PrimaryGeneratedColumn()
   @Expose()
   id: number;
   @Column()
@@ -54,12 +54,14 @@ export class Game {
   @Column()
   @Expose()
   bggurl: string;
-  @ManyToMany(() => User, (user) => user.played, { nullable: true })
+  @ManyToMany(() => Users, (user) => user.playedboardgames, { nullable: true })
   @Type(() => UserDto)
   @Expose()
-  playedby: User[];
-  @ManyToMany(() => User, (user) => user.wanttoplay, { nullable: true })
+  playedbyusers: Users[];
+  @ManyToMany(() => Users, (user) => user.wanttoplayboardgames, {
+    nullable: true,
+  })
   @Type(() => UserDto)
   @Expose()
-  wanttoplay: User[];
+  userswanttoplay: Users[];
 }

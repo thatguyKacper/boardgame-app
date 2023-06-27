@@ -1,5 +1,5 @@
 import { Exclude, Expose, Type } from 'class-transformer';
-import { Game } from '../games/game.entity';
+import { Boardgames } from '../../boardgames/entities/boardgames.entity';
 import {
   Entity,
   Column,
@@ -7,10 +7,10 @@ import {
   ManyToMany,
   JoinTable,
 } from 'typeorm';
-import { GameDto } from '../games/dtos/game.dto';
+import { BoardgameDto } from '../../boardgames/dtos/boardgame.dto';
 
 @Entity()
-export class User {
+export class Users {
   @PrimaryGeneratedColumn()
   @Expose()
   id: number;
@@ -24,40 +24,40 @@ export class User {
   password: string;
 
   @JoinTable({
-    name: 'users_played_games',
+    name: 'users_played_boardgames',
     joinColumn: {
       name: 'userId',
       referencedColumnName: 'id',
     },
     inverseJoinColumn: {
-      name: 'gameId',
+      name: 'boardgameId',
       referencedColumnName: 'id',
     },
   })
-  @ManyToMany(() => Game, (game) => game.playedby, {
+  @ManyToMany(() => Boardgames, (boardgame) => boardgame.playedbyusers, {
     cascade: true,
     nullable: true,
   })
-  @Type(() => GameDto)
+  @Type(() => BoardgameDto)
   @Expose()
-  played: Game[];
+  playedboardgames: Boardgames[];
 
   @JoinTable({
-    name: 'users_wanttoplay_games',
+    name: 'users_wanttoplay_boardgames',
     joinColumn: {
       name: 'userId',
       referencedColumnName: 'id',
     },
     inverseJoinColumn: {
-      name: 'gameId',
+      name: 'boardgameId',
       referencedColumnName: 'id',
     },
   })
-  @ManyToMany(() => Game, (game) => game.wanttoplay, {
+  @ManyToMany(() => Boardgames, (boardgame) => boardgame.userswanttoplay, {
     cascade: true,
     nullable: true,
   })
-  @Type(() => GameDto)
+  @Type(() => BoardgameDto)
   @Expose()
-  wanttoplay: Game[];
+  wanttoplayboardgames: Boardgames[];
 }
