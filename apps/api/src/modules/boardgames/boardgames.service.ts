@@ -4,6 +4,7 @@ import { Boardgames } from './entities/boardgames.entity';
 import { Repository } from 'typeorm';
 import { CreateBoardgameDto } from './dtos/create-boardgame.dto';
 import { UpdateBoardgameDto } from './dtos/update-boardgame.dto';
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto/pagination-query.dto';
 
 @Injectable()
 export class BoardgamesService {
@@ -14,9 +15,12 @@ export class BoardgamesService {
     private readonly boardgamesRepository: Repository<Boardgames>,
   ) {}
 
-  findAll() {
+  findAll(paginationQuery: PaginationQueryDto) {
+    const { limit, offset } = paginationQuery;
+
     return this.boardgamesRepository.find({
       relations: ['playedbyusers', 'userswanttoplay'],
+      take: limit,
     });
   }
 
