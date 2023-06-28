@@ -8,12 +8,14 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   SerializeOptions,
   UseInterceptors,
 } from '@nestjs/common';
 import { BoardgamesService } from './boardgames.service';
 import { CreateBoardgameDto } from './dtos/create-boardgame.dto';
 import { UpdateBoardgameDto } from './dtos/update-boardgame.dto';
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto/pagination-query.dto';
 
 @Controller('boardgames')
 @SerializeOptions({ strategy: 'excludeAll' })
@@ -27,8 +29,8 @@ export class BoardgamesController {
   }
 
   @Get()
-  findAll() {
-    return this.boardgamesService.findAll();
+  findAll(@Query() paginationQuery: PaginationQueryDto) {
+    return this.boardgamesService.findAll(paginationQuery);
   }
 
   @Post()
