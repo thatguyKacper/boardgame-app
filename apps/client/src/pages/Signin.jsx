@@ -1,8 +1,8 @@
-export default function Signin() {
+export default function Signup() {
   return (
     <main className="form-signin w-100 m-auto">
       <form>
-        <h1 className="h3 mb-3 fw-normal">Sign up</h1>
+        <h1 className="h3 mb-3 fw-normal">Sign in</h1>
 
         <div className="form-floating">
           <input
@@ -23,7 +23,7 @@ export default function Signin() {
           <label htmlFor="floatingPassword">Password</label>
         </div>
         <button className="w-100 btn btn-lg btn-primary" type="submit">
-          Sign up
+          Sign in
         </button>
       </form>
     </main>
