@@ -16,7 +16,7 @@ export class BoardgamesService {
   ) {}
 
   findAll(paginationQuery: PaginationQueryDto) {
-    const { limit, offset } = paginationQuery;
+    const { limit } = paginationQuery;
 
     return this.boardgamesRepository.find({
       relations: ['playedbyusers', 'userswanttoplay'],
