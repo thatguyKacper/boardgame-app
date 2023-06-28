@@ -7,7 +7,7 @@ export default function Boardgames() {
   useEffect(() => {
     const read = async () => {
       try {
-        const response = await fetch('/api/boardgames/');
+        const response = await fetch('/api/boardgames?limit=50');
         return response.json();
       } catch (err) {
         console.log(err);
