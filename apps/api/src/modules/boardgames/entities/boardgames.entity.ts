@@ -64,4 +64,7 @@ export class Boardgames {
   @Type(() => UserDto)
   @Expose()
   userswanttoplay: Users[];
+
+  playedbyusersCount?: number;
+  userswanttoplayCount?: number;
 }
