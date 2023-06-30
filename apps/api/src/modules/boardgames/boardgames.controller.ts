@@ -15,7 +15,7 @@ import {
 import { BoardgamesService } from './boardgames.service';
 import { CreateBoardgameDto } from './dtos/create-boardgame.dto';
 import { UpdateBoardgameDto } from './dtos/update-boardgame.dto';
-import { PaginationQueryDto } from '../common/dto/pagination-query.dto/pagination-query.dto';
+import { FilterBoardgameDto } from './dtos/filter-boardgame.dto';
 
 @Controller('boardgames')
 @SerializeOptions({ strategy: 'excludeAll' })
@@ -24,13 +24,13 @@ export class BoardgamesController {
   constructor(private readonly boardgamesService: BoardgamesService) {}
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.boardgamesService.findOne(+id);
+  async findOne(@Param('id') id: number) {
+    return await this.boardgamesService.getBoardgame(+id);
   }
 
   @Get()
-  findAll(@Query() paginationQuery: PaginationQueryDto) {
-    return this.boardgamesService.findAll(paginationQuery);
+  findAll(@Query() filter: FilterBoardgameDto) {
+    return this.boardgamesService.getBoardgamesFiltered(filter);
   }
 
   @Post()
