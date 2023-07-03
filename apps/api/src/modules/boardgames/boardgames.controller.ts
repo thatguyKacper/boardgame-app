@@ -1,6 +1,5 @@
 import {
   Body,
-  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -9,17 +8,16 @@ import {
   Patch,
   Post,
   Query,
-  SerializeOptions,
   UseInterceptors,
 } from '@nestjs/common';
 import { BoardgamesService } from './boardgames.service';
 import { CreateBoardgameDto } from './dtos/create-boardgame.dto';
 import { UpdateBoardgameDto } from './dtos/update-boardgame.dto';
 import { FilterBoardgameDto } from './dtos/filter-boardgame.dto';
+import { SerializeInterceptor } from 'src/interceptors/serialize.interceptor';
 
 @Controller('boardgames')
-@SerializeOptions({ strategy: 'excludeAll' })
-@UseInterceptors(ClassSerializerInterceptor)
+@UseInterceptors(new SerializeInterceptor(FilterBoardgameDto))
 export class BoardgamesController {
   constructor(private readonly boardgamesService: BoardgamesService) {}
 
@@ -29,11 +27,15 @@ export class BoardgamesController {
   }
 
   @Get()
-  findAll(@Query() filter: FilterBoardgameDto) {
-    return this.boardgamesService.getBoardgamesFiltered(filter);
+  async findAll(@Query() filter: FilterBoardgameDto) {
+    return await this.boardgamesService.getBoardgamesFilteredPaginated(filter, {
+      currentPage: 1,
+      limit: 50,
+    });
   }
 
   @Post()
+  @UseInterceptors(new SerializeInterceptor(CreateBoardgameDto))
   create(@Body() createBoardgameDto: CreateBoardgameDto) {
     return this.boardgamesService.create(createBoardgameDto);
   }
