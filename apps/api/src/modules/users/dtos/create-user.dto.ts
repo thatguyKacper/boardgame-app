@@ -1,4 +1,4 @@
-import { IsEmail, IsStrongPassword } from 'class-validator';
+import { IsEmail, IsString, IsStrongPassword } from 'class-validator';
 
 export class CreateUserDto {
   @IsEmail()
@@ -12,4 +12,7 @@ export class CreateUserDto {
     minSymbols: 0,
   })
   password: string;
+
+  @IsString()
+  retypedPassword: string;
 }

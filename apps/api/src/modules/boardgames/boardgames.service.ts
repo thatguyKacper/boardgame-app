@@ -99,20 +99,32 @@ export class BoardgamesService {
     }
 
     if (filter.yearpublished) {
-      query = query.andWhere('bg.yearpublished ILIKE :yearpublished', {
-        yearpublished: `%${filter.yearpublished}%`,
+      query = query.andWhere('bg.yearpublished = :yearpublished', {
+        yearpublished: `${filter.yearpublished}`,
       });
     }
 
     if (filter.minplayers) {
-      query = query.andWhere('bg.minplayers ILIKE :minplayers', {
-        minplayers: `%${filter.minplayers}%`,
+      query = query.andWhere('bg.minplayers = :minplayers', {
+        minplayers: `${filter.minplayers}`,
+      });
+    }
+
+    if (filter.maxplayers) {
+      query = query.andWhere('bg.maxplayers = :maxplayers', {
+        maxplayers: `${filter.maxplayers}`,
+      });
+    }
+
+    if (filter.minage) {
+      query = query.andWhere('bg.minage = :minage', {
+        minage: `${filter.minage}`,
       });
     }
 
     if (filter.playingtime) {
-      query = query.andWhere('bg.playingtime ILIKE :playingtime', {
-        playingtime: `%${filter.playingtime}%`,
+      query = query.andWhere('bg.playingtime = :playingtime', {
+        playingtime: `${filter.playingtime}`,
       });
     }
 

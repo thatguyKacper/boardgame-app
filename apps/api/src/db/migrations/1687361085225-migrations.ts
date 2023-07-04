@@ -98,6 +98,7 @@ export class InitialMigration1687361085225 implements MigrationInterface {
             name: 'email',
             type: 'text',
             isNullable: false,
+            isUnique: true,
           },
           {
             name: 'password',

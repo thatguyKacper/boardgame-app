@@ -1,9 +1,19 @@
-import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Patch,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './local-auth.guard';
 import { JwtAuthGuard } from './jwt-auth.guard';
+import { CreateUserDto } from '../users/dtos/create-user.dto';
+import { UpdateUserDto } from '../users/dtos/update-user.dto';
 
-@Controller('auth')
+@Controller()
 export class AuthController {
   constructor(private authService: AuthService) {}
 
@@ -14,8 +24,19 @@ export class AuthController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('/profile')
-  async getProfile(@Request() req) {
-    return req.user;
+  @Patch('/profile/edit')
+  async editProfile(@Request() req, @Body() updateUserDto: UpdateUserDto) {
+    return this.authService.update(updateUserDto, req.user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('/profile/delete')
+  async deleteProfile(@Request() req) {
+    return this.authService.remove(req.user);
+  }
+
+  @Post('/signup')
+  async createUser(@Body() createUserDto: CreateUserDto) {
+    return this.authService.signup(createUserDto);
   }
 }

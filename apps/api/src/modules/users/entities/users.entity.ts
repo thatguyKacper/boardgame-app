@@ -15,7 +15,7 @@ export class Users {
   @Expose()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   @Expose()
   email: string;
 

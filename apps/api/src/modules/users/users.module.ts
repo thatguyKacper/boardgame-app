@@ -4,6 +4,7 @@ import { Users } from './entities/users.entity';
 import { Boardgames } from '../boardgames/entities/boardgames.entity';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
+import { AuthService } from '../auth/auth.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Users, Boardgames])],

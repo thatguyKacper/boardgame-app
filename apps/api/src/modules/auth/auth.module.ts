@@ -6,10 +6,12 @@ import { LocalStrategy } from './local.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
+import { Users } from '../users/entities/users.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
-    UsersModule,
+    TypeOrmModule.forFeature([Users]),
     PassportModule,
     JwtModule.registerAsync({
       useFactory: () => ({
