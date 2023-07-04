@@ -5,6 +5,7 @@ import { join } from 'path';
 import { dataSourceOptions } from './db/data-source';
 import { UsersModule } from './modules/users/users.module';
 import { BoardgamesModule } from './modules/boardgames/boardgames.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { BoardgamesModule } from './modules/boardgames/boardgames.module';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '../..', 'client', 'dist'),
     }),
+    AuthModule,
     UsersModule,
     BoardgamesModule,
   ],

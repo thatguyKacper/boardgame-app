@@ -1,10 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from './entities/users.entity';
 
 @Injectable()
 export class UsersService {
+  private readonly logger = new Logger(UsersService.name);
   constructor(
     @InjectRepository(Users)
     private readonly usersRepository: Repository<Users>,
@@ -18,7 +24,7 @@ export class UsersService {
     return users;
   }
 
-  async findOne(id: number) {
+  async findOneById(id: number) {
     const user = await this.usersRepository.findOne({
       where: {
         id,
@@ -33,6 +39,19 @@ export class UsersService {
     return user;
   }
 
+  async findOneByEmail(email: string): Promise<Users | undefined> {
+    const user = await this.usersRepository.findOne({
+      where: { email },
+    });
+
+    if (!user) {
+      this.logger.debug(`User with email: ${email} not found!`);
+      throw new UnauthorizedException();
+    }
+
+    return user;
+  }
+
   async create(email: string, password: string) {
     const user = this.usersRepository.create({ email, password });
 
@@ -40,7 +59,7 @@ export class UsersService {
   }
 
   async update(id: number, attrs: Partial<Users>) {
-    const user = await this.findOne(id);
+    const user = await this.findOneById(id);
 
     if (!user) {
       throw new NotFoundException(`User #${id} not found`);
@@ -52,7 +71,7 @@ export class UsersService {
   }
 
   async remove(id: number) {
-    const user = await this.findOne(id);
+    const user = await this.findOneById(id);
 
     if (!user) {
       throw new NotFoundException(`User #${id} not found`);
