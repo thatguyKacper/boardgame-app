@@ -1,11 +1,7 @@
 import {
-  Body,
   Controller,
-  Delete,
   Get,
-  HttpCode,
   Param,
-  Patch,
   UseInterceptors,
   ClassSerializerInterceptor,
   SerializeOptions,
@@ -26,11 +22,5 @@ export class UsersController {
   @Get('/:id')
   findUser(@Param('id') id: string) {
     return this.usersService.findOneById(parseInt(id));
-  }
-
-  @Delete('/:id')
-  @HttpCode(204)
-  removeUser(@Param('id') id: string) {
-    return this.usersService.remove(parseInt(id));
   }
 }

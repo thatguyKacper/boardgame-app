@@ -1,11 +1,15 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
+  HttpCode,
   Patch,
   Post,
   Request,
+  SerializeOptions,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './local-auth.guard';
@@ -14,6 +18,8 @@ import { CreateUserDto } from '../users/dtos/create-user.dto';
 import { UpdateUserDto } from '../users/dtos/update-user.dto';
 
 @Controller()
+@SerializeOptions({ strategy: 'excludeAll' })
+@UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
   constructor(private authService: AuthService) {}
 
@@ -36,6 +42,7 @@ export class AuthController {
   }
 
   @Post('/signup')
+  @HttpCode(204)
   async createUser(@Body() createUserDto: CreateUserDto) {
     return this.authService.signup(createUserDto);
   }

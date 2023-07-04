@@ -10,13 +10,12 @@ import { Users } from './entities/users.entity';
 
 @Injectable()
 export class UsersService {
-  private readonly logger = new Logger(UsersService.name);
   constructor(
     @InjectRepository(Users)
     private readonly usersRepository: Repository<Users>,
   ) {}
 
-  async findAll() {
+  public async findAll(): Promise<Users[] | undefined> {
     const users = await this.usersRepository.find({
       relations: ['playedboardgames', 'wanttoplayboardgames'],
     });
@@ -24,7 +23,7 @@ export class UsersService {
     return users;
   }
 
-  async findOneById(id: number) {
+  public async findOneById(id: number): Promise<Users | undefined> {
     const user = await this.usersRepository.findOne({
       where: {
         id,
@@ -39,44 +38,16 @@ export class UsersService {
     return user;
   }
 
-  async findOneByEmail(email: string): Promise<Users | undefined> {
+  public async findOneByEmail(email: string): Promise<Users | undefined> {
     const user = await this.usersRepository.findOne({
       where: { email },
+      relations: ['playedboardgames', 'wanttoplayboardgames'],
     });
 
     if (!user) {
-      this.logger.debug(`User with email: ${email} not found!`);
-      throw new UnauthorizedException();
+      throw new NotFoundException(`User #${email} not found`);
     }
 
     return user;
-  }
-
-  async create(email: string, password: string) {
-    const user = this.usersRepository.create({ email, password });
-
-    return this.usersRepository.save(user);
-  }
-
-  async update(id: number, attrs: Partial<Users>) {
-    const user = await this.findOneById(id);
-
-    if (!user) {
-      throw new NotFoundException(`User #${id} not found`);
-    }
-
-    Object.assign(user, attrs);
-
-    return this.usersRepository.save(user);
-  }
-
-  async remove(id: number) {
-    const user = await this.findOneById(id);
-
-    if (!user) {
-      throw new NotFoundException(`User #${id} not found`);
-    }
-
-    // return this.usersRepository.remove(user);
   }
 }
