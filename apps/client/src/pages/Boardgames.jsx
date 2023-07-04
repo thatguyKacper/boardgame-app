@@ -7,15 +7,15 @@ export default function Boardgames() {
   useEffect(() => {
     const read = async () => {
       try {
-        const response = await fetch('/api/boardgames?limit=10');
+        const response = await fetch('/api/boardgames');
         return response.json();
       } catch (err) {
         console.log(err);
       }
     };
 
-    read().then((data) => {
-      setGames(data);
+    read().then((res) => {
+      setGames(res.data);
     });
   }, []);
 

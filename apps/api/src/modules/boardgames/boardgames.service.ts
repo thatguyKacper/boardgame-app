@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateBoardgameDto } from './dtos/create-boardgame.dto';
 import { UpdateBoardgameDto } from './dtos/update-boardgame.dto';
 import { FilterBoardgameDto } from './dtos/filter-boardgame.dto';
+import { PaginatorOptions, paginate } from 'src/common/paginator';
 
 @Injectable()
 export class BoardgamesService {
@@ -14,28 +15,6 @@ export class BoardgamesService {
     @InjectRepository(Boardgames)
     private readonly boardgamesRepository: Repository<Boardgames>,
   ) {}
-
-  // async findAll() {
-  //   const { page, limit } = paginationQueryDto;
-
-  //   const [result, total] = await this.boardgamesRepository.findAndCount({
-  //     // relations: ['playedbyusers', 'userswanttoplay'],
-  //     take: limit,
-  //     skip: (page - 1) * limit,
-  //     order: {
-  //       id: 'ASC',
-  //     },
-  //   });
-
-  //   return {
-  //     data: result,
-  //     meta: {
-  //       page,
-  //       total,
-  //       last_page: Math.ceil(total / limit),
-  //     },
-  //   };
-  // }
 
   create(createBoardgameDto: CreateBoardgameDto) {
     const game = this.boardgamesRepository.create(createBoardgameDto);
@@ -71,8 +50,8 @@ export class BoardgamesService {
   private getBoardgameBaseQuery() {
     return this.boardgamesRepository
       .createQueryBuilder('bg')
-      .orderBy('bg.id', 'DESC')
-      .limit(50);
+      .orderBy('bg.id', 'DESC');
+    // .limit(50);
   }
 
   public getBoardgamesWithUsersCount() {
@@ -98,7 +77,7 @@ export class BoardgamesService {
     let query = this.getBoardgameBaseQuery();
 
     if (!filter) {
-      return query.getMany();
+      return query;
     }
 
     if (filter.name) {
@@ -155,6 +134,16 @@ export class BoardgamesService {
       });
     }
 
-    return await query.getMany();
+    return query;
+  }
+
+  public async getBoardgamesFilteredPaginated(
+    filter: FilterBoardgameDto,
+    paginatorOptions: PaginatorOptions,
+  ) {
+    return await paginate(
+      await this.getBoardgamesFiltered(filter),
+      paginatorOptions,
+    );
   }
 }
