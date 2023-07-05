@@ -20,8 +20,8 @@ import { CreateUserDto } from '../users/dtos/create-user.dto';
 import { UpdateUserDto } from '../users/dtos/update-user.dto';
 
 @Controller()
-// @SerializeOptions({ strategy: 'excludeAll' })
-// @UseInterceptors(ClassSerializerInterceptor)
+@SerializeOptions({ strategy: 'excludeAll' })
+@UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
   constructor(private authService: AuthService) {}
 
@@ -39,13 +39,17 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Patch('/profile/:id')
-  async editProfile(@Request() req, @Body() updateUserDto: UpdateUserDto) {
+  async editProfile(
+    @Request() req,
+    @Body() updateUserDto: UpdateUserDto,
+    @Param('id') id: number,
+  ) {
     return this.authService.update(updateUserDto, req.user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete('/profile/:id')
-  async deleteProfile(@Request() req) {
+  async deleteProfile(@Request() req, @Param('id') id: number) {
     return this.authService.remove(req.user);
   }
 

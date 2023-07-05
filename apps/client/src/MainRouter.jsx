@@ -26,7 +26,7 @@ function App() {
               <Route path="/boardgames/:id" element={<BoardgamePage />} />
               <Route path="/users" element={<Users />} />
               <Route path="/users/:id" element={<UserPage />} />
-              <Route path="/profile" element={<Profile />} />
+              <Route path="/profile/:id" element={<Profile />} />
             </Routes>
           </main>
         </div>
