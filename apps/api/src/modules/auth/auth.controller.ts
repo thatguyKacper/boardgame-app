@@ -3,7 +3,9 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Delete,
+  Get,
   HttpCode,
+  Param,
   Patch,
   Post,
   Request,
@@ -18,25 +20,31 @@ import { CreateUserDto } from '../users/dtos/create-user.dto';
 import { UpdateUserDto } from '../users/dtos/update-user.dto';
 
 @Controller()
-@SerializeOptions({ strategy: 'excludeAll' })
-@UseInterceptors(ClassSerializerInterceptor)
+// @SerializeOptions({ strategy: 'excludeAll' })
+// @UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
   constructor(private authService: AuthService) {}
 
   @UseGuards(LocalAuthGuard)
-  @Post('/signin')
+  @Post('auth/signin')
   async signin(@Request() req) {
     return this.authService.signin(req.user);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch('/profile/edit')
+  @Get('/profile/:id')
+  async getProfile(@Request() req, @Param('id') id: number) {
+    return this.authService.get(req.user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('/profile/:id')
   async editProfile(@Request() req, @Body() updateUserDto: UpdateUserDto) {
     return this.authService.update(updateUserDto, req.user);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete('/profile/delete')
+  @Delete('/profile/:id')
   async deleteProfile(@Request() req) {
     return this.authService.remove(req.user);
   }

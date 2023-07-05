@@ -55,6 +55,12 @@ export class AuthService {
     };
   }
 
+  public async get(req: any): Promise<any> {
+    const user = await this.usersRepository.findOneBy({ id: req.userId });
+
+    return user;
+  }
+
   public async update(updateUserDto: UpdateUserDto, req: any): Promise<any> {
     const updatedUser = new UpdateUserDto();
 

@@ -6,8 +6,9 @@ import { Route, Routes } from 'react-router-dom';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import Signin from './pages/Signin';
-import Boardgame from './boardgames/Boardgame';
-import User from './users/User';
+import BoardgamePage from './boardgames/BoardgamePage';
+import UserPage from './users/UserPage';
+import Profile from './users/Profile';
 
 function App() {
   return (
@@ -22,9 +23,10 @@ function App() {
               <Route path="/signup" element={<Signup />} />
               <Route path="/signin" element={<Signin />} />
               <Route path="/boardgames" element={<Boardgames />} />
-              <Route path="/boardgames/:id" element={<Boardgame />} />
+              <Route path="/boardgames/:id" element={<BoardgamePage />} />
               <Route path="/users" element={<Users />} />
-              <Route path="/users/:id" element={<User />} />
+              <Route path="/users/:id" element={<UserPage />} />
+              <Route path="/profile" element={<Profile />} />
             </Routes>
           </main>
         </div>

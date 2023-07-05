@@ -1,55 +1,59 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import UserList from '../users/UserList';
 
 export default function Users() {
   const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const read = async () => {
+      setIsLoading(true);
       try {
-        const response = await fetch('/api/users');
-        return response.json();
+        const res = await fetch('/api/users');
+
+        if (!res.ok) {
+          throw new Error('Failed to fetch data');
+        }
+
+        const data = await res.json();
+
+        setUsers(data);
       } catch (err) {
-        console.log(err);
+        console.log(err.message);
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    read().then((data) => {
-      setUsers(data);
-    });
+    read();
   }, []);
+
+  function Loader() {
+    return (
+      <div className="d-flex justify-content-center">
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
+  function ErrorMessage({ message }) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        {message}
+      </div>
+    );
+  }
 
   return (
     <>
       <h2>Users</h2>
-      <div className="table-responsive">
-        <table className="table table-striped table-sm">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Email</th>
-              <th scope="col">Games Played</th>
-              <th scope="col">Wishlist</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.length
-              ? users.map((user) => (
-                  <tr key={user.id}>
-                    <td>
-                      <Link to={`/users/${user.id}`}>{user.id}</Link>
-                    </td>
-                    <td>
-                      <Link to={`/users/${user.id}`}>{user.email}</Link>
-                    </td>
-                    <td>{user.wanttoplayboardgames}</td>
-                    <td>{user.userplayedboardgames}</td>
-                  </tr>
-                ))
-              : null}
-          </tbody>
-        </table>
-      </div>
+      {isLoading && <Loader />}
+      {!isLoading && !error && <UserList users={users} />}
+      {error && <ErrorMessage message={error} />}
     </>
   );
 }
