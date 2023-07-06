@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import MainPage from '../pages/MainPage';
 
 export default function BoardgamePage() {
   const { id } = useParams();
@@ -50,7 +51,7 @@ export default function BoardgamePage() {
   }
 
   return (
-    <main>
+    <MainPage>
       {isLoading && <Loader />}
       {!isLoading && !error && (
         <>
@@ -118,6 +119,6 @@ export default function BoardgamePage() {
         </>
       )}
       {error && <ErrorMessage message={error} />}
-    </main>
+    </MainPage>
   );
 }

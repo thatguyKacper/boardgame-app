@@ -9,8 +9,10 @@ export default function UserListItem({ user }) {
       <td>
         <Link to={`/users/${user.id}`}>{user.email}</Link>
       </td>
-      <td>{user.wanttoplayboardgames}</td>
-      <td>{user.userplayedboardgames}</td>
+      <td>{user.playedboardgames.length ? user.playedboardgames : '0'}</td>
+      <td>
+        {user.wanttoplayboardgames.length ? user.wanttoplayboardgames : '0'}
+      </td>
     </tr>
   );
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import MainPage from '../pages/MainPage';
 
 export default function User() {
   const { id } = useParams();
@@ -21,7 +22,7 @@ export default function User() {
   }, []);
 
   return (
-    <main>
+    <MainPage>
       <h1 className="visually-hidden">{user.id}</h1>
 
       <div className="px-4 py-5 my-5 text-center">
@@ -55,6 +56,6 @@ export default function User() {
           </ul>
         </div>
       </div>
-    </main>
+    </MainPage>
   );
 }

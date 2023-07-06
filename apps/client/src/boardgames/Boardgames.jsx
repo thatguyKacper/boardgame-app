@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
-import UserList from '../users/UserList';
+import BoardgameList from './BoardgameList';
+import MainPage from '../pages/MainPage';
 
-export default function Users() {
-  const [users, setUsers] = useState([]);
+export default function Boardgames() {
+  const [games, setGames] = useState([]);
+  const [page, setPage] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -10,15 +12,16 @@ export default function Users() {
     const read = async () => {
       setIsLoading(true);
       try {
-        const res = await fetch('/api/users');
+        const res = await fetch('/api/boardgames');
 
         if (!res.ok) {
           throw new Error('Failed to fetch data');
         }
 
-        const data = await res.json();
+        const { data, meta } = await res.json();
 
-        setUsers(data);
+        setGames(data);
+        setPage(meta);
       } catch (err) {
         console.log(err.message);
         setError(err.message);
@@ -49,11 +52,11 @@ export default function Users() {
   }
 
   return (
-    <>
-      <h2>Users</h2>
+    <MainPage>
+      <h2>Boardgames</h2>
       {isLoading && <Loader />}
-      {!isLoading && !error && <UserList users={users} />}
+      {!isLoading && !error && <BoardgameList games={games} meta={page} />}
       {error && <ErrorMessage message={error} />}
-    </>
+    </MainPage>
   );
 }

@@ -1,36 +1,34 @@
-import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import MainPage from '../pages/MainPage';
 
 export default function Profile() {
-  const { id } = useParams();
-
-  useEffect(() => {
-    const credentials = JSON.parse(sessionStorage.getItem('jwt'));
-
-    const read = async () => {
-      try {
-        const res = await fetch(`/api/profile/${id}`, {
-          method: 'GET',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + credentials,
-          },
-        });
-
-        if (!res.ok) {
-          throw new Error('Failed to fetch data');
-        }
-
-        const data = await res.json();
-        console.log(data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    read();
-  }, [id]);
-
-  return <div>Profile</div>;
+  return (
+    <MainPage>
+      <form>
+        <div className="mb-3">
+          <label htmlFor="exampleInputEmail1" className="form-label">
+            New password
+          </label>
+          <input
+            type="email"
+            className="form-control"
+            id="exampleInputEmail1"
+            aria-describedby="emailHelp"
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="exampleInputPassword1" className="form-label">
+            Retype new password
+          </label>
+          <input
+            type="password"
+            className="form-control"
+            id="exampleInputPassword1"
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+      </form>
+    </MainPage>
+  );
 }
