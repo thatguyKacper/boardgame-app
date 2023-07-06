@@ -1,9 +1,8 @@
-import MainPage from '../pages/MainPage';
 import UserListItem from './UserListItem';
 
 export default function UserList({ users }) {
   return (
-    <MainPage>
+    <>
       <div className="table-responsive">
         <table className="table table-striped table-sm">
           <thead>
@@ -21,6 +20,6 @@ export default function UserList({ users }) {
           </tbody>
         </table>
       </div>
-    </MainPage>
+    </>
   );
 }

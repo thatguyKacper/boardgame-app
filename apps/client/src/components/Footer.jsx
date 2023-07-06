@@ -3,12 +3,15 @@ export default function Footer() {
     <div className="container">
       <footer className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4">
         <div className="col-md-4 d-flex align-items-center">
-          <span className="mb-3 mb-md-0 text-muted">2022 Company, Inc</span>
+          <span className="mb-3 mb-md-0 text-muted">2023 Kacper Wójtowicz</span>
         </div>
 
         <ul className="nav col-md-4 justify-content-end list-unstyled d-flex">
           <li className="ms-3">
-            <a className="text-muted" href="#">
+            <a
+              className="text-muted"
+              href="https://github.com/thatguyKacper/boardgame-app"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -20,7 +23,10 @@ export default function Footer() {
             </a>
           </li>
           <li className="ms-3">
-            <a className="text-muted" href="#">
+            <a
+              className="text-muted"
+              href="https://pl.linkedin.com/in/kacper-wojtowicz"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"

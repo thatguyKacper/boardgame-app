@@ -4,10 +4,7 @@ export default function Nav() {
   return (
     <header>
       <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <div className="container-fluid">
-          <Link className="navbar-brand" to="/">
-            Logo
-          </Link>
+        <div className="container">
           <button
             className="navbar-toggler"
             type="button"
@@ -34,6 +31,11 @@ export default function Nav() {
               <li className="nav-item">
                 <Link className="nav-link" to="/users">
                   Users
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/profile/:id">
+                  Profile
                 </Link>
               </li>
             </ul>
