@@ -1,4 +1,36 @@
-export default function Signup() {
+import { useEffect } from 'react';
+
+export default function Signin() {
+  useEffect(() => {
+    const read = async () => {
+      try {
+        const res = await fetch('/api/auth/signin', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: 'test1@test.com',
+            password: 'Pass12345',
+          }),
+        });
+
+        if (!res.ok) {
+          throw new Error('Failed to fetch data');
+        }
+
+        const data = await res.json();
+
+        sessionStorage.setItem('jwt', JSON.stringify(data.token));
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    read();
+  }, []);
+
   return (
     <main className="form-signin w-100 m-auto">
       <form>

@@ -6,6 +6,7 @@ import { UpdateUserDto } from '../users/dtos/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from '../users/entities/users.entity';
 import { Repository } from 'typeorm';
+import { RequestDto } from './dtos/request.dto';
 
 @Injectable()
 export class AuthService {
@@ -48,11 +49,16 @@ export class AuthService {
     return this.usersRepository.save(user);
   }
 
-  public async signin(user: any) {
+  public async signin(user: RequestDto) {
     const payload = { email: user.email, sub: user.id };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+
+    // return {
+    //   token: this.jwtService.sign(payload),
+    // };
+
+    return new RequestDto({
+      token: this.jwtService.sign(payload),
+    });
   }
 
   public async get(req: any): Promise<any> {
