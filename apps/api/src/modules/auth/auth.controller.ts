@@ -48,13 +48,20 @@ export class AuthController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @HttpCode(204)
+  @Post('/signout')
+  async signout(@Request() req) {
+    return this.authService.signout(req.user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(204)
   @Delete('/profile/:id')
   async deleteProfile(@Request() req, @Param('id') id: number) {
     return this.authService.remove(req.user);
   }
 
   @Post('/signup')
-  @HttpCode(204)
   async createUser(@Body() createUserDto: CreateUserDto) {
     return this.authService.signup(createUserDto);
   }

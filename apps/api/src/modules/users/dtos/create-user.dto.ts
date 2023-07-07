@@ -1,6 +1,8 @@
+import { Expose } from 'class-transformer';
 import { IsEmail, IsString, IsStrongPassword } from 'class-validator';
 
 export class CreateUserDto {
+  @Expose()
   @IsEmail()
   email: string;
 
@@ -12,7 +14,4 @@ export class CreateUserDto {
     minSymbols: 0,
   })
   password: string;
-
-  @IsString()
-  retypedPassword: string;
 }

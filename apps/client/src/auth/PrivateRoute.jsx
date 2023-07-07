@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
+import Loader from '../components/Loader';
+import { isAuthenticated } from './auth-helper';
 
 export default function PrivateRoute({ children }) {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-
-  const credentials = JSON.parse(sessionStorage.getItem('jwt'));
+  const { token } = isAuthenticated();
 
   useEffect(() => {
     const read = async () => {
@@ -17,7 +18,7 @@ export default function PrivateRoute({ children }) {
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + credentials,
+            Authorization: 'Bearer ' + token,
           },
         });
 
@@ -25,9 +26,7 @@ export default function PrivateRoute({ children }) {
           throw new Error('Unauthorized');
         }
 
-        const data = await res.json();
-
-        console.log(data);
+        // const data = await res.json();
       } catch (err) {
         console.log(err.message);
         setError(err.message);
@@ -38,16 +37,6 @@ export default function PrivateRoute({ children }) {
 
     read();
   }, [id]);
-
-  function Loader() {
-    return (
-      <div className="d-flex justify-content-center">
-        <div className="spinner-border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <>
