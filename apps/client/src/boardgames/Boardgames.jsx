@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import BoardgameList from './BoardgameList';
 import MainPage from '../pages/MainPage';
+import Loader from '../components/Loader';
+import ErrorMessage from '../components/Error';
 
 export default function Boardgames() {
   const [games, setGames] = useState([]);
@@ -32,24 +34,6 @@ export default function Boardgames() {
 
     read();
   }, []);
-
-  function Loader() {
-    return (
-      <div className="d-flex justify-content-center">
-        <div className="spinner-border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    );
-  }
-
-  function ErrorMessage({ message }) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        {message}
-      </div>
-    );
-  }
 
   return (
     <MainPage>

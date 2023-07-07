@@ -1,6 +1,15 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { clearSession, isAuthenticated } from '../auth/auth-helper';
 
 export default function Nav() {
+  const session = isAuthenticated();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    clearSession();
+    navigate(0);
+  };
+
   return (
     <header>
       <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
@@ -33,17 +42,33 @@ export default function Nav() {
                   Users
                 </Link>
               </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/profile/:id">
-                  Profile
-                </Link>
-              </li>
+              {session ? (
+                <li className="nav-item">
+                  <Link className="nav-link" to={`/profile/${session.id}`}>
+                    Profile
+                  </Link>
+                </li>
+              ) : null}
             </ul>
             <div className="navbar-nav">
               <div className="nav-item text-nowrap">
-                <Link className="nav-link" to="/signin">
-                  Sign in
-                </Link>
+                {session ? (
+                  <button
+                    type="button"
+                    className="btn btn-outline-light me-2"
+                    onClick={handleLogout}
+                  >
+                    Sign out
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="btn btn-outline-light me-2"
+                    onClick={() => navigate('/signin')}
+                  >
+                    Sign in
+                  </button>
+                )}
               </div>
             </div>
           </div>

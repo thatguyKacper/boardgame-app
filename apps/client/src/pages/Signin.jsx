@@ -1,11 +1,22 @@
-import { useEffect } from 'react';
+import { useState } from 'react';
 import './Sign.css';
 import MainPage from './MainPage';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+import Loader from '../components/Loader';
+import ErrorMessage from '../components/Error';
 
 export default function Signin() {
-  useEffect(() => {
-    const read = async () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const signin = async () => {
+      setError('');
       try {
         const res = await fetch('/api/auth/signin', {
           method: 'POST',
@@ -14,30 +25,38 @@ export default function Signin() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            email: 'test1@test.com',
-            password: 'Pass12345',
+            email,
+            password,
           }),
         });
 
         if (!res.ok) {
-          throw new Error('Failed to fetch data');
+          throw new Error('Failed to authenticate');
         }
 
         const data = await res.json();
 
         sessionStorage.setItem('jwt', JSON.stringify(data.token));
+        sessionStorage.setItem('userId', JSON.stringify(data.id));
+
+        setIsAuthenticated(true);
       } catch (err) {
-        console.log(err);
+        console.log(err.message);
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
       }
     };
-
-    read();
-  }, []);
+    signin();
+  };
 
   return (
     <MainPage>
+      {isLoading && <Loader />}
+      {!isLoading && !error && isAuthenticated && <Navigate to="/" replace />}
+      {error && <ErrorMessage message={error} />}
       <main className="form-sign w-100 m-auto">
-        <form>
+        <form onSubmit={handleSubmit}>
           <h1 className="h3 mb-3 fw-normal">Sign in</h1>
 
           <div className="form-floating">
@@ -46,6 +65,7 @@ export default function Signin() {
               className="form-control"
               id="floatingInput"
               placeholder="name@example.com"
+              onChange={(e) => setEmail(e.target.value)}
             />
             <label htmlFor="floatingInput">Email address</label>
           </div>
@@ -55,6 +75,7 @@ export default function Signin() {
               className="form-control"
               id="floatingPassword"
               placeholder="Password"
+              onChange={(e) => setPassword(e.target.value)}
             />
             <label htmlFor="floatingPassword">Password</label>
           </div>

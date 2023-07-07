@@ -29,7 +29,7 @@ export class AuthService {
   }
 
   public async signup(createUserDto: CreateUserDto): Promise<any> {
-    const user = new CreateUserDto();
+    let user = new CreateUserDto();
 
     const existingUser = await this.usersRepository.findOneBy({
       email: createUserDto.email,
@@ -39,14 +39,19 @@ export class AuthService {
       throw new BadRequestException('Email is already taken!');
     }
 
-    if (createUserDto.password !== createUserDto.retypedPassword) {
-      throw new BadRequestException('Passwords are not identical!');
-    }
-
     user.email = createUserDto.email;
     user.password = await this.hashPassword(createUserDto.password);
 
-    return this.usersRepository.save(user);
+    user = await this.usersRepository.save(user);
+
+    const request = new RequestDto(user);
+
+    const payload = { email: request.email, sub: request.id };
+
+    return new RequestDto({
+      id: request.id,
+      token: this.jwtService.sign(payload),
+    });
   }
 
   public async signin(user: RequestDto) {
@@ -57,6 +62,7 @@ export class AuthService {
     // };
 
     return new RequestDto({
+      id: user.id,
       token: this.jwtService.sign(payload),
     });
   }
@@ -76,13 +82,25 @@ export class AuthService {
     //   updatedUser.email = updateUserDto.email;
     // }
 
-    if (updateUserDto.password !== user.password) {
-      updatedUser.password = await this.hashPassword(updateUserDto.password);
+    if (updateUserDto.password !== updateUserDto.retypedPassword) {
+      throw new BadRequestException();
     }
+
+    updatedUser.password = await this.hashPassword(updateUserDto.password);
 
     Object.assign(user, updatedUser);
 
     return await this.usersRepository.save(user);
+  }
+
+  async signout(req: any) {
+    const user = await this.usersRepository.findOneBy({ id: req.userId });
+
+    if (!user) {
+      throw new BadRequestException();
+    }
+
+    return;
   }
 
   async remove(req: any) {

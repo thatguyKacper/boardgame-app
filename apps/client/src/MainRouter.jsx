@@ -1,5 +1,3 @@
-import Nav from './components/Nav';
-import Sidebar from './components/Sidebar';
 import Users from './users/Users';
 import Boardgames from './boardgames/Boardgames';
 import { Route, Routes } from 'react-router-dom';
