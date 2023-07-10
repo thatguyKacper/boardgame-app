@@ -4,8 +4,9 @@ import { Boardgames } from './entities/boardgames.entity';
 import { Repository } from 'typeorm';
 import { CreateBoardgameDto } from './dtos/create-boardgame.dto';
 import { UpdateBoardgameDto } from './dtos/update-boardgame.dto';
-import { FilterBoardgameDto } from './dtos/filter-boardgame.dto';
 import { PaginatorOptions, paginate } from 'src/common/paginator';
+import { QueryBoardgamesDto } from './dtos/query-boardgames.dto';
+import { BoardgameDto } from './dtos/boardgame.dto';
 
 @Injectable()
 export class BoardgamesService {
@@ -51,7 +52,6 @@ export class BoardgamesService {
     return this.boardgamesRepository
       .createQueryBuilder('bg')
       .orderBy('bg.id', 'DESC');
-    // .limit(50);
   }
 
   public getBoardgamesWithUsersCount() {
@@ -73,7 +73,8 @@ export class BoardgamesService {
     return await query.getOne();
   }
 
-  public async getBoardgamesFiltered(filter?: FilterBoardgameDto) {
+  public async getBoardgamesFiltered(filter?: QueryBoardgamesDto) {
+    // console.log(filter);
     let query = this.getBoardgameBaseQuery();
 
     if (!filter) {
@@ -149,8 +150,49 @@ export class BoardgamesService {
     return query;
   }
 
+  public async getBoardgamesFilteredTop(filter?: QueryBoardgamesDto) {
+    console.log(filter);
+
+    let query = this.getBoardgameBaseQuery();
+
+    if (!filter) {
+      return query;
+    }
+
+    if (filter.score) {
+      query = query
+        .innerJoinAndSelect('bg.score', 'top')
+        .orderBy('top', 'ASC')
+        .limit(10)
+        .loadRelationCountAndMap('bg.playedbyusersCount', 'bg.playedbyusers');
+    }
+
+    if (filter.played) {
+      query = query
+        .innerJoinAndSelect('bg.playedbyusers', 'top')
+        .orderBy('top', 'ASC')
+        .limit(10)
+        .loadRelationCountAndMap('bg.playedbyusersCount', 'bg.playedbyusers');
+    }
+
+    if (filter.wishlist) {
+      query = query
+        .innerJoinAndSelect('bg.userswanttoplay', 'top')
+        .orderBy('top', 'ASC')
+        .limit(10)
+        .loadRelationCountAndMap(
+          'bg.userswanttoplayCount',
+          'bg.userswanttoplay',
+        );
+    }
+
+    return {
+      data: await query.getMany(),
+    };
+  }
+
   public async getBoardgamesFilteredPaginated(
-    filter: FilterBoardgameDto,
+    filter: QueryBoardgamesDto,
     paginatorOptions: PaginatorOptions,
   ) {
     return await paginate(

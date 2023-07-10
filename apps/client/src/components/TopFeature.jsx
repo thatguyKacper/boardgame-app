@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 export default function TopFeature() {
   return (
     <div className="container px-4 py-5" id="featured-3">
@@ -6,32 +8,41 @@ export default function TopFeature() {
         <div className="feature col">
           <h3 className="fs-2">Most scored boardgames</h3>
           <p>Here you can see boardgames that have best score</p>
-          <a
-            href="/api/boardgames?top=score"
+          {/* <Link
+            to="/boardgames/lists?top=score"
+            state={{ query: '?score=score' }}
             className="icon-link d-inline-flex align-items-center"
           >
             See boardgames
-          </a>
+          </Link> */}
+          <Link
+            to="/page-not-ready"
+            className="icon-link d-inline-flex align-items-center"
+          >
+            See boardgames
+          </Link>
         </div>
         <div className="feature col">
           <h3 className="fs-2">Most viewed boardgames</h3>
           <p>Here you can see boardgames that users search most</p>
-          <a
-            href="/api/boardgames?top=viewed"
+          <Link
+            to="/boardgames/lists?top=played"
+            state={{ query: '?played=played' }}
             className="icon-link d-inline-flex align-items-center"
           >
             See boardgames
-          </a>
+          </Link>
         </div>
         <div className="feature col">
           <h3 className="fs-2">Most wished boardgames</h3>
           <p>Here you can see boardgames that users add to wishlist most</p>
-          <a
-            href="/api/boardgames?top=wishlist"
+          <Link
+            to="/boardgames/lists?top=wishlist"
+            state={{ query: '?wishlist=wishlist' }}
             className="icon-link d-inline-flex align-items-center"
           >
             See boardgames
-          </a>
+          </Link>
         </div>
       </div>
     </div>

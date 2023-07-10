@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { clearSession, isAuthenticated } from '../auth/auth-helper';
 
 export default function Nav() {
@@ -28,25 +28,25 @@ export default function Nav() {
           <div className="collapse navbar-collapse" id="navbarCollapse">
             <ul className="navbar-nav me-auto mb-2 mb-md-0">
               <li className="nav-item">
-                <Link className="nav-link active" aria-current="page" to="/">
+                <NavLink className="nav-link" aria-current="page" to="/">
                   Home
-                </Link>
+                </NavLink>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/boardgames">
+                <NavLink className="nav-link" to="/boardgames">
                   Boardgames
-                </Link>
+                </NavLink>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/users">
+                <NavLink className="nav-link" to="/users">
                   Users
-                </Link>
+                </NavLink>
               </li>
               {session ? (
                 <li className="nav-item">
-                  <Link className="nav-link" to={`/profile/${session.id}`}>
+                  <NavLink className="nav-link" to={`/profile/${session.id}`}>
                     Profile
-                  </Link>
+                  </NavLink>
                 </li>
               ) : null}
             </ul>

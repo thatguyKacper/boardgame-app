@@ -30,7 +30,7 @@ export default function BoardgamePage() {
     };
 
     read();
-  }, []);
+  }, [id]);
 
   function Loader() {
     return (
