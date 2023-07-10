@@ -33,7 +33,7 @@ export default function User() {
             {user.length ? (
               user.map((el) => (
                 <li key={el.id} className="display-6">
-                  key={el.userplayedgames}
+                  {el.userplayedgames}
                 </li>
               ))
             ) : (
@@ -47,7 +47,7 @@ export default function User() {
             {user.length ? (
               user.map((el) => (
                 <li key={el.id} className="display-6">
-                  key={el.wanttoplaygames}
+                  {el.wanttoplaygames}
                 </li>
               ))
             ) : (

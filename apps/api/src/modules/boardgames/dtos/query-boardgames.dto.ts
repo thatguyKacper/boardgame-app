@@ -1,0 +1,55 @@
+import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { Transform } from 'class-transformer';
+export class QueryBoardgamesDto {
+  @IsOptional()
+  @Transform(({ value }) => parseInt(value))
+  @IsNumber()
+  id: number;
+  @IsOptional()
+  @IsString()
+  name: string;
+  @IsOptional()
+  @IsString()
+  designer: string;
+  @IsOptional()
+  @IsString()
+  artist: string;
+  @IsOptional()
+  @Transform(({ value }) => parseInt(value))
+  @IsNumber()
+  yearpublished: number;
+  @IsOptional()
+  @Transform(({ value }) => parseInt(value))
+  @IsNumber()
+  minplayers: number;
+  @IsOptional()
+  @Transform(({ value }) => parseInt(value))
+  @IsNumber()
+  maxplayers: number;
+  @IsOptional()
+  @Transform(({ value }) => parseInt(value))
+  @IsNumber()
+  minage: number;
+  @IsOptional()
+  @Transform(({ value }) => parseInt(value))
+  @IsNumber()
+  playingtime: number;
+  @IsOptional()
+  @IsString()
+  publisher: string;
+  @IsOptional()
+  @IsString()
+  category: string;
+  @IsOptional()
+  @IsString()
+  mechanic: string;
+  @IsOptional()
+  @IsString()
+  score: string;
+  @IsOptional()
+  @IsString()
+  played: string;
+  @IsOptional()
+  @IsString()
+  wishlist: string;
+}

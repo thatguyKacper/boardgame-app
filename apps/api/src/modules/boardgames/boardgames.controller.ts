@@ -13,25 +13,30 @@ import {
 import { BoardgamesService } from './boardgames.service';
 import { CreateBoardgameDto } from './dtos/create-boardgame.dto';
 import { UpdateBoardgameDto } from './dtos/update-boardgame.dto';
-import { FilterBoardgameDto } from './dtos/filter-boardgame.dto';
 import { SerializeInterceptor } from 'src/interceptors/serialize.interceptor';
+import { QueryBoardgamesDto } from './dtos/query-boardgames.dto';
 
 @Controller('boardgames')
-@UseInterceptors(new SerializeInterceptor(FilterBoardgameDto))
+@UseInterceptors(new SerializeInterceptor(QueryBoardgamesDto))
 export class BoardgamesController {
   constructor(private readonly boardgamesService: BoardgamesService) {}
 
-  @Get(':id')
-  async findOne(@Param('id') id: number) {
-    return await this.boardgamesService.getBoardgame(+id);
+  @Get('/lists')
+  async getMostPlayed(@Query() filter: QueryBoardgamesDto) {
+    return await this.boardgamesService.getBoardgamesFilteredTop(filter);
   }
 
   @Get()
-  async findAll(@Query() filter: FilterBoardgameDto) {
+  async findAll(@Query() filter: QueryBoardgamesDto) {
     return await this.boardgamesService.getBoardgamesFilteredPaginated(filter, {
       currentPage: 1,
       limit: 50,
     });
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') id: number) {
+    return await this.boardgamesService.getBoardgame(+id);
   }
 
   @Post()
