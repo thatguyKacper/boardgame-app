@@ -29,7 +29,7 @@ export class BoardgamesController {
   @Get()
   async findAll(@Query() filter: QueryBoardgamesDto) {
     return await this.boardgamesService.getBoardgamesFilteredPaginated(filter, {
-      currentPage: 1,
+      currentPage: filter.page,
       limit: 50,
     });
   }

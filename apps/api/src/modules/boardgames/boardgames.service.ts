@@ -6,7 +6,6 @@ import { CreateBoardgameDto } from './dtos/create-boardgame.dto';
 import { UpdateBoardgameDto } from './dtos/update-boardgame.dto';
 import { PaginatorOptions, paginate } from 'src/common/paginator';
 import { QueryBoardgamesDto } from './dtos/query-boardgames.dto';
-import { BoardgameDto } from './dtos/boardgame.dto';
 
 @Injectable()
 export class BoardgamesService {
@@ -151,8 +150,6 @@ export class BoardgamesService {
   }
 
   public async getBoardgamesFilteredTop(filter?: QueryBoardgamesDto) {
-    console.log(filter);
-
     let query = this.getBoardgameBaseQuery();
 
     if (!filter) {
