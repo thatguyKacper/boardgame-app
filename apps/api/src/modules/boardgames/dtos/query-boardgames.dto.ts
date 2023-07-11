@@ -4,52 +4,56 @@ export class QueryBoardgamesDto {
   @IsOptional()
   @Transform(({ value }) => parseInt(value))
   @IsNumber()
-  id: number;
+  id?: number;
   @IsOptional()
   @IsString()
-  name: string;
+  name?: string;
   @IsOptional()
   @IsString()
-  designer: string;
+  designer?: string;
   @IsOptional()
   @IsString()
-  artist: string;
+  artist?: string;
   @IsOptional()
   @Transform(({ value }) => parseInt(value))
   @IsNumber()
-  yearpublished: number;
+  yearpublished?: number;
   @IsOptional()
   @Transform(({ value }) => parseInt(value))
   @IsNumber()
-  minplayers: number;
+  minplayers?: number;
   @IsOptional()
   @Transform(({ value }) => parseInt(value))
   @IsNumber()
-  maxplayers: number;
+  maxplayers?: number;
   @IsOptional()
   @Transform(({ value }) => parseInt(value))
   @IsNumber()
-  minage: number;
+  minage?: number;
   @IsOptional()
   @Transform(({ value }) => parseInt(value))
   @IsNumber()
-  playingtime: number;
+  playingtime?: number;
   @IsOptional()
   @IsString()
-  publisher: string;
+  publisher?: string;
   @IsOptional()
   @IsString()
-  category: string;
+  category?: string;
   @IsOptional()
   @IsString()
-  mechanic: string;
+  mechanic?: string;
+  @IsOptional()
+  @Transform(({ value }) => parseInt(value))
+  @IsNumber()
+  page?: number;
   @IsOptional()
   @IsString()
-  score: string;
+  score?: string;
   @IsOptional()
   @IsString()
-  played: string;
+  played?: string;
   @IsOptional()
   @IsString()
-  wishlist: string;
+  wishlist?: string;
 }
