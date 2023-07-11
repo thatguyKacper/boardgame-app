@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Nav from '../components/Nav';
 import Jumbo from '../components/Jumbo';

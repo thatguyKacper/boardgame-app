@@ -2,7 +2,7 @@ import BoardgameListItem from './BoardgameListItem';
 
 export default function BoardgameList({ games }) {
   return (
-    <div className="table-responsive">
+    <div className="table">
       <table className="table table-striped table-sm">
         <thead>
           <tr>
