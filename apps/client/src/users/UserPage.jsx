@@ -30,12 +30,10 @@ export default function User() {
         <div className="col-lg-6 mx-auto">
           <h6 className="display-6">Played Games:</h6>
           <ul className="lead mb-4">
-            {user.length ? (
-              user.map((el) => (
-                <li key={el.id} className="display-6">
-                  {el.userplayedgames}
-                </li>
-              ))
+            {user.playedboardgames ? (
+              <p className="display-6 fw-bold">
+                {user.playedboardgames.length}
+              </p>
             ) : (
               <p className="display-6 fw-bold">0</p>
             )}
@@ -44,12 +42,10 @@ export default function User() {
         <div className="col-lg-6 mx-auto">
           <h6 className="display-6 ">Wishlist:</h6>
           <ul className="lead mb-4">
-            {user.length ? (
-              user.map((el) => (
-                <li key={el.id} className="display-6">
-                  {el.wanttoplaygames}
-                </li>
-              ))
+            {user.wanttoplayboardgames ? (
+              <p className="display-6 fw-bold">
+                {user.wanttoplayboardgames.length}
+              </p>
             ) : (
               <p className="display-6 fw-bold">0</p>
             )}

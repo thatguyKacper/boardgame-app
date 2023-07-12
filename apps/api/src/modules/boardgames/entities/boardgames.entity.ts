@@ -65,6 +65,14 @@ export class Boardgames {
   @Expose()
   userswanttoplay: Users[];
 
+  @ManyToMany(() => Users, (user) => user.scoredboardgames, {
+    nullable: true,
+  })
+  @Type(() => UserDto)
+  @Expose()
+  usersscored: Users[];
+
   playedbyusersCount?: number;
   userswanttoplayCount?: number;
+  usersscoredCount?: number;
 }

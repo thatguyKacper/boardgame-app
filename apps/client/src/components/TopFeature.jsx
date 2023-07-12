@@ -8,26 +8,20 @@ export default function TopFeature() {
         <div className="feature col">
           <h3 className="fs-2">Most scored boardgames</h3>
           <p>Here you can see boardgames that have best score</p>
-          {/* <Link
-            to="/boardgames/lists?top=score"
-            state={{ query: '?score=score' }}
-            className="icon-link d-inline-flex align-items-center"
-          >
-            See boardgames
-          </Link> */}
           <Link
-            to="/page-not-ready"
+            to="/boardgames/lists?top=score"
+            state={{ query: '&score=score' }}
             className="icon-link d-inline-flex align-items-center"
           >
             See boardgames
           </Link>
         </div>
         <div className="feature col">
-          <h3 className="fs-2">Most viewed boardgames</h3>
-          <p>Here you can see boardgames that users search most</p>
+          <h3 className="fs-2">Most played boardgames</h3>
+          <p>Here you can see boardgames that users played most</p>
           <Link
             to="/boardgames/lists?top=played"
-            state={{ query: '?played=played' }}
+            state={{ query: '&played=played' }}
             className="icon-link d-inline-flex align-items-center"
           >
             See boardgames
@@ -38,7 +32,7 @@ export default function TopFeature() {
           <p>Here you can see boardgames that users add to wishlist most</p>
           <Link
             to="/boardgames/lists?top=wishlist"
-            state={{ query: '?wishlist=wishlist' }}
+            state={{ query: '&wishlist=wishlist' }}
             className="icon-link d-inline-flex align-items-center"
           >
             See boardgames

@@ -60,4 +60,27 @@ export class Users {
   @Type(() => BoardgameDto)
   @Expose()
   wanttoplayboardgames: Boardgames[];
+
+  @JoinTable({
+    name: 'users_scored_boardgames',
+    joinColumn: {
+      name: 'userId',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'boardgameId',
+      referencedColumnName: 'id',
+    },
+  })
+  @ManyToMany(() => Boardgames, (boardgame) => boardgame.usersscored, {
+    cascade: true,
+    nullable: true,
+  })
+  @Type(() => BoardgameDto)
+  @Expose()
+  scoredboardgames: Boardgames[];
+
+  playedboardgamesCount?: number;
+  wanttoplayboardgamesCount?: number;
+  scoredboardgamesCount?: number;
 }

@@ -9,6 +9,8 @@ import {
   Patch,
   Post,
   Query,
+  Request,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { BoardgamesService } from './boardgames.service';
@@ -16,6 +18,7 @@ import { CreateBoardgameDto } from './dtos/create-boardgame.dto';
 import { UpdateBoardgameDto } from './dtos/update-boardgame.dto';
 import { SerializeInterceptor } from 'src/interceptors/serialize.interceptor';
 import { QueryBoardgamesDto } from './dtos/query-boardgames.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('boardgames')
 @UseInterceptors(new SerializeInterceptor(QueryBoardgamesDto))
@@ -24,7 +27,13 @@ export class BoardgamesController {
 
   @Get('/lists')
   async getMostPlayed(@Query() filter: QueryBoardgamesDto) {
-    return await this.boardgamesService.getBoardgamesFilteredTop(filter);
+    return await this.boardgamesService.getBoardgamesFilteredTopPaginated(
+      filter,
+      {
+        currentPage: filter.page,
+        limit: 10,
+      },
+    );
   }
 
   @Get()
@@ -40,12 +49,36 @@ export class BoardgamesController {
     return await this.boardgamesService.getBoardgame(+id);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/score-boardgame')
+  async addScore(
+    @Param('id') id: number,
+    @Request() req,
+    @Body() score: number,
+  ) {
+    return await this.boardgamesService.addScore(+id, req.user.userId, score);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/add-as-played')
+  async addAsPlayed(@Param('id') id: number, @Request() req) {
+    return await this.boardgamesService.addAsPlayed(+id, req.user.userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/add-to-wishlist')
+  async addToWishlist(@Param('id') id: number, @Request() req) {
+    return await this.boardgamesService.addToWishlist(+id, req.user.userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Post()
   @UseInterceptors(new SerializeInterceptor(CreateBoardgameDto))
   async create(@Body() createBoardgameDto: CreateBoardgameDto) {
     return await this.boardgamesService.createBoardgame(createBoardgameDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -61,10 +94,11 @@ export class BoardgamesController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   @HttpCode(204)
   async remove(@Param('id') id: number) {
-    const result = await this.boardgamesService.removeBoardgame(id);
+    const result = await this.boardgamesService.removeBoardgame(+id);
 
     if (result.affected !== 1) {
       throw new NotFoundException();

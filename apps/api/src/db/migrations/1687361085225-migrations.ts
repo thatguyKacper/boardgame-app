@@ -180,6 +180,47 @@ export class InitialMigration1687361085225 implements MigrationInterface {
         referencedTableName: 'boardgames',
       }),
     ]);
+
+    await queryRunner.createTable(
+      new Table({
+        name: 'users_scored_boardgames',
+        columns: [
+          {
+            name: 'userId',
+            type: 'int',
+            isNullable: true,
+          },
+          {
+            name: 'boardgameId',
+            type: 'int',
+            isNullable: true,
+          },
+          {
+            name: 'score',
+            type: 'int',
+            isNullable: true,
+          },
+        ],
+      }),
+    );
+
+    await queryRunner.createPrimaryKey('users_scored_boardgames', [
+      'userId',
+      'boardgameId',
+    ]);
+
+    await queryRunner.createForeignKeys('users_scored_boardgames', [
+      new TableForeignKey({
+        columnNames: ['userId'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'users',
+      }),
+      new TableForeignKey({
+        columnNames: ['boardgameId'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'boardgames',
+      }),
+    ]);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

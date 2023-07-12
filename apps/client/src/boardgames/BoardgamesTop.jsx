@@ -19,7 +19,7 @@ export default function BoardgamesTop() {
     const read = async () => {
       setIsLoading(true);
       try {
-        const res = await fetch('/api/boardgames/lists' + query);
+        const res = await fetch('/api/boardgames/lists?page=1' + query);
 
         if (!res.ok) {
           throw new Error('Failed to fetch data');

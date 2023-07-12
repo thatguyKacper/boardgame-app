@@ -18,6 +18,7 @@ export default function Boardgames() {
 
   useEffect(() => {
     const read = async () => {
+      setError('');
       setIsLoading(true);
       try {
         const res = await fetch(`/api/boardgames?page=${page}`);
@@ -47,6 +48,7 @@ export default function Boardgames() {
     e.preventDefault();
 
     const search = async () => {
+      setError('');
       setIsLoading(true);
       try {
         const res = await fetch(

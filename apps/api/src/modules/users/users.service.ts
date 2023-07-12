@@ -17,7 +17,11 @@ export class UsersService {
 
   public async findAll(): Promise<Users[] | undefined> {
     const users = await this.usersRepository.find({
-      relations: ['playedboardgames', 'wanttoplayboardgames'],
+      relations: [
+        'playedboardgames',
+        'wanttoplayboardgames',
+        'scoredboardgames',
+      ],
     });
 
     return users;
@@ -28,7 +32,11 @@ export class UsersService {
       where: {
         id,
       },
-      relations: ['playedboardgames', 'wanttoplayboardgames'],
+      relations: [
+        'playedboardgames',
+        'wanttoplayboardgames',
+        'scoredboardgames',
+      ],
     });
 
     if (!id || !user) {
