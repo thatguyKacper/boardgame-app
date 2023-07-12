@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpCode,
+  NotFoundException,
   Param,
   Patch,
   Post,
@@ -41,21 +42,32 @@ export class BoardgamesController {
 
   @Post()
   @UseInterceptors(new SerializeInterceptor(CreateBoardgameDto))
-  create(@Body() createBoardgameDto: CreateBoardgameDto) {
-    return this.boardgamesService.create(createBoardgameDto);
+  async create(@Body() createBoardgameDto: CreateBoardgameDto) {
+    return await this.boardgamesService.createBoardgame(createBoardgameDto);
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateBoardgameDto: UpdateBoardgameDto,
   ) {
-    return this.boardgamesService.update(id, updateBoardgameDto);
+    const result = await this.boardgamesService.updateBoardgame(
+      id,
+      updateBoardgameDto,
+    );
+
+    if (result.affected !== 1) {
+      throw new NotFoundException();
+    }
   }
 
   @Delete(':id')
   @HttpCode(204)
-  remove(@Param('id') id: number) {
-    return this.boardgamesService.remove(id);
+  async remove(@Param('id') id: number) {
+    const result = await this.boardgamesService.removeBoardgame(id);
+
+    if (result.affected !== 1) {
+      throw new NotFoundException();
+    }
   }
 }

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import BoardgameList from './BoardgameList';
-import BoardgameListDetail from './BoardgameListDetail';
 import MainPage from '../pages/MainPage';
 import Loader from '../components/Loader';
 import ErrorMessage from '../components/Error';
@@ -9,9 +8,9 @@ export default function Boardgames() {
   const [games, setGames] = useState([]);
   const [searchResult, setSearchResult] = useState(false);
   const [page, setPage] = useState(1);
-  const [lastPage, setLastPage] = useState(0);
-  const [prevPage, setPrevPage] = useState(0);
   const [nextPage, setNextPage] = useState(0);
+  const [prevPage, setPrevPage] = useState(0);
+  const [lastPage, setLastPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [searchField, setSearchField] = useState('');
@@ -66,8 +65,6 @@ export default function Boardgames() {
         setNextPage(meta.next_page);
         setPrevPage(meta.prev_page);
         setSearchResult(true);
-        // setSearchField('');
-        // setSearchName('');
       } catch (err) {
         console.log(err.message);
         setError(err.message);
@@ -143,7 +140,7 @@ export default function Boardgames() {
         <BoardgameList games={games} meta={page} />
       )}
       {!isLoading && !error && searchResult && (
-        <BoardgameListDetail games={games} meta={page} />
+        <BoardgameList games={games} meta={page} search={searchField} />
       )}
       {error && <ErrorMessage message={error} />}
       <div className="py-2 border-bottom mb-3">

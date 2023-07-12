@@ -16,36 +16,34 @@ export class BoardgamesService {
     private readonly boardgamesRepository: Repository<Boardgames>,
   ) {}
 
-  create(createBoardgameDto: CreateBoardgameDto) {
-    const game = this.boardgamesRepository.create(createBoardgameDto);
-
-    return this.boardgamesRepository.save(game);
+  public async createBoardgame(createBoardgameDto: CreateBoardgameDto) {
+    return await this.boardgamesRepository
+      .createQueryBuilder('bg')
+      .insert()
+      .into(Boardgames)
+      .values(createBoardgameDto)
+      .execute();
   }
 
-  async update(id: string, updateBoardgameDto: UpdateBoardgameDto) {
-    const game = await this.boardgamesRepository.preload({
-      id: +id,
-      ...updateBoardgameDto,
-    });
-
-    if (!game) {
-      throw new NotFoundException(`Boardgame #${id} not found`);
-    }
-
-    return this.boardgamesRepository.save(game);
+  public async updateBoardgame(
+    id: string,
+    updateBoardgameDto?: UpdateBoardgameDto,
+  ) {
+    return await this.boardgamesRepository
+      .createQueryBuilder('bg')
+      .update()
+      .where('id = :id', { id })
+      .set(updateBoardgameDto)
+      .execute();
   }
 
-  async remove(id: number) {
-    const game = await this.getBoardgame(id);
-
-    if (game) {
-      this.boardgamesRepository.remove(game);
-    }
-
-    return null;
+  public async removeBoardgame(id: number) {
+    return await this.boardgamesRepository
+      .createQueryBuilder('bg')
+      .delete()
+      .where('id = :id', { id })
+      .execute();
   }
-
-  // Query builder aproach
 
   private getBoardgameBaseQuery() {
     return this.boardgamesRepository
@@ -73,7 +71,6 @@ export class BoardgamesService {
   }
 
   public async getBoardgamesFiltered(filter?: QueryBoardgamesDto) {
-    // console.log(filter);
     let query = this.getBoardgameBaseQuery();
 
     if (!filter) {
