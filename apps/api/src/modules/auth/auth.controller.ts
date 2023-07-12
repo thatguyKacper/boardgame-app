@@ -9,7 +9,6 @@ import {
   Patch,
   Post,
   Request,
-  SerializeOptions,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -20,7 +19,6 @@ import { CreateUserDto } from '../users/dtos/create-user.dto';
 import { UpdateUserDto } from '../users/dtos/update-user.dto';
 
 @Controller()
-@SerializeOptions({ strategy: 'excludeAll' })
 @UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
   constructor(private authService: AuthService) {}

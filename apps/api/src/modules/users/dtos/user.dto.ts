@@ -1,9 +1,15 @@
-import { Expose } from 'class-transformer';
+import { Transform } from 'class-transformer';
+import { IsNumber, IsOptional } from 'class-validator';
 
 export class UserDto {
-  @Expose()
-  id: number;
+  @IsOptional()
+  id?: number;
 
-  @Expose()
-  email: string;
+  @IsOptional()
+  email?: string;
+
+  @IsOptional()
+  @Transform(({ value }) => parseInt(value))
+  @IsNumber()
+  page?: number;
 }

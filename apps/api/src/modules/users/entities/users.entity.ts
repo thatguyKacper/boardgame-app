@@ -1,4 +1,4 @@
-import { Exclude, Expose, Type } from 'class-transformer';
+import { Exclude, Type } from 'class-transformer';
 import { Boardgames } from '../../boardgames/entities/boardgames.entity';
 import {
   Entity,
@@ -12,11 +12,9 @@ import { BoardgameDto } from '../../boardgames/dtos/boardgame.dto';
 @Entity()
 export class Users {
   @PrimaryGeneratedColumn()
-  @Expose()
   id: number;
 
   @Column({ unique: true })
-  @Expose()
   email: string;
 
   @Column()
@@ -39,7 +37,6 @@ export class Users {
     nullable: true,
   })
   @Type(() => BoardgameDto)
-  @Expose()
   playedboardgames: Boardgames[];
 
   @JoinTable({
@@ -58,7 +55,6 @@ export class Users {
     nullable: true,
   })
   @Type(() => BoardgameDto)
-  @Expose()
   wanttoplayboardgames: Boardgames[];
 
   @JoinTable({
@@ -77,7 +73,6 @@ export class Users {
     nullable: true,
   })
   @Type(() => BoardgameDto)
-  @Expose()
   scoredboardgames: Boardgames[];
 
   playedboardgamesCount?: number;

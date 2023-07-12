@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -21,7 +22,8 @@ import { QueryBoardgamesDto } from './dtos/query-boardgames.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('boardgames')
-@UseInterceptors(new SerializeInterceptor(QueryBoardgamesDto))
+@UseInterceptors(ClassSerializerInterceptor)
+// @UseInterceptors(new SerializeInterceptor(QueryBoardgamesDto))
 export class BoardgamesController {
   constructor(private readonly boardgamesService: BoardgamesService) {}
 

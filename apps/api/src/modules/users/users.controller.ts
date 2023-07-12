@@ -4,23 +4,26 @@ import {
   Param,
   UseInterceptors,
   ClassSerializerInterceptor,
-  SerializeOptions,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { UserDto } from './dtos/user.dto';
 
 @Controller('users')
-@SerializeOptions({ strategy: 'excludeAll' })
 @UseInterceptors(ClassSerializerInterceptor)
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  async findAll(@Query() filter: UserDto) {
+    return await this.usersService.getUsersFilteredPaginated(filter, {
+      currentPage: filter.page,
+      limit: 50,
+    });
   }
 
   @Get('/:id')
-  findUser(@Param('id') id: string) {
-    return this.usersService.findOneById(parseInt(id));
+  async findOne(@Param('id') id: number) {
+    return await this.usersService.getUser(+id);
   }
 }
