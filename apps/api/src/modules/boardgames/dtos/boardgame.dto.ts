@@ -1,8 +1,8 @@
-import { Expose } from 'class-transformer';
-
 export class BoardgameDto {
-  @Expose()
   id: number;
-  @Expose()
   name: string;
+
+  constructor(partial: Partial<BoardgameDto>) {
+    Object.assign(this, partial);
+  }
 }

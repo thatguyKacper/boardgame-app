@@ -54,9 +54,13 @@ export class BoardgamesService {
   }
 
   public async getBoardgame(id: number): Promise<Boardgames | undefined> {
-    const query = this.getBoardgamesBaseQuery().andWhere('bg.id = :id', {
-      id,
-    });
+    const query = this.getBoardgamesBaseQuery()
+      .andWhere('bg.id = :id', {
+        id,
+      })
+      .loadRelationCountAndMap('bg.usersscoredCount', 'bg.usersscored')
+      .loadRelationCountAndMap('bg.playedbyusersCount', 'bg.playedbyusers')
+      .loadRelationCountAndMap('bg.userswanttoplayCount', 'bg.userswanttoplay');
 
     if (!query) {
       throw new NotFoundException(`Boardgame #${id} not found`);
@@ -151,7 +155,7 @@ export class BoardgamesService {
     if (filter.score) {
       query = query
         .innerJoinAndSelect('bg.usersscored', 'top')
-        .loadRelationCountAndMap('bg.usersscoredCount', 'bg.playedbyusers');
+        .loadRelationCountAndMap('bg.usersscoredCount', 'bg.usersscored');
     }
 
     if (filter.played) {

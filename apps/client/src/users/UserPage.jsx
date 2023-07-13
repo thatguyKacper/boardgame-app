@@ -30,10 +30,8 @@ export default function User() {
         <div className="col-lg-6 mx-auto">
           <h6 className="display-6">Played Games:</h6>
           <ul className="lead mb-4">
-            {user.playedboardgames ? (
-              <p className="display-6 fw-bold">
-                {user.playedboardgames.length}
-              </p>
+            {user.playedboardgamesCount ? (
+              <p className="display-6 fw-bold">{user.playedboardgamesCount}</p>
             ) : (
               <p className="display-6 fw-bold">0</p>
             )}
@@ -42,9 +40,9 @@ export default function User() {
         <div className="col-lg-6 mx-auto">
           <h6 className="display-6 ">Wishlist:</h6>
           <ul className="lead mb-4">
-            {user.wanttoplayboardgames ? (
+            {user.wanttoplayboardgamesCount ? (
               <p className="display-6 fw-bold">
-                {user.wanttoplayboardgames.length}
+                {user.wanttoplayboardgamesCount}
               </p>
             ) : (
               <p className="display-6 fw-bold">0</p>

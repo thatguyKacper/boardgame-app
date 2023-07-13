@@ -17,9 +17,16 @@ export class UsersService {
   }
 
   public async getUser(id: number): Promise<Users | undefined> {
-    const query = this.getUsersBaseQuery().andWhere('u.id = :id', {
-      id,
-    });
+    const query = this.getUsersBaseQuery()
+      .andWhere('u.id = :id', {
+        id,
+      })
+      .loadRelationCountAndMap('u.playedboardgamesCount', 'u.playedboardgames')
+      .loadRelationCountAndMap('u.scoredboardgamesCount', 'u.scoredboardgames')
+      .loadRelationCountAndMap(
+        'u.wanttoplayboardgamesCount',
+        'u.wanttoplayboardgames',
+      );
 
     if (!query) {
       throw new NotFoundException(`User #${id} not found`);
