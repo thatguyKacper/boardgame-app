@@ -13,13 +13,13 @@ export default function Users() {
     const read = async () => {
       setIsLoading(true);
       try {
-        const res = await fetch('/api/users');
+        const res = await fetch('/api/users?page=1');
 
         if (!res.ok) {
           throw new Error('Failed to fetch data');
         }
 
-        const data = await res.json();
+        const { data } = await res.json();
 
         setUsers(data);
       } catch (err) {

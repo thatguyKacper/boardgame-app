@@ -1,12 +1,9 @@
-import {
-  Injectable,
-  Logger,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from './entities/users.entity';
+import { UserDto } from './dtos/user.dto';
+import { PaginatorOptions, paginate } from 'src/common/paginator';
 
 @Injectable()
 export class UsersService {
@@ -15,39 +12,45 @@ export class UsersService {
     private readonly usersRepository: Repository<Users>,
   ) {}
 
-  public async findAll(): Promise<Users[] | undefined> {
-    const users = await this.usersRepository.find({
-      relations: ['playedboardgames', 'wanttoplayboardgames'],
-    });
-
-    return users;
+  private getUsersBaseQuery() {
+    return this.usersRepository.createQueryBuilder('u');
   }
 
-  public async findOneById(id: number): Promise<Users | undefined> {
-    const user = await this.usersRepository.findOne({
-      where: {
-        id,
-      },
-      relations: ['playedboardgames', 'wanttoplayboardgames'],
+  public async getUser(id: number): Promise<Users | undefined> {
+    const query = this.getUsersBaseQuery().andWhere('u.id = :id', {
+      id,
     });
 
-    if (!id || !user) {
+    if (!query) {
       throw new NotFoundException(`User #${id} not found`);
     }
 
-    return user;
+    return await query.getOne();
   }
 
-  public async findOneByEmail(email: string): Promise<Users | undefined> {
-    const user = await this.usersRepository.findOne({
-      where: { email },
-      relations: ['playedboardgames', 'wanttoplayboardgames'],
-    });
+  public async getUsersFiltered(filter?: UserDto) {
+    let query = this.getUsersBaseQuery();
 
-    if (!user) {
-      throw new NotFoundException(`User #${email} not found`);
+    if (!filter) {
+      return query;
     }
 
-    return user;
+    if (filter.email) {
+      query = query.andWhere('u.email = :email', {
+        email: filter.email,
+      });
+    }
+
+    return query;
+  }
+
+  public async getUsersFilteredPaginated(
+    filter: UserDto,
+    paginatorOptions: PaginatorOptions,
+  ) {
+    return await paginate(
+      await this.getUsersFiltered(filter),
+      paginatorOptions,
+    );
   }
 }

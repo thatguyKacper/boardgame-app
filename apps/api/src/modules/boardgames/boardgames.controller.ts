@@ -1,13 +1,17 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
   HttpCode,
+  NotFoundException,
   Param,
   Patch,
   Post,
   Query,
+  Request,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { BoardgamesService } from './boardgames.service';
@@ -15,15 +19,23 @@ import { CreateBoardgameDto } from './dtos/create-boardgame.dto';
 import { UpdateBoardgameDto } from './dtos/update-boardgame.dto';
 import { SerializeInterceptor } from 'src/interceptors/serialize.interceptor';
 import { QueryBoardgamesDto } from './dtos/query-boardgames.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('boardgames')
-@UseInterceptors(new SerializeInterceptor(QueryBoardgamesDto))
+@UseInterceptors(ClassSerializerInterceptor)
+// @UseInterceptors(new SerializeInterceptor(QueryBoardgamesDto))
 export class BoardgamesController {
   constructor(private readonly boardgamesService: BoardgamesService) {}
 
   @Get('/lists')
   async getMostPlayed(@Query() filter: QueryBoardgamesDto) {
-    return await this.boardgamesService.getBoardgamesFilteredTop(filter);
+    return await this.boardgamesService.getBoardgamesFilteredTopPaginated(
+      filter,
+      {
+        currentPage: filter.page,
+        limit: 10,
+      },
+    );
   }
 
   @Get()
@@ -39,23 +51,59 @@ export class BoardgamesController {
     return await this.boardgamesService.getBoardgame(+id);
   }
 
-  @Post()
-  @UseInterceptors(new SerializeInterceptor(CreateBoardgameDto))
-  create(@Body() createBoardgameDto: CreateBoardgameDto) {
-    return this.boardgamesService.create(createBoardgameDto);
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/score-boardgame')
+  async addScore(
+    @Param('id') id: number,
+    @Request() req,
+    @Body() score: number,
+  ) {
+    return await this.boardgamesService.addScore(+id, req.user.userId, score);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/add-as-played')
+  async addAsPlayed(@Param('id') id: number, @Request() req) {
+    return await this.boardgamesService.addAsPlayed(+id, req.user.userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/add-to-wishlist')
+  async addToWishlist(@Param('id') id: number, @Request() req) {
+    return await this.boardgamesService.addToWishlist(+id, req.user.userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post()
+  @UseInterceptors(new SerializeInterceptor(CreateBoardgameDto))
+  async create(@Body() createBoardgameDto: CreateBoardgameDto) {
+    return await this.boardgamesService.createBoardgame(createBoardgameDto);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateBoardgameDto: UpdateBoardgameDto,
   ) {
-    return this.boardgamesService.update(id, updateBoardgameDto);
+    const result = await this.boardgamesService.updateBoardgame(
+      id,
+      updateBoardgameDto,
+    );
+
+    if (result.affected !== 1) {
+      throw new NotFoundException();
+    }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   @HttpCode(204)
-  remove(@Param('id') id: number) {
-    return this.boardgamesService.remove(id);
+  async remove(@Param('id') id: number) {
+    const result = await this.boardgamesService.removeBoardgame(+id);
+
+    if (result.affected !== 1) {
+      throw new NotFoundException();
+    }
   }
 }

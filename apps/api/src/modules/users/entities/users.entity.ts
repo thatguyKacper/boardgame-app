@@ -1,4 +1,4 @@
-import { Exclude, Expose, Type } from 'class-transformer';
+import { Exclude, Type } from 'class-transformer';
 import { Boardgames } from '../../boardgames/entities/boardgames.entity';
 import {
   Entity,
@@ -12,11 +12,9 @@ import { BoardgameDto } from '../../boardgames/dtos/boardgame.dto';
 @Entity()
 export class Users {
   @PrimaryGeneratedColumn()
-  @Expose()
   id: number;
 
   @Column({ unique: true })
-  @Expose()
   email: string;
 
   @Column()
@@ -39,7 +37,6 @@ export class Users {
     nullable: true,
   })
   @Type(() => BoardgameDto)
-  @Expose()
   playedboardgames: Boardgames[];
 
   @JoinTable({
@@ -58,6 +55,27 @@ export class Users {
     nullable: true,
   })
   @Type(() => BoardgameDto)
-  @Expose()
   wanttoplayboardgames: Boardgames[];
+
+  @JoinTable({
+    name: 'users_scored_boardgames',
+    joinColumn: {
+      name: 'userId',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'boardgameId',
+      referencedColumnName: 'id',
+    },
+  })
+  @ManyToMany(() => Boardgames, (boardgame) => boardgame.usersscored, {
+    cascade: true,
+    nullable: true,
+  })
+  @Type(() => BoardgameDto)
+  scoredboardgames: Boardgames[];
+
+  playedboardgamesCount?: number;
+  wanttoplayboardgamesCount?: number;
+  scoredboardgamesCount?: number;
 }
