@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import MainPage from '../pages/MainPage';
-import { useNavigate, useParams } from 'react-router-dom';
 import SuccessMessage from '../components/Success';
 import ErrorMessage from '../components/Error';
-import { clearSession, isAuthenticated } from '../auth/auth-helper';
-import { useMutation } from '@tanstack/react-query';
+import { isAuthenticated } from '../auth/auth-helper';
+import useEdit from '../hooks/useEdit';
+import useDelete from '../hooks/useDelete';
 
 export default function Profile() {
   const [password, setPassword] = useState('');
@@ -12,69 +12,30 @@ export default function Profile() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const { id } = useParams();
-  const { token } = isAuthenticated();
-  const navigate = useNavigate();
+  const { token, id } = isAuthenticated();
+
+  const { edit } = useEdit();
+  const { remove } = useDelete();
 
   const handleChangePassword = (e) => {
     e.preventDefault();
 
-    const edit = async () => {
-      try {
-        const res = await fetch(`/api/profile/${id}`, {
-          method: 'PATCH',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + token,
-          },
-          body: JSON.stringify({
-            password,
-            retypedPassword,
-          }),
-        });
+    if (!password || !retypedPassword) {
+      return;
+    }
 
-        if (!res.ok) {
-          throw new Error('Passwords are not identical!');
-        }
-
-        // const data = await res.json();
-        setSuccess('Password changed successfully!');
-        setPassword('');
-        setRetypedPassword('');
-      } catch (err) {
-        console.log(err.message);
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    edit();
+    edit({ id, token, password, retypedPassword });
   };
 
-  const { mutate } = useMutation({
-    mutationFn: async () => {
-      if (!token) {
-        return;
-      }
+  const handleDelete = (e) => {
+    e.preventDefault();
 
-      await fetch(`/api/profile/${id}`, {
-        method: 'DELETE',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        },
-      });
-    },
-    onSuccess: () => {
-      clearSession();
-      navigate('/', { replace: true });
-    },
-    onError: (err) => {
-      throw new Error('Could not delete account!');
-    },
-  });
+    if (!token) {
+      return;
+    }
+
+    remove({ id, token });
+  };
 
   return (
     <MainPage>
@@ -109,7 +70,7 @@ export default function Profile() {
           Submit
         </button>
       </form>
-      <form onSubmit={() => mutate()}>
+      <form onSubmit={handleDelete}>
         <div className="mb-3">
           <h4 className="pb-2 border-bottom mb-3">Delete account</h4>
           <button type="submit" className="btn btn-danger">

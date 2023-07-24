@@ -36,4 +36,39 @@ const signup = async (email, password) => {
   return data;
 };
 
-export { signin, signup };
+const editAccount = async (id, token, password, retypedPassword) => {
+  const res = await fetch(`/api/profile/${id}`, {
+    method: 'PATCH',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token,
+    },
+    body: JSON.stringify({ password, retypedPassword }),
+  });
+
+  if (!res.ok) {
+    throw new Error('Passwords are not identical!');
+  }
+
+  return;
+};
+
+const deleteAccount = async (id, token) => {
+  const res = await fetch(`/api/profile/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error('Could not delete account!');
+  }
+
+  return;
+};
+
+export { signin, signup, editAccount, deleteAccount };
