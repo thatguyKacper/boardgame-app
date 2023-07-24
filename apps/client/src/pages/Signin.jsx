@@ -1,60 +1,31 @@
 import { useState } from 'react';
 import './Sign.css';
 import MainPage from './MainPage';
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Loader from '../components/Loader';
 import ErrorMessage from '../components/Error';
+import useSignin from '../hooks/useSignin';
 
 export default function Signin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const handleSubmit = (e) => {
+  const { signin, isLoading } = useSignin();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const signin = async () => {
-      setError('');
-      try {
-        const res = await fetch('/api/auth/signin', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email,
-            password,
-          }),
-        });
+    if (!email || !password) {
+      return;
+    }
 
-        if (!res.ok) {
-          throw new Error('Failed to authenticate');
-        }
-
-        const data = await res.json();
-
-        sessionStorage.setItem('jwt', JSON.stringify(data.token));
-        sessionStorage.setItem('userId', JSON.stringify(data.id));
-
-        setIsAuthenticated(true);
-      } catch (err) {
-        console.log(err.message);
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    signin();
+    signin({ email, password });
   };
 
   return (
     <MainPage>
       {isLoading && <Loader />}
-      {!isLoading && !error && isAuthenticated && <Navigate to="/" replace />}
-      {error && <ErrorMessage message={error} />}
+      {/* {isError && <ErrorMessage message />} */}
       <main className="form-sign w-100 m-auto">
         <form onSubmit={handleSubmit}>
           <h1 className="h3 mb-3 fw-normal">Sign in</h1>

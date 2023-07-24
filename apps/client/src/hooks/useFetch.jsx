@@ -1,17 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
+import { getAll, getSearch } from '../boardgames/api-boardgames';
 
 export default function useFetch(page, searchCategory, searchText) {
   const fetchBoardgames = async () => {
-    if (!searchCategory || !searchText) {
-      const res = await fetch(`/api/boardgames?page=${page}`);
-      const data = await res.json();
-      return data;
+    if (searchCategory && searchText) {
+      return getSearch(page, searchCategory, searchText);
     } else {
-      const res = await fetch(
-        `/api/boardgames?page=${page}&${searchCategory}=${searchText}`
-      );
-      const data = await res.json();
-      return data;
+      return getAll(page);
     }
   };
 

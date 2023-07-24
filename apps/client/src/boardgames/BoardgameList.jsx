@@ -1,4 +1,4 @@
-import useStore from '../store';
+import useSearchStore from '../searchStore';
 import BoardgameListItem from './BoardgameListItem';
 
 export default function BoardgameList({ boardgames }) {
@@ -6,7 +6,7 @@ export default function BoardgameList({ boardgames }) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
-  const { searchCategory } = useStore();
+  const { searchCategory } = useSearchStore();
 
   return (
     <div className="table">

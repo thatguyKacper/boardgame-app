@@ -1,58 +1,31 @@
 import { useState } from 'react';
 import './Sign.css';
 import MainPage from './MainPage';
-import { Link, Navigate } from 'react-router-dom';
 import Loader from '../components/Loader';
 import ErrorMessage from '../components/Error';
+import useSignup from '../hooks/useSignup';
 
-export default function Signin() {
+export default function Signup() {
   const [email, setEmail] = useState({ email: '' });
   const [password, setPassword] = useState({ password: '' });
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const { signup, isLoading } = useSignup();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const signin = async () => {
-      try {
-        const res = await fetch('/api/signup', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email,
-            password,
-          }),
-        });
+    if (!email || !password) {
+      return;
+    }
 
-        if (!res.ok) {
-          throw new Error('Email already in use!');
-        }
-
-        const data = await res.json();
-
-        sessionStorage.setItem('jwt', JSON.stringify(data.token));
-
-        setIsAuthenticated(true);
-      } catch (err) {
-        console.log(err.message);
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    signin();
+    signup({ email, password });
   };
 
   return (
     <MainPage>
       {isLoading && <Loader />}
-      {!isLoading && !error && isAuthenticated && <Navigate to="/" replace />}
-      {error && <ErrorMessage message={error} />}
+      {/* {error && <ErrorMessage message={error} />} */}
       <main className="form-sign w-100 m-auto">
         <form onSubmit={handleSubmit}>
           <h1 className="h3 mb-3 fw-normal">Sign up</h1>

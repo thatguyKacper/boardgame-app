@@ -1,9 +1,9 @@
-import useStore from '../store';
+import useSearchStore from '../searchStore';
 
 export default function Pagination({ meta }) {
   const { prev_page, next_page, curent_page, last_page } = meta;
 
-  const { handleNextPage, handlePrevPage, handleSetPage } = useStore();
+  const { handleNextPage, handlePrevPage, handleSetPage } = useSearchStore();
 
   return (
     <div className="py-2 border-bottom mb-3">

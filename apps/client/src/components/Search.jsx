@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import useStore from '../store';
+import useSearchStore from '../searchStore';
 
 export default function Search() {
   const [searchCategory, setSearchCategory] = useState('');
   const [searchInput, setSearchInput] = useState('');
-  const { handleSearchCategory, handleSearchText } = useStore();
+  const { handleSearchCategory, handleSearchText } = useSearchStore();
 
   const handleSubmit = (e) => {
     e.preventDefault();

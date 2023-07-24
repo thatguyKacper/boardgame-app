@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import MainPage from '../pages/MainPage';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import SuccessMessage from '../components/Success';
 import ErrorMessage from '../components/Error';
-import { isAuthenticated } from '../auth/auth-helper';
+import { clearSession, isAuthenticated } from '../auth/auth-helper';
+import { useMutation } from '@tanstack/react-query';
 
 export default function Profile() {
   const [password, setPassword] = useState('');
@@ -13,8 +14,9 @@ export default function Profile() {
   const [success, setSuccess] = useState('');
   const { id } = useParams();
   const { token } = isAuthenticated();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleChangePassword = (e) => {
     e.preventDefault();
 
     const edit = async () => {
@@ -50,12 +52,37 @@ export default function Profile() {
     edit();
   };
 
+  const { mutate } = useMutation({
+    mutationFn: async () => {
+      if (!token) {
+        return;
+      }
+
+      await fetch(`/api/profile/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+      });
+    },
+    onSuccess: () => {
+      clearSession();
+      navigate('/', { replace: true });
+    },
+    onError: (err) => {
+      throw new Error('Could not delete account!');
+    },
+  });
+
   return (
     <MainPage>
       {error && <ErrorMessage message={error} />}
       {success && <SuccessMessage message={success} />}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleChangePassword} className="mb-3">
         <div className="mb-3">
+          <h4 className="pb-2 border-bottom">Change password</h4>
           <label htmlFor="newPassword" className="form-label">
             New password
           </label>
@@ -81,6 +108,14 @@ export default function Profile() {
         <button type="submit" className="btn btn-primary">
           Submit
         </button>
+      </form>
+      <form onSubmit={() => mutate()}>
+        <div className="mb-3">
+          <h4 className="pb-2 border-bottom mb-3">Delete account</h4>
+          <button type="submit" className="btn btn-danger">
+            Delete
+          </button>
+        </div>
       </form>
     </MainPage>
   );

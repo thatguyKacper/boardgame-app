@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
-import useStore from '../store';
+import useSearchStore from '../searchStore';
 
 export default function BoardgameListItem({ boardgame }) {
-  const { searchCategory, searchText } = useStore();
+  const { searchCategory, searchText } = useSearchStore();
 
   return (
     <tr>
