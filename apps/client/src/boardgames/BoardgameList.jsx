@@ -1,9 +1,12 @@
+import useSearchStore from '../searchStore';
 import BoardgameListItem from './BoardgameListItem';
 
-export default function BoardgameList({ games, search }) {
+export default function BoardgameList({ boardgames }) {
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
+
+  const { searchCategory } = useSearchStore();
 
   return (
     <div className="table">
@@ -12,8 +15,8 @@ export default function BoardgameList({ games, search }) {
           <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
-            {search ? (
-              <th scope="col">{capitalizeFirstLetter(search)}</th>
+            {searchCategory ? (
+              <th scope="col">{capitalizeFirstLetter(searchCategory)}</th>
             ) : (
               <>
                 <th scope="col">Min Players</th>
@@ -26,8 +29,8 @@ export default function BoardgameList({ games, search }) {
           </tr>
         </thead>
         <tbody>
-          {games.map((game) => (
-            <BoardgameListItem game={game} key={game.id} search={search} />
+          {boardgames.map((boardgame) => (
+            <BoardgameListItem boardgame={boardgame} key={boardgame.id} />
           ))}
         </tbody>
       </table>

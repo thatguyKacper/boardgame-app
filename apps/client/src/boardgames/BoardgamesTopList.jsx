@@ -1,7 +1,7 @@
 import { useSearchParams } from 'react-router-dom';
 import BoardgameTopListItem from './BoardgamesTopListItem';
 
-export default function BoardgameTopList({ games, title }) {
+export default function BoardgameTopList({ boardgames, title }) {
   console.log();
   return (
     <div className="table-responsive">
@@ -15,8 +15,12 @@ export default function BoardgameTopList({ games, title }) {
           </tr>
         </thead>
         <tbody>
-          {games.map((game) => (
-            <BoardgameTopListItem game={game} key={game.id} title={title} />
+          {boardgames.map((boardgame) => (
+            <BoardgameTopListItem
+              boardgame={boardgame}
+              key={boardgame.id}
+              title={title}
+            />
           ))}
         </tbody>
       </table>

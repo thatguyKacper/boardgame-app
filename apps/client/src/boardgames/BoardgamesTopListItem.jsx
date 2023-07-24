@@ -1,18 +1,18 @@
 import { Link } from 'react-router-dom';
 
-export default function BoardgameTopListItem({ game, title }) {
+export default function BoardgameTopListItem({ boardgame, title }) {
   return (
     <tr>
       <td>
-        <Link to={`/boardgames/${game.id}`}>{game.id}</Link>
+        <Link to={`/boardboardgames/${boardgame.id}`}>{boardgame.id}</Link>
       </td>
       <td>
-        <Link to={`/boardgames/${game.id}`}>{game.name}</Link>
+        <Link to={`/boardboardgames/${boardgame.id}`}>{boardgame.name}</Link>
       </td>
       {title.includes('played') ? (
-        <td>{game.playedbyusersCount}</td>
+        <td>{boardgame.playedbyusersCount}</td>
       ) : (
-        <td>{game.userswanttoplayCount}</td>
+        <td>{boardgame.userswanttoplayCount}</td>
       )}
     </tr>
   );

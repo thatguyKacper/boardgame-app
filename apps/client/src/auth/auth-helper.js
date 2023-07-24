@@ -1,15 +1,20 @@
-export function isAuthenticated() {
+const isAuthenticated = () => {
   if (sessionStorage.getItem('jwt'))
     return {
       id: sessionStorage.getItem('userId'),
       token: JSON.parse(sessionStorage.getItem('jwt')),
     };
   else return false;
-}
+};
 
-export function clearSession() {
+const authenticate = (data) => {
+  sessionStorage.setItem('jwt', JSON.stringify(data.token));
+  sessionStorage.setItem('userId', JSON.stringify(data.id));
+};
+
+const clearSession = () => {
   sessionStorage.removeItem('jwt');
   sessionStorage.removeItem('userId');
-}
+};
 
-export default { isAuthenticated, clearSession };
+export { isAuthenticated, authenticate, clearSession };

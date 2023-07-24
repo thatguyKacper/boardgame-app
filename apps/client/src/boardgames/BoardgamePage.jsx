@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import MainPage from '../pages/MainPage';
+import Loader from '../components/Loader';
+import ErrorMessage from '../components/Error';
 
 export default function BoardgamePage() {
   const { id } = useParams();
-  const [game, setGame] = useState([]);
+  const [boardgame, setGame] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -32,84 +34,66 @@ export default function BoardgamePage() {
     read();
   }, [id]);
 
-  function Loader() {
-    return (
-      <div className="d-flex justify-content-center">
-        <div className="spinner-border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    );
-  }
-
-  function ErrorMessage({ message }) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        {message}
-      </div>
-    );
-  }
-
   return (
     <MainPage>
       {isLoading && <Loader />}
-      {!isLoading && !error && (
+      {!isLoading && (
         <>
-          <h1 className="visually-hidden">{game.id}</h1>
+          <h1 className="visually-hidden">{boardgame.id}</h1>
           <div className="px-4 py-5 my-5 text-center">
-            <h1 className="display-5 fw-bold mb-5">{game.name}</h1>
+            <h1 className="display-5 fw-bold mb-5">{boardgame.name}</h1>
             <div className="table-responsive">
               <h6 className="display-6">Info</h6>
               <table className="table table-striped table-sm">
                 <tbody>
                   <tr>
                     <td>Name</td>
-                    <td>{game.name}</td>
+                    <td>{boardgame.name}</td>
                   </tr>
                   <tr>
                     <td>Designer</td>
-                    <td>{game.designer}</td>
+                    <td>{boardgame.designer}</td>
                   </tr>
                   <tr>
                     <td>Artist</td>
-                    <td>{game.artist}</td>
+                    <td>{boardgame.artist}</td>
                   </tr>
                   <tr>
                     <td>Year</td>
-                    <td>{game.yearpublished}</td>
+                    <td>{boardgame.yearpublished}</td>
                   </tr>
                   <tr>
                     <td>Min Players</td>
-                    <td>{game.minplayers}</td>
+                    <td>{boardgame.minplayers}</td>
                   </tr>
                   <tr>
                     <td>Max Players</td>
-                    <td>{game.maxplayers}</td>
+                    <td>{boardgame.maxplayers}</td>
                   </tr>
                   <tr>
                     <td>Min Age</td>
-                    <td>{game.minage}</td>
+                    <td>{boardgame.minage}</td>
                   </tr>
                   <tr>
                     <td>Playing time</td>
-                    <td>{game.playingtime}</td>
+                    <td>{boardgame.playingtime}</td>
                   </tr>
                   <tr>
                     <td>Publisher</td>
-                    <td>{game.publisher}</td>
+                    <td>{boardgame.publisher}</td>
                   </tr>
                   <tr>
                     <td>Category</td>
-                    <td>{game.category}</td>
+                    <td>{boardgame.category}</td>
                   </tr>
                   <tr>
                     <td>Mechanic</td>
-                    <td>{game.mechanic}</td>
+                    <td>{boardgame.mechanic}</td>
                   </tr>
                   <tr>
                     <td>Url</td>
                     <td>
-                      <Link to={`${game.bggurl}`}>{game.bggurl}</Link>
+                      <Link to={`${boardgame.bggurl}`}>{boardgame.bggurl}</Link>
                     </td>
                   </tr>
                 </tbody>
