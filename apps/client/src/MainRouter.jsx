@@ -11,7 +11,7 @@ import MainPage from './pages/MainPage';
 import NotFound from './pages/NotFound';
 import BoardgamesTop from './boardgames/BoardgamesTop';
 
-function App() {
+function MainRouter() {
   return (
     <>
       <Routes>
@@ -37,4 +37,4 @@ function App() {
   );
 }
 
-export default App;
+export default MainRouter;

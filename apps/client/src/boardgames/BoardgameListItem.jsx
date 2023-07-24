@@ -1,23 +1,26 @@
 import { Link } from 'react-router-dom';
+import useStore from '../store';
 
-export default function BoardgameListItem({ game, search }) {
+export default function BoardgameListItem({ boardgame }) {
+  const { searchCategory, searchText } = useStore();
+
   return (
     <tr>
       <td>
-        <Link to={`/boardgames/${game.id}`}>{game.id}</Link>
+        <Link to={`/boardgames/${boardgame.id}`}>{boardgame.id}</Link>
       </td>
       <td>
-        <Link to={`/boardgames/${game.id}`}>{game.name}</Link>
+        <Link to={`/boardgames/${boardgame.id}`}>{boardgame.name}</Link>
       </td>
-      {search ? (
-        <td>{game[search]}</td>
+      {searchText ? (
+        <td>{boardgame[searchCategory]}</td>
       ) : (
         <>
-          <td>{game.minplayers}</td>
-          <td>{game.maxplayers}</td>
-          <td>{game.minage}</td>
-          <td>{game.playingtime}</td>
-          <td>{game.category}</td>
+          <td>{boardgame.minplayers}</td>
+          <td>{boardgame.maxplayers}</td>
+          <td>{boardgame.minage}</td>
+          <td>{boardgame.playingtime}</td>
+          <td>{boardgame.category}</td>
         </>
       )}
     </tr>
