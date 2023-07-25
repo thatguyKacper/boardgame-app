@@ -244,4 +244,22 @@ export class BoardgamesService {
       .of(query.game)
       .add(query.user);
   }
+
+  async removeFromAsPlayed(gameId: number, userId: number) {
+    const query = await this.searchBoardgameAndUserQuery(gameId, userId);
+
+    return await this.getBoardgamesBaseQuery()
+      .relation(Boardgames, 'playedbyusers')
+      .of(query.game)
+      .remove(query.user);
+  }
+
+  async removeFromWishlist(gameId: number, userId: number) {
+    const query = await this.searchBoardgameAndUserQuery(gameId, userId);
+
+    return await this.getBoardgamesBaseQuery()
+      .relation(Boardgames, 'userswanttoplay')
+      .of(query.game)
+      .remove(query.user);
+  }
 }

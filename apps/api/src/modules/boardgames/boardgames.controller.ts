@@ -74,6 +74,24 @@ export class BoardgamesController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Delete(':id/remove-from-played')
+  async removeFromAsPlayed(@Param('id') id: number, @Request() req) {
+    return await this.boardgamesService.removeFromAsPlayed(
+      +id,
+      req.user.userId,
+    );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id/remove-from-wishlist')
+  async removeFromWishlist(@Param('id') id: number, @Request() req) {
+    return await this.boardgamesService.removeFromWishlist(
+      +id,
+      req.user.userId,
+    );
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Post()
   @UseInterceptors(new SerializeInterceptor(CreateBoardgameDto))
   async create(@Body() createBoardgameDto: CreateBoardgameDto) {

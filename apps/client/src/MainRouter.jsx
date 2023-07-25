@@ -10,6 +10,7 @@ import PrivateRoute from './auth/PrivateRoute';
 import MainPage from './pages/MainPage';
 import NotFound from './pages/NotFound';
 import BoardgamesTop from './boardgames/BoardgamesTop';
+import Dashboard from './pages/Dashboard';
 
 function MainRouter() {
   return (
@@ -28,6 +29,14 @@ function MainRouter() {
           element={
             <PrivateRoute>
               <Profile />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <Dashboard />
             </PrivateRoute>
           }
         />
