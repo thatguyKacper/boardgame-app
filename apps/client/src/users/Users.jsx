@@ -1,44 +1,29 @@
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
 import UserList from './UserList';
 import MainPage from '../pages/MainPage';
 import Loader from '../components/Loader';
-import ErrorMessage from '../components/Error';
+import useFetchUsers from '../hooks/useFetchUsers';
+import toast from 'react-hot-toast';
+import useSearchStore from '../searchStore';
+import Pagination from '../components/Pagination';
 
 export default function Users() {
-  const [users, setUsers] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const { page } = useSearchStore();
 
-  useEffect(() => {
-    const read = async () => {
-      setIsLoading(true);
-      try {
-        const res = await fetch('/api/users?page=1');
-
-        if (!res.ok) {
-          throw new Error('Failed to fetch data');
-        }
-
-        const { data } = await res.json();
-
-        setUsers(data);
-      } catch (err) {
-        console.log(err.message);
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    read();
-  }, []);
+  const {
+    isLoading,
+    isSuccess,
+    isError,
+    data: { data: users, meta } = {},
+  } = useFetchUsers(page);
 
   return (
     <MainPage>
       <h2>Users</h2>
       {isLoading && <Loader />}
-      {!isLoading && !error && <UserList users={users} />}
-      {error && <ErrorMessage message={error} />}
+      {isError && toast.error('Could not fetch users')}
+      {isSuccess && <UserList users={users} />}
+      {/* <Pagination meta={meta} /> */}
     </MainPage>
   );
 }

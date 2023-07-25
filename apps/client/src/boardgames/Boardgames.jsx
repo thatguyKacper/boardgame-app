@@ -1,11 +1,11 @@
 import BoardgameList from './BoardgameList';
 import MainPage from '../pages/MainPage';
 import Loader from '../components/Loader';
-import ErrorMessage from '../components/Error';
-import useFetch from '../hooks/useFetch';
+import useFetchBoardgames from '../hooks/useFetchBoardgames';
 import Pagination from '../components/Pagination';
 import useSearchStore from '../searchStore';
 import Search from '../components/Search';
+import toast from 'react-hot-toast';
 
 export default function Boardgames() {
   const { page, searchCategory, searchText } = useSearchStore();
@@ -15,21 +15,20 @@ export default function Boardgames() {
     isSuccess,
     isError,
     data: { data: boardgames, meta } = {},
-    error,
-  } = useFetch(page, searchCategory, searchText);
+  } = useFetchBoardgames(page, searchCategory, searchText);
 
   return (
-    <>
+    <MainPage>
       {isLoading && <Loader />}
-      {isError && <ErrorMessage message={error} />}
+      {isError && toast.error('Could not fetch boardgames')}
       {isSuccess && (
-        <MainPage>
+        <>
           <h2>Boardgames</h2>
           <Search />
           <BoardgameList boardgames={boardgames} />
           <Pagination meta={meta} />
-        </MainPage>
+        </>
       )}
-    </>
+    </MainPage>
   );
 }

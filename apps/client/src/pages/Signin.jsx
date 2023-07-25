@@ -3,7 +3,6 @@ import './Sign.css';
 import MainPage from './MainPage';
 import { Link } from 'react-router-dom';
 import Loader from '../components/Loader';
-import ErrorMessage from '../components/Error';
 import useSignin from '../hooks/useSignin';
 
 export default function Signin() {
@@ -25,7 +24,6 @@ export default function Signin() {
   return (
     <MainPage>
       {isLoading && <Loader />}
-      {/* {isError && <ErrorMessage message />} */}
       <main className="form-sign w-100 m-auto">
         <form onSubmit={handleSubmit}>
           <h1 className="h3 mb-3 fw-normal">Sign in</h1>

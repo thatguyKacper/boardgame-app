@@ -20,7 +20,11 @@ export class BoardgamesService {
   ) {}
 
   private getBoardgamesBaseQuery() {
-    return this.boardgamesRepository.createQueryBuilder('bg');
+    return this.boardgamesRepository
+      .createQueryBuilder('bg')
+      .loadRelationCountAndMap('bg.usersscoredCount', 'bg.usersscored')
+      .loadRelationCountAndMap('bg.playedbyusersCount', 'bg.playedbyusers')
+      .loadRelationCountAndMap('bg.userswanttoplayCount', 'bg.userswanttoplay');
   }
 
   private getUsersBaseQuery() {
@@ -58,9 +62,9 @@ export class BoardgamesService {
       .andWhere('bg.id = :id', {
         id,
       })
-      .loadRelationCountAndMap('bg.usersscoredCount', 'bg.usersscored')
-      .loadRelationCountAndMap('bg.playedbyusersCount', 'bg.playedbyusers')
-      .loadRelationCountAndMap('bg.userswanttoplayCount', 'bg.userswanttoplay');
+      .leftJoinAndSelect('bg.usersscored', 'usersscored')
+      .leftJoinAndSelect('bg.playedbyusers', 'playedbyusers')
+      .leftJoinAndSelect('bg.userswanttoplay', 'userswanttoplay');
 
     if (!query) {
       throw new NotFoundException(`Boardgame #${id} not found`);

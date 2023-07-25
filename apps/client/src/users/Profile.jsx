@@ -1,7 +1,5 @@
 import { useState } from 'react';
 import MainPage from '../pages/MainPage';
-import SuccessMessage from '../components/Success';
-import ErrorMessage from '../components/Error';
 import { isAuthenticated } from '../auth/auth-helper';
 import useEdit from '../hooks/useEdit';
 import useDelete from '../hooks/useDelete';
@@ -10,8 +8,6 @@ export default function Profile() {
   const [password, setPassword] = useState('');
   const [retypedPassword, setRetypedPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
   const { token, id } = isAuthenticated();
 
   const { edit } = useEdit();
@@ -39,8 +35,6 @@ export default function Profile() {
 
   return (
     <MainPage>
-      {error && <ErrorMessage message={error} />}
-      {success && <SuccessMessage message={success} />}
       <form onSubmit={handleChangePassword} className="mb-3">
         <div className="mb-3">
           <h4 className="pb-2 border-bottom">Change password</h4>

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import './Sign.css';
 import MainPage from './MainPage';
 import Loader from '../components/Loader';
-import ErrorMessage from '../components/Error';
 import useSignup from '../hooks/useSignup';
 
 export default function Signup() {
@@ -25,7 +24,6 @@ export default function Signup() {
   return (
     <MainPage>
       {isLoading && <Loader />}
-      {/* {error && <ErrorMessage message={error} />} */}
       <main className="form-sign w-100 m-auto">
         <form onSubmit={handleSubmit}>
           <h1 className="h3 mb-3 fw-normal">Sign up</h1>
