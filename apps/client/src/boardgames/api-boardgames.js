@@ -57,4 +57,34 @@ const getSearch = async (page, searchCategory, searchText) => {
   return data;
 };
 
-export { getAll, getOne, getTop, getSearch };
+const addAsPlayed = async (id, token) => {
+  const res = await fetch(`/api/boardgames/${id}/add-as-played`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error('Could not add boardgame!');
+  }
+};
+
+const addToWishlist = async (id, token) => {
+  const res = await fetch(`/api/boardgames/${id}/add-to-wishlist`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error('Could not add boardgame!');
+  }
+};
+
+export { getAll, getOne, getTop, getSearch, addAsPlayed, addToWishlist };

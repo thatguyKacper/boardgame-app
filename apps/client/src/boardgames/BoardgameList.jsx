@@ -1,27 +1,41 @@
+import { isAuthenticated } from '../auth/auth-helper';
+import { capitalizeFirstLetter } from '../helpers/string-helper';
 import useSearchStore from '../searchStore';
 import BoardgameListItem from './BoardgameListItem';
 
 export default function BoardgameList({ boardgames }) {
-  function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
-
+  const session = isAuthenticated();
   const { searchCategory } = useSearchStore();
 
   return (
     <div className="table">
-      <table className="table table-striped table-sm">
+      <table className="table table-striped table-sm table-hover">
         <thead>
           <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
-            {searchCategory ? (
+            {searchCategory && !session && (
               <th scope="col">{capitalizeFirstLetter(searchCategory)}</th>
-            ) : (
+            )}
+            {searchCategory && session && (
+              <>
+                <th scope="col">{capitalizeFirstLetter(searchCategory)}</th>
+                <th scope="col">Actions</th>
+              </>
+            )}
+            {!searchCategory && session && (
               <>
                 <th scope="col">Min Players</th>
                 <th scope="col">Max Players</th>
-                <th scope="col">Min Age</th>
+                <th scope="col">Playing time</th>
+                <th scope="col">Category</th>
+                <th scope="col">Actions</th>
+              </>
+            )}
+            {!searchCategory && !session && (
+              <>
+                <th scope="col">Min Players</th>
+                <th scope="col">Max Players</th>
                 <th scope="col">Playing time</th>
                 <th scope="col">Category</th>
               </>
