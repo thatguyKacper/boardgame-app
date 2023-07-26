@@ -6,7 +6,7 @@ export default function Pagination({ meta }) {
   const { handleNextPage, handlePrevPage, handleSetPage } = useSearchStore();
 
   return (
-    <div className="py-2 border-bottom mb-3">
+    <div className="py-2 mb-3">
       <div className="container d-flex flex-wrap justify-content-center">
         <nav aria-label="Page navigation example">
           <ul className="pagination">

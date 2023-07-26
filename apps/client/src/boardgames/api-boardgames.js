@@ -87,4 +87,43 @@ const addToWishlist = async (id, token) => {
   }
 };
 
-export { getAll, getOne, getTop, getSearch, addAsPlayed, addToWishlist };
+const removeFromPlayed = async (id, token) => {
+  const res = await fetch(`/api/boardgames/${id}/remove-from-played`, {
+    method: 'DELETE',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error('Could not remove boardgame!');
+  }
+};
+
+const removeFromWishlist = async (id, token) => {
+  const res = await fetch(`/api/boardgames/${id}/remove-from-wishlist`, {
+    method: 'DELETE',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error('Could not remove boardgame!');
+  }
+};
+
+export {
+  getAll,
+  getOne,
+  getTop,
+  getSearch,
+  addAsPlayed,
+  addToWishlist,
+  removeFromPlayed,
+  removeFromWishlist,
+};

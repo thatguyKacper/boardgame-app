@@ -20,7 +20,11 @@ export class BoardgamesService {
   ) {}
 
   private getBoardgamesBaseQuery() {
-    return this.boardgamesRepository.createQueryBuilder('bg');
+    return this.boardgamesRepository
+      .createQueryBuilder('bg')
+      .loadRelationCountAndMap('bg.usersscoredCount', 'bg.usersscored')
+      .loadRelationCountAndMap('bg.playedbyusersCount', 'bg.playedbyusers')
+      .loadRelationCountAndMap('bg.userswanttoplayCount', 'bg.userswanttoplay');
   }
 
   private getUsersBaseQuery() {
@@ -58,9 +62,9 @@ export class BoardgamesService {
       .andWhere('bg.id = :id', {
         id,
       })
-      .loadRelationCountAndMap('bg.usersscoredCount', 'bg.usersscored')
-      .loadRelationCountAndMap('bg.playedbyusersCount', 'bg.playedbyusers')
-      .loadRelationCountAndMap('bg.userswanttoplayCount', 'bg.userswanttoplay');
+      .leftJoinAndSelect('bg.usersscored', 'usersscored')
+      .leftJoinAndSelect('bg.playedbyusers', 'playedbyusers')
+      .leftJoinAndSelect('bg.userswanttoplay', 'userswanttoplay');
 
     if (!query) {
       throw new NotFoundException(`Boardgame #${id} not found`);
@@ -239,5 +243,23 @@ export class BoardgamesService {
       .relation(Boardgames, 'usersscored')
       .of(query.game)
       .add(query.user);
+  }
+
+  async removeFromAsPlayed(gameId: number, userId: number) {
+    const query = await this.searchBoardgameAndUserQuery(gameId, userId);
+
+    return await this.getBoardgamesBaseQuery()
+      .relation(Boardgames, 'playedbyusers')
+      .of(query.game)
+      .remove(query.user);
+  }
+
+  async removeFromWishlist(gameId: number, userId: number) {
+    const query = await this.searchBoardgameAndUserQuery(gameId, userId);
+
+    return await this.getBoardgamesBaseQuery()
+      .relation(Boardgames, 'userswanttoplay')
+      .of(query.game)
+      .remove(query.user);
   }
 }

@@ -1,4 +1,3 @@
-import { useSearchParams } from 'react-router-dom';
 import BoardgameTopListItem from './BoardgamesTopListItem';
 
 export default function BoardgameTopList({ boardgames, title }) {
