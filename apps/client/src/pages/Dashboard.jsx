@@ -63,7 +63,7 @@ export default function User() {
                       <td>
                         <button
                           type="button"
-                          className="btn btn-danger"
+                          className="btn btn-danger float-end"
                           onClick={() => handleRemoveFromPlayed(boardgame.id)}
                         >
                           <svg
@@ -113,7 +113,7 @@ export default function User() {
                       <td>
                         <button
                           type="button"
-                          className="btn btn-danger"
+                          className="btn btn-danger float-end"
                           onClick={() => handleRemoveFromWishlist(boardgame.id)}
                         >
                           <svg
