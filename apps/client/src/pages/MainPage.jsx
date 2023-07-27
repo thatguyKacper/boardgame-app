@@ -3,6 +3,7 @@ import Footer from '../components/Footer';
 import Nav from '../components/Nav';
 import Jumbo from '../components/Jumbo';
 import TopFeature from '../components/TopFeature';
+import Categories from '../components/Categories';
 
 export default function MainPage({ children }) {
   const { pathname } = useLocation();
@@ -16,6 +17,7 @@ export default function MainPage({ children }) {
             <>
               <Jumbo />
               <TopFeature />
+              <Categories />
             </>
           ) : (
             children

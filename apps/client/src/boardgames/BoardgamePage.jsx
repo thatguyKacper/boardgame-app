@@ -4,8 +4,10 @@ import MainPage from '../pages/MainPage';
 import Loader from '../components/Loader';
 import toast from 'react-hot-toast';
 import AddTo from '../components/AddTo';
+import { isAuthenticated } from '../auth/auth-helper';
 
 export default function BoardgamePage() {
+  const session = isAuthenticated();
   const { id } = useParams();
   const [boardgame, setGame] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -49,9 +51,11 @@ export default function BoardgamePage() {
             <div className="table-responsive">
               <div className="container text-center px-0">
                 <h6 className="display-6">Details</h6>
-                <div className="float-end">
-                  <AddTo />
-                </div>
+                {session ? (
+                  <div className="float-end">
+                    <AddTo />
+                  </div>
+                ) : null}
               </div>
               <table className="table table-striped table-sm">
                 <tbody>

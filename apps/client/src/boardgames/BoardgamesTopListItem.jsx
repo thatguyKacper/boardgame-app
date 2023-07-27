@@ -4,10 +4,10 @@ export default function BoardgameTopListItem({ boardgame, title }) {
   return (
     <tr>
       <td>
-        <Link to={`/boardboardgames/${boardgame.id}`}>{boardgame.id}</Link>
+        <Link to={`/boardgames/${boardgame.id}`}>{boardgame.id}</Link>
       </td>
       <td>
-        <Link to={`/boardboardgames/${boardgame.id}`}>{boardgame.name}</Link>
+        <Link to={`/boardgames/${boardgame.id}`}>{boardgame.name}</Link>
       </td>
       {title.includes('played') ? (
         <td>{boardgame.playedbyusersCount}</td>
