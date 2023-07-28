@@ -14,11 +14,18 @@ import child from '../assets/child.svg';
 import useSearchStore from '../searchStore';
 
 export default function Categories() {
-  const { handleSearchCategory, handleSearchText } = useSearchStore();
+  const {
+    handleSearchCategory,
+    handleSearchText,
+    handleSortBy,
+    handleSortOrder,
+  } = useSearchStore();
 
   const handleClick = (name) => {
     handleSearchCategory('category');
     handleSearchText(name);
+    handleSortBy('category');
+    handleSortOrder('DESC');
   };
 
   return (

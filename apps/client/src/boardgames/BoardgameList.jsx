@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { isAuthenticated } from '../auth/auth-helper';
 import { capitalizeFirstLetter } from '../helpers/string-helper';
 import useSearchStore from '../searchStore';
@@ -7,15 +8,36 @@ export default function BoardgameList({ boardgames }) {
   const session = isAuthenticated();
   const { searchCategory } = useSearchStore();
 
+  // State to track sorting parameters
+  const [sortOrder, setSortOrder] = useState('ASC');
+
+  const { handleSortBy, handleSortOrder } = useSearchStore();
+
+  const handleClick = (name) => {
+    handleSortBy(name);
+    setSortOrder((prevOrder) => (prevOrder === 'ASC' ? 'DESC' : 'ASC'));
+    handleSortOrder(sortOrder);
+  };
+
   return (
     <div className="table">
       <table className="table table-striped table-sm table-hover">
         <thead>
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
+            <th scope="col" role="button" onClick={() => handleClick('id')}>
+              #
+            </th>
+            <th scope="col" role="button" onClick={() => handleClick('name')}>
+              Name
+            </th>
             {searchCategory && !session && (
-              <th scope="col">{capitalizeFirstLetter(searchCategory)}</th>
+              <th
+                scope="col"
+                role="button"
+                onClick={() => handleClick(searchCategory)}
+              >
+                {capitalizeFirstLetter(searchCategory)}
+              </th>
             )}
             {searchCategory && session && (
               <>
@@ -25,19 +47,67 @@ export default function BoardgameList({ boardgames }) {
             )}
             {!searchCategory && session && (
               <>
-                <th scope="col">Min Players</th>
-                <th scope="col">Max Players</th>
-                <th scope="col">Playing time</th>
-                <th scope="col">Category</th>
+                <th
+                  scope="col"
+                  role="button"
+                  onClick={() => handleClick('minplayers')}
+                >
+                  Min Players
+                </th>
+                <th
+                  scope="col"
+                  role="button"
+                  onClick={() => handleClick('maxplayers')}
+                >
+                  Max Players
+                </th>
+                <th
+                  scope="col"
+                  role="button"
+                  onClick={() => handleClick('playingtime')}
+                >
+                  Playing time
+                </th>
+                <th
+                  scope="col"
+                  role="button"
+                  onClick={() => handleClick('category')}
+                >
+                  Category
+                </th>
                 <th scope="col">Actions</th>
               </>
             )}
             {!searchCategory && !session && (
               <>
-                <th scope="col">Min Players</th>
-                <th scope="col">Max Players</th>
-                <th scope="col">Playing time</th>
-                <th scope="col">Category</th>
+                <th
+                  scope="col"
+                  role="button"
+                  onClick={() => handleClick('minplayers')}
+                >
+                  Min Players
+                </th>
+                <th
+                  scope="col"
+                  role="button"
+                  onClick={() => handleClick('maxplayers')}
+                >
+                  Max Players
+                </th>
+                <th
+                  scope="col"
+                  role="button"
+                  onClick={() => handleClick('playingtime')}
+                >
+                  Playing time
+                </th>
+                <th
+                  scope="col"
+                  role="button"
+                  onClick={() => handleClick('category')}
+                >
+                  Category
+                </th>
               </>
             )}
           </tr>

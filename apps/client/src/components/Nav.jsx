@@ -7,8 +7,13 @@ import { getRandom } from '../boardgames/api-boardgames';
 export default function Nav() {
   const session = isAuthenticated();
   const navigate = useNavigate();
-  const { handleSetPage, handleSearchCategory, handleSearchText } =
-    useSearchStore();
+  const {
+    handleSetPage,
+    handleSearchCategory,
+    handleSearchText,
+    handleSortBy,
+    handleSortOrder,
+  } = useSearchStore();
 
   const handleLogout = () => {
     clearSession();
@@ -19,6 +24,8 @@ export default function Nav() {
     handleSetPage(1);
     handleSearchCategory('');
     handleSearchText('');
+    handleSortBy('');
+    handleSortOrder('');
   };
 
   // TO DO fix double request (from this function and boardgame page)
