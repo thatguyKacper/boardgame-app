@@ -36,6 +36,25 @@ const signup = async (email, password) => {
   return data;
 };
 
+const getAccount = async (id, token) => {
+  const res = await fetch(`/api/profile/${id}`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error('Unathorized!');
+  }
+
+  const data = await res.json();
+
+  return data;
+};
+
 const editAccount = async (id, token, password, retypedPassword) => {
   const res = await fetch(`/api/profile/${id}`, {
     method: 'PATCH',
@@ -71,4 +90,4 @@ const deleteAccount = async (id, token) => {
   return;
 };
 
-export { signin, signup, editAccount, deleteAccount };
+export { signin, signup, getAccount, editAccount, deleteAccount };

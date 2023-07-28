@@ -1,47 +1,27 @@
-import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import MainPage from '../pages/MainPage';
 import Loader from '../components/Loader';
 import toast from 'react-hot-toast';
 import AddTo from '../components/AddTo';
+import { isAuthenticated } from '../auth/auth-helper';
+import useFetchBoardgame from '../hooks/useFetchBoardgame';
 
 export default function BoardgamePage() {
+  const session = isAuthenticated();
   const { id } = useParams();
-  const [boardgame, setGame] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
 
-  // TODO react query
-
-  useEffect(() => {
-    const read = async () => {
-      setIsLoading(true);
-      try {
-        const res = await fetch(`/api/boardgames/${id}`);
-
-        if (!res.ok) {
-          throw new Error('Failed to fetch data');
-        }
-
-        const data = await res.json();
-
-        setGame(data);
-      } catch (err) {
-        console.log(err.message);
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    read();
-  }, [id]);
+  const {
+    isLoading,
+    isSuccess,
+    isError,
+    data: boardgame = {},
+  } = useFetchBoardgame(id);
 
   return (
     <MainPage>
       {isLoading && <Loader />}
-      {error && toast.error('Could not fetch boardgames')}
-      {!isLoading && (
+      {isError && toast.error('Could not fetch boardgame')}
+      {isSuccess && (
         <>
           <h1 className="visually-hidden">{boardgame.id}</h1>
           <div className="px-4 py-5 my-5 text-center">
@@ -49,9 +29,11 @@ export default function BoardgamePage() {
             <div className="table-responsive">
               <div className="container text-center px-0">
                 <h6 className="display-6">Details</h6>
-                <div className="float-end">
-                  <AddTo />
-                </div>
+                {session ? (
+                  <div className="float-end">
+                    <AddTo />
+                  </div>
+                ) : null}
               </div>
               <table className="table table-striped table-sm">
                 <tbody>

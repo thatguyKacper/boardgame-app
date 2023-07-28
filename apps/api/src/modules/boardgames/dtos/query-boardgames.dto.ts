@@ -1,5 +1,6 @@
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
+
 export class QueryBoardgamesDto {
   @IsOptional()
   @Transform(({ value }) => parseInt(value))
@@ -47,6 +48,12 @@ export class QueryBoardgamesDto {
   @Transform(({ value }) => parseInt(value))
   @IsNumber()
   page?: number;
+  @IsOptional()
+  @IsString()
+  sortBy?: string;
+  @IsOptional()
+  @IsString()
+  sortOrder?: 'ASC' | 'DESC';
   @IsOptional()
   @IsString()
   score?: string;

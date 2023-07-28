@@ -19,7 +19,7 @@ function MainRouter() {
         <Route index path="/" element={<MainPage />} />
         <Route path="/boardgames" element={<Boardgames />}></Route>
         <Route path="/boardgames/:id" element={<BoardgamePage />} />
-        <Route path="boardgames/lists" element={<BoardgamesTop />} />
+        <Route path="/boardgames/lists" element={<BoardgamesTop />} />
         <Route path="/users" element={<Users />} />
         <Route path="/users/:id" element={<UserPage />} />
         <Route path="/signup" element={<Signup />} />

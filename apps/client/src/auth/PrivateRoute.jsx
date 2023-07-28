@@ -1,48 +1,18 @@
-import { useEffect, useState } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import Loader from '../components/Loader';
 import { isAuthenticated } from './auth-helper';
+import useFetchUser from '../hooks/useFetchUser';
 
 export default function PrivateRoute({ children }) {
-  const { id } = useParams();
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const { token } = isAuthenticated();
+  const { id } = isAuthenticated();
 
-  useEffect(() => {
-    const read = async () => {
-      setIsLoading(true);
-      try {
-        const res = await fetch(`/api/profile/${id}`, {
-          method: 'GET',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + token,
-          },
-        });
-
-        if (!res.ok) {
-          throw new Error('Unauthorized');
-        }
-
-        // const data = await res.json();
-      } catch (err) {
-        console.log(err.message);
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    read();
-  }, [id]);
+  const { isLoading, isSuccess, isError, data } = useFetchUser(id);
 
   return (
     <>
       {isLoading && <Loader />}
-      {!isLoading && !error && children}
-      {!isLoading && error && <Navigate to="/signin" replace />}
+      {isSuccess && children}
+      {isError && <Navigate to="/signin" replace />}
     </>
   );
 }

@@ -13,7 +13,7 @@ const getAll = async (page) => {
 };
 
 const getOne = async (id) => {
-  const res = await fetch(`api/users/${id}`, {
+  const res = await fetch(`/api/users/${id}`, {
     method: 'GET',
   });
 

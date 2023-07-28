@@ -8,14 +8,15 @@ import Search from '../components/Search';
 import toast from 'react-hot-toast';
 
 export default function Boardgames() {
-  const { page, searchCategory, searchText } = useSearchStore();
+  const { page, searchCategory, searchText, sortBy, sortOrder } =
+    useSearchStore();
 
   const {
     isLoading,
     isSuccess,
     isError,
     data: { data: boardgames, meta } = {},
-  } = useFetchBoardgames(page, searchCategory, searchText);
+  } = useFetchBoardgames(page, searchCategory, searchText, sortBy, sortOrder);
 
   return (
     <MainPage>

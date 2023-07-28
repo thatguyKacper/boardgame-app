@@ -1,7 +1,6 @@
 import BoardgameTopListItem from './BoardgamesTopListItem';
 
 export default function BoardgameTopList({ boardgames, title }) {
-  console.log();
   return (
     <div className="table-responsive">
       <table className="table table-striped table-sm">

@@ -46,6 +46,11 @@ export class BoardgamesController {
     });
   }
 
+  @Get('/random')
+  async random() {
+    return await this.boardgamesService.getRandomBoardgame();
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: number) {
     return await this.boardgamesService.getBoardgame(+id);

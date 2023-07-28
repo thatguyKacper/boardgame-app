@@ -1,5 +1,18 @@
-const getAll = async (page) => {
-  const res = await fetch(`/api/boardgames?page=${page}`, {
+const getAll = async (page, searchCategory, searchText, sortBy, sortOrder) => {
+  const queryParams = new URLSearchParams({
+    page,
+  });
+
+  if (searchCategory && searchText) {
+    queryParams.append(searchCategory, searchText);
+  }
+
+  if (sortBy && sortOrder) {
+    queryParams.append('sortBy', sortBy);
+    queryParams.append('sortOrder', sortOrder);
+  }
+
+  const res = await fetch(`/api/boardgames?${queryParams}`, {
     method: 'GET',
   });
 
@@ -13,7 +26,21 @@ const getAll = async (page) => {
 };
 
 const getOne = async (id) => {
-  const res = await fetch(`api/boardgames/${id}`, {
+  const res = await fetch(`/api/boardgames/${id}`, {
+    method: 'GET',
+  });
+
+  if (!res.ok) {
+    throw new Error('Could not get data!');
+  }
+
+  const data = await res.json();
+
+  return data;
+};
+
+const getRandom = async () => {
+  const res = await fetch(`/api/boardgames/random`, {
     method: 'GET',
   });
 
@@ -30,23 +57,6 @@ const getTop = async (query) => {
   const res = await fetch(`/api/boardgames/lists?page=1${query}`, {
     method: 'GET',
   });
-
-  if (!res.ok) {
-    throw new Error('Could not get data!');
-  }
-
-  const data = await res.json();
-
-  return data;
-};
-
-const getSearch = async (page, searchCategory, searchText) => {
-  const res = await fetch(
-    `/api/boardgames?page=${page}&${searchCategory}=${searchText}`,
-    {
-      method: 'GET',
-    }
-  );
 
   if (!res.ok) {
     throw new Error('Could not get data!');
@@ -120,8 +130,8 @@ const removeFromWishlist = async (id, token) => {
 export {
   getAll,
   getOne,
+  getRandom,
   getTop,
-  getSearch,
   addAsPlayed,
   addToWishlist,
   removeFromPlayed,

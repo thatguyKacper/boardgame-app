@@ -1,7 +1,7 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Boardgames } from './entities/boardgames.entity';
-import { Repository } from 'typeorm';
+import { Repository, SelectQueryBuilder } from 'typeorm';
 import { CreateBoardgameDto } from './dtos/create-boardgame.dto';
 import { UpdateBoardgameDto } from './dtos/update-boardgame.dto';
 import { PaginatorOptions, paginate } from 'src/common/paginator';
@@ -18,6 +18,17 @@ export class BoardgamesService {
     @InjectRepository(Users)
     private readonly usersRepository: Repository<Users>,
   ) {}
+
+  private applySorting(
+    query: SelectQueryBuilder<any>,
+    sortBy: string,
+    sortOrder: 'ASC' | 'DESC',
+  ) {
+    if (sortBy && sortOrder) {
+      query = query.orderBy(`bg.${sortBy}`, sortOrder);
+    }
+    return query;
+  }
 
   private getBoardgamesBaseQuery() {
     return this.boardgamesRepository
@@ -146,6 +157,8 @@ export class BoardgamesService {
       });
     }
 
+    query = this.applySorting(query, filter.sortBy, filter.sortOrder);
+
     return query;
   }
 
@@ -261,5 +274,15 @@ export class BoardgamesService {
       .relation(Boardgames, 'userswanttoplay')
       .of(query.game)
       .remove(query.user);
+  }
+
+  public async getRandomBoardgame(): Promise<Boardgames | undefined> {
+    const query = this.getBoardgamesBaseQuery().orderBy('RANDOM()').limit(1);
+
+    if (!query) {
+      throw new NotFoundException(`Boardgame not found`);
+    }
+
+    return await query.getOne();
   }
 }
