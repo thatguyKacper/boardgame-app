@@ -1,4 +1,3 @@
-// import { useState, useEffect } from 'react';
 import UserList from './UserList';
 import MainPage from '../pages/MainPage';
 import Loader from '../components/Loader';
@@ -19,11 +18,15 @@ export default function Users() {
 
   return (
     <MainPage>
-      <h2>Users</h2>
       {isLoading && <Loader />}
       {isError && toast.error('Could not fetch users')}
-      {isSuccess && <UserList users={users} />}
-      {/* <Pagination meta={meta} /> */}
+      {isSuccess && (
+        <>
+          <h2>Users</h2>
+          <UserList users={users} />
+          <Pagination meta={meta} />
+        </>
+      )}
     </MainPage>
   );
 }

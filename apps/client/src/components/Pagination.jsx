@@ -19,53 +19,58 @@ export default function Pagination({ meta }) {
                 Previous
               </button>
             </li>
-            {next_page && (
-              <>
-                {prev_page > 0 ? (
-                  <li className="page-item">
-                    <button
-                      className="page-link"
-                      onClick={() => handleSetPage(prev_page)}
-                    >
-                      {prev_page}
-                    </button>
-                  </li>
-                ) : null}
-                <li className="page-item">
-                  <button className="page-link" disabled>
-                    {curent_page}
-                  </button>
-                </li>
-                <li className="page-item">
-                  <button
-                    className="page-link"
-                    onClick={() => handleSetPage(next_page)}
-                  >
-                    {next_page}
-                  </button>
-                </li>
-                <li className="page-item">
-                  <span className="page-link">...</span>
-                </li>
-                <li className="page-item">
-                  <button
-                    className="page-link"
-                    onClick={() => handleSetPage(last_page)}
-                  >
-                    {last_page}
-                  </button>
-                </li>
-                <li className="page-item">
-                  <button
-                    className="page-link"
-                    disabled={prev_page >= last_page}
-                    onClick={handleNextPage}
-                  >
-                    Next
-                  </button>
-                </li>
-              </>
+            {prev_page ? (
+              <li className="page-item">
+                <button
+                  className="page-link"
+                  onClick={() => handleSetPage(prev_page)}
+                >
+                  {prev_page}
+                </button>
+              </li>
+            ) : null}
+            {curent_page !== last_page ? (
+              <li className="page-item">
+                <button className="page-link active" disabled>
+                  {curent_page}
+                </button>
+              </li>
+            ) : null}
+            {next_page ? (
+              <li className="page-item">
+                <button
+                  className="page-link"
+                  onClick={() => handleSetPage(next_page)}
+                >
+                  {next_page}
+                </button>
+              </li>
+            ) : null}
+            {!prev_page && !next_page ? null : (
+              <li className="page-item">
+                <span className="page-link">...</span>
+              </li>
             )}
+            <li className="page-item">
+              <button
+                className={
+                  curent_page !== last_page ? 'page-link' : 'page-link active'
+                }
+                onClick={() => handleSetPage(last_page)}
+              >
+                {last_page}
+              </button>
+            </li>
+
+            <li className="page-item">
+              <button
+                className="page-link"
+                disabled={curent_page === last_page}
+                onClick={handleNextPage}
+              >
+                Next
+              </button>
+            </li>
           </ul>
         </nav>
       </div>

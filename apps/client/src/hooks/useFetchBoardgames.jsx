@@ -11,8 +11,12 @@ export default function useFetchBoardgames(page, searchCategory, searchText) {
   };
 
   return useQuery({
-    queryKey: ['boardgames', page, searchCategory, searchText],
+    queryKey:
+      searchCategory && searchText
+        ? ['boardgames', page, searchCategory, searchText]
+        : ['boardgames', page],
     queryFn: fetchBoardgames,
-    staleTime: 1 * 60 * 1000, //1m
+    staleTime: 10 * (60 * 1000), //10m
+    cacheTime: 15 * (60 * 1000), // 15m
   });
 }

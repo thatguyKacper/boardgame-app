@@ -13,7 +13,21 @@ const getAll = async (page) => {
 };
 
 const getOne = async (id) => {
-  const res = await fetch(`api/boardgames/${id}`, {
+  const res = await fetch(`/api/boardgames/${id}`, {
+    method: 'GET',
+  });
+
+  if (!res.ok) {
+    throw new Error('Could not get data!');
+  }
+
+  const data = await res.json();
+
+  return data;
+};
+
+const getRandom = async () => {
+  const res = await fetch(`/api/boardgames/random`, {
     method: 'GET',
   });
 
@@ -120,6 +134,7 @@ const removeFromWishlist = async (id, token) => {
 export {
   getAll,
   getOne,
+  getRandom,
   getTop,
   getSearch,
   addAsPlayed,

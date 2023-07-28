@@ -27,7 +27,7 @@ export default function Categories() {
 
       <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-5 py-5">
         <Link
-          to="/boardgames?page=1&category=wargame"
+          to="/boardgames?category=war-games"
           className="text-decoration-none text-dark"
           onClick={() => handleClick('wargame')}
         >
@@ -37,7 +37,7 @@ export default function Categories() {
           </div>
         </Link>
         <Link
-          to="/boardgames?page=1&category=fighting"
+          to="/boardgames?category=fighting"
           className="text-decoration-none text-dark"
           onClick={() => handleClick('fighting')}
         >
@@ -47,7 +47,7 @@ export default function Categories() {
           </div>
         </Link>
         <Link
-          to="/boardgames?page=1&category=adventure"
+          to="/boardgames?category=adventure"
           className="text-decoration-none text-dark"
           onClick={() => handleClick('adventure')}
         >
@@ -57,7 +57,7 @@ export default function Categories() {
           </div>
         </Link>
         <Link
-          to="/boardgames?page=1&category=economic"
+          to="/boardgames?category=economic"
           className="text-decoration-none text-dark"
           onClick={() => handleClick('economic')}
         >
@@ -67,7 +67,7 @@ export default function Categories() {
           </div>
         </Link>
         <Link
-          to="/boardgames?page=1&category=horror"
+          to="/boardgames?category=horror"
           className="text-decoration-none text-dark"
           onClick={() => handleClick('horror')}
         >
@@ -77,7 +77,7 @@ export default function Categories() {
           </div>
         </Link>
         <Link
-          to="/boardgames?page=1&category=puzzle"
+          to="/boardgames?category=puzzle"
           className="text-decoration-none text-dark"
           onClick={() => handleClick('puzzle')}
         >
@@ -87,7 +87,7 @@ export default function Categories() {
           </div>
         </Link>
         <Link
-          to="/boardgames?page=1&category=card-games"
+          to="/boardgames?category=card-games"
           className="text-decoration-none text-dark"
           onClick={() => handleClick('card game')}
         >
@@ -97,7 +97,7 @@ export default function Categories() {
           </div>
         </Link>
         <Link
-          to="/boardgames?page=1&category=dice"
+          to="/boardgames?category=dice"
           className="text-decoration-none text-dark"
           onClick={() => handleClick('dice')}
         >
@@ -107,7 +107,7 @@ export default function Categories() {
           </div>
         </Link>
         <Link
-          to="/boardgames?page=1&category=fantasy"
+          to="/boardgames?category=fantasy"
           className="text-decoration-none text-dark"
           onClick={() => handleClick('fantasy')}
         >
@@ -117,7 +117,7 @@ export default function Categories() {
           </div>
         </Link>
         <Link
-          to="/boardgames?page=1&category=science-fiction"
+          to="/boardgames?category=science-fiction"
           className="text-decoration-none text-dark"
           onClick={() => handleClick('science fiction')}
         >
@@ -127,9 +127,9 @@ export default function Categories() {
           </div>
         </Link>
         <Link
-          to="/boardgames?page=1&category=party-game"
+          to="/boardgames?category=party-game"
           className="text-decoration-none text-dark"
-          onClick={() => handleClick('party-game')}
+          onClick={() => handleClick('party game')}
         >
           <div className="col d-flex flex-column align-items-center">
             <img src={party} alt="party" />
@@ -137,7 +137,7 @@ export default function Categories() {
           </div>
         </Link>
         <Link
-          to="/boardgames?page=1&category=childrens-game"
+          to="/boardgames?category=childrens-game"
           className="text-decoration-none text-dark"
           onClick={() => handleClick('childrens game')}
         >

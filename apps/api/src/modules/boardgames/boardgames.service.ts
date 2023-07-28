@@ -262,4 +262,14 @@ export class BoardgamesService {
       .of(query.game)
       .remove(query.user);
   }
+
+  public async getRandomBoardgame(): Promise<Boardgames | undefined> {
+    const query = this.getBoardgamesBaseQuery().orderBy('RANDOM()').limit(1);
+
+    if (!query) {
+      throw new NotFoundException(`Boardgame not found`);
+    }
+
+    return await query.getOne();
+  }
 }

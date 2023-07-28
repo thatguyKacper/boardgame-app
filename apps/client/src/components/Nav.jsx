@@ -1,6 +1,8 @@
-import { NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { clearSession, isAuthenticated } from '../auth/auth-helper';
 import useSearchStore from '../searchStore';
+import { useQuery } from '@tanstack/react-query';
+import { getRandom } from '../boardgames/api-boardgames';
 
 export default function Nav() {
   const session = isAuthenticated();
@@ -17,6 +19,11 @@ export default function Nav() {
     handleSetPage(1);
     handleSearchCategory('');
     handleSearchText('');
+  };
+
+  // TO DO fix double request (from this function and boardgame page)
+  const handleRandom = async () => {
+    getRandom().then((data) => navigate(`/boardgames/${data.id}`));
   };
 
   return (
@@ -47,13 +54,30 @@ export default function Nav() {
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink
-                  className="nav-link"
-                  to="/boardgames"
-                  onClick={handleClick}
-                >
-                  Boardgames
-                </NavLink>
+                <div className="btn-group">
+                  <NavLink
+                    className="nav-link"
+                    to="/boardgames"
+                    onClick={handleClick}
+                  >
+                    Boardgames
+                  </NavLink>
+                  <button
+                    type="button"
+                    className="btn dropdown-toggle dropdown-toggle-split nav-link"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <span className="visually-hidden">Toggle Dropdown</span>
+                  </button>
+                  <ul className="dropdown-menu dropdown-menu-dark">
+                    <li>
+                      <Link className="dropdown-item" onClick={handleRandom}>
+                        Random Boardgame
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
               </li>
               <li className="nav-item">
                 <NavLink className="nav-link" to="/users" onClick={handleClick}>
