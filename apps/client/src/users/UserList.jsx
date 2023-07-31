@@ -11,6 +11,7 @@ export default function UserList({ users }) {
               <th scope="col">Email</th>
               <th scope="col">Games Played</th>
               <th scope="col">Wishlist</th>
+              <th scope="col">Scored Games</th>
             </tr>
           </thead>
           <tbody>

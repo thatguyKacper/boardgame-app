@@ -20,6 +20,33 @@ export default function User() {
           <div className="px-4 py-5 my-5 text-center">
             <h1 className="display-5 fw-bold mb-5">{user.email}</h1>
             <div className="col-lg-6 mx-auto">
+              <h6 className="display-6">Scored Games:</h6>
+              {user.usersscoredCount ? (
+                <div className="table-responsive">
+                  <table className="table table-striped table-sm">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Score</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {user.score.map((boardgame) => (
+                        <tr key={boardgame.id}>
+                          <td>
+                            <Link to={`/boardgames/${boardgame.boardgameId}`}>
+                              {boardgame.boardgameId}
+                            </Link>
+                          </td>
+                          <td>{boardgame.score}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                '0'
+              )}
               <h6 className="display-6">Played Games:</h6>
               {user.playedboardgamesCount ? (
                 <div className="table-responsive">

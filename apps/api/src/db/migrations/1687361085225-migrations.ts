@@ -186,28 +186,30 @@ export class InitialMigration1687361085225 implements MigrationInterface {
         name: 'users_scored_boardgames',
         columns: [
           {
+            name: 'id',
+            type: 'int',
+            isGenerated: true,
+            generationStrategy: 'increment',
+            isNullable: false,
+          },
+          {
             name: 'userId',
             type: 'int',
-            isNullable: true,
+            isNullable: false,
           },
           {
             name: 'boardgameId',
             type: 'int',
-            isNullable: true,
+            isNullable: false,
           },
           {
             name: 'score',
             type: 'int',
-            isNullable: true,
+            isNullable: false,
           },
         ],
       }),
     );
-
-    await queryRunner.createPrimaryKey('users_scored_boardgames', [
-      'userId',
-      'boardgameId',
-    ]);
 
     await queryRunner.createForeignKeys('users_scored_boardgames', [
       new TableForeignKey({

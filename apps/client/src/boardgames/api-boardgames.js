@@ -97,6 +97,53 @@ const addToWishlist = async (id, token) => {
   }
 };
 
+const addScore = async (id, token, score) => {
+  const res = await fetch(`/api/boardgames/${id}/score-boardgame`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token,
+    },
+    body: JSON.stringify({ score }),
+  });
+
+  if (!res.ok) {
+    throw new Error('Could not add score!');
+  }
+};
+
+const updateScore = async (id, token, score) => {
+  const res = await fetch(`/api/boardgames/${id}/score-boardgame`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token,
+    },
+    body: JSON.stringify({ score }),
+  });
+
+  if (!res.ok) {
+    throw new Error('Could not update score!');
+  }
+};
+
+const removeScore = async (id, token) => {
+  const res = await fetch(`/api/boardgames/${id}/remove-score`, {
+    method: 'DELETE',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error('Could not remove score!');
+  }
+};
+
 const removeFromPlayed = async (id, token) => {
   const res = await fetch(`/api/boardgames/${id}/remove-from-played`, {
     method: 'DELETE',
@@ -134,6 +181,9 @@ export {
   getTop,
   addAsPlayed,
   addToWishlist,
+  addScore,
+  updateScore,
+  removeScore,
   removeFromPlayed,
   removeFromWishlist,
 };

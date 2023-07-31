@@ -13,6 +13,7 @@ export default function UserListItem({ user }) {
       <td>
         {user.wanttoplayboardgamesCount ? user.wanttoplayboardgamesCount : '0'}
       </td>
+      <td>{user.usersscoredCount ? user.usersscoredCount : '0'}</td>
     </tr>
   );
 }

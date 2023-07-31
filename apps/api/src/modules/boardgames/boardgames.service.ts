@@ -7,6 +7,7 @@ import { UpdateBoardgameDto } from './dtos/update-boardgame.dto';
 import { PaginatorOptions, paginate } from 'src/common/paginator';
 import { QueryBoardgamesDto } from './dtos/query-boardgames.dto';
 import { Users } from '../users/entities/users.entity';
+import { UsersScoredBoardgames } from './entities/score.entity';
 
 @Injectable()
 export class BoardgamesService {
@@ -17,6 +18,8 @@ export class BoardgamesService {
     private readonly boardgamesRepository: Repository<Boardgames>,
     @InjectRepository(Users)
     private readonly usersRepository: Repository<Users>,
+    @InjectRepository(UsersScoredBoardgames)
+    private userScoredBoardgameRepository: Repository<UsersScoredBoardgames>,
   ) {}
 
   private applySorting(
@@ -33,7 +36,7 @@ export class BoardgamesService {
   private getBoardgamesBaseQuery() {
     return this.boardgamesRepository
       .createQueryBuilder('bg')
-      .loadRelationCountAndMap('bg.usersscoredCount', 'bg.usersscored')
+      .loadRelationCountAndMap('bg.usersscoredCount', 'bg.score')
       .loadRelationCountAndMap('bg.playedbyusersCount', 'bg.playedbyusers')
       .loadRelationCountAndMap('bg.userswanttoplayCount', 'bg.userswanttoplay');
   }
@@ -43,7 +46,8 @@ export class BoardgamesService {
   }
 
   public async createBoardgame(createBoardgameDto: CreateBoardgameDto) {
-    return await this.getBoardgamesBaseQuery()
+    return await this.boardgamesRepository
+      .createQueryBuilder()
       .insert()
       .into(Boardgames)
       .values(createBoardgameDto)
@@ -54,8 +58,9 @@ export class BoardgamesService {
     id: string,
     updateBoardgameDto?: UpdateBoardgameDto,
   ) {
-    return await this.getBoardgamesBaseQuery()
-      .update()
+    return await this.boardgamesRepository
+      .createQueryBuilder()
+      .update(Boardgames)
       .where('id = :id', { id })
       .set(updateBoardgameDto)
       .execute();
@@ -70,12 +75,14 @@ export class BoardgamesService {
 
   public async getBoardgame(id: number): Promise<Boardgames | undefined> {
     const query = this.getBoardgamesBaseQuery()
+      .leftJoinAndSelect('bg.score', 'score')
+      .leftJoinAndSelect('bg.playedbyusers', 'playedbyusers')
+      .leftJoinAndSelect('bg.userswanttoplay', 'userswanttoplay')
       .andWhere('bg.id = :id', {
         id,
-      })
-      .leftJoinAndSelect('bg.usersscored', 'usersscored')
-      .leftJoinAndSelect('bg.playedbyusers', 'playedbyusers')
-      .leftJoinAndSelect('bg.userswanttoplay', 'userswanttoplay');
+      });
+
+    // this.logger.debug(query.getSql());
 
     if (!query) {
       throw new NotFoundException(`Boardgame #${id} not found`);
@@ -171,8 +178,8 @@ export class BoardgamesService {
 
     if (filter.score) {
       query = query
-        .innerJoinAndSelect('bg.usersscored', 'top')
-        .loadRelationCountAndMap('bg.usersscoredCount', 'bg.usersscored');
+        .innerJoinAndSelect('bg.score', 'top')
+        .loadRelationCountAndMap('bg.usersscoredCount', 'bg.score');
     }
 
     if (filter.played) {
@@ -247,15 +254,41 @@ export class BoardgamesService {
       .add(query.user);
   }
 
-  // TODO add score to score column
+  async addScore(boardgameId: number, userId: number, score: number) {
+    return await this.userScoredBoardgameRepository
+      .createQueryBuilder()
+      .insert()
+      .into(UsersScoredBoardgames)
+      .values({
+        boardgameId,
+        userId,
+        score,
+      })
+      .execute();
+  }
 
-  async addScore(gameId: number, userId: number, score: number) {
-    const query = await this.searchBoardgameAndUserQuery(gameId, userId);
+  async updateScore(boardgameId: number, userId: number, score: number) {
+    return await this.userScoredBoardgameRepository
+      .createQueryBuilder()
+      .update(UsersScoredBoardgames)
+      .set({ score })
+      .where('userId = :userId AND boardgameId = :boardgameId', {
+        userId,
+        boardgameId,
+      })
+      .execute();
+  }
 
-    return await this.getBoardgamesBaseQuery()
-      .relation(Boardgames, 'usersscored')
-      .of(query.game)
-      .add(query.user);
+  async removeScore(boardgameId: number, userId: number) {
+    return await this.userScoredBoardgameRepository
+      .createQueryBuilder()
+      .delete()
+      .from(UsersScoredBoardgames)
+      .where('userId = :userId AND boardgameId = :boardgameId', {
+        userId,
+        boardgameId,
+      })
+      .execute();
   }
 
   async removeFromAsPlayed(gameId: number, userId: number) {

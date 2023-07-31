@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import AddTo from '../components/AddTo';
 import { isAuthenticated } from '../auth/auth-helper';
 import useFetchBoardgame from '../hooks/useFetchBoardgame';
+import Score from '../components/Score';
 
 export default function BoardgamePage() {
   const session = isAuthenticated();
@@ -26,12 +27,13 @@ export default function BoardgamePage() {
           <h1 className="visually-hidden">{boardgame.id}</h1>
           <div className="px-4 py-5 my-5 text-center">
             <h1 className="display-5 fw-bold mb-5">{boardgame.name}</h1>
+            {session ? <Score gameId={boardgame.id} /> : null}
             <div className="table-responsive">
               <div className="container text-center px-0">
-                <h6 className="display-6">Details</h6>
+                <h6 className="display-6 mt-5">Details</h6>
                 {session ? (
                   <div className="float-end">
-                    <AddTo />
+                    <AddTo rating={boardgame.score} />
                   </div>
                 ) : null}
               </div>
@@ -90,6 +92,35 @@ export default function BoardgamePage() {
                 </tbody>
               </table>
             </div>
+            {boardgame.usersscoredCount ? (
+              <>
+                <h6 className="display-6">Scored by</h6>
+                <div className="table-responsive">
+                  <table className="table table-striped table-sm">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">User</th>
+                        <th scope="col">Score</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {boardgame.score.map((user, i) => (
+                        <tr key={user.id}>
+                          <td>{i + 1}</td>
+                          <td>
+                            <Link to={`/users/${user.userId}`}>
+                              {user.userId}
+                            </Link>
+                          </td>
+                          <td>{user.score}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            ) : null}
             {boardgame.playedbyusersCount ? (
               <>
                 <h6 className="display-6">Played by</h6>
@@ -102,13 +133,11 @@ export default function BoardgamePage() {
                       </tr>
                     </thead>
                     <tbody>
-                      {boardgame.playedbyusers.map((user) => (
+                      {boardgame.playedbyusers.map((user, i) => (
                         <tr key={boardgame.id}>
+                          <td>{i + 1}</td>
                           <td>
                             <Link to={`/users/${user.id}`}>{user.id}</Link>
-                          </td>
-                          <td>
-                            <Link to={`/users/${user.id}`}>{user.email}</Link>
                           </td>
                         </tr>
                       ))}
@@ -129,13 +158,11 @@ export default function BoardgamePage() {
                       </tr>
                     </thead>
                     <tbody>
-                      {boardgame.userswanttoplay.map((user) => (
-                        <tr key={boardgame.id}>
+                      {boardgame.userswanttoplay.map((user, i) => (
+                        <tr key={user.id}>
+                          <td>{i + 1}</td>
                           <td>
                             <Link to={`/users/${user.id}`}>{user.id}</Link>
-                          </td>
-                          <td>
-                            <Link to={`/users/${user.id}`}>{user.email}</Link>
                           </td>
                         </tr>
                       ))}

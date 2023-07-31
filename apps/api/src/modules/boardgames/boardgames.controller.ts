@@ -57,16 +57,6 @@ export class BoardgamesController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post(':id/score-boardgame')
-  async addScore(
-    @Param('id') id: number,
-    @Request() req,
-    @Body() score: number,
-  ) {
-    return await this.boardgamesService.addScore(+id, req.user.userId, score);
-  }
-
-  @UseGuards(JwtAuthGuard)
   @Post(':id/add-as-played')
   async addAsPlayed(@Param('id') id: number, @Request() req) {
     return await this.boardgamesService.addAsPlayed(+id, req.user.userId);
@@ -76,6 +66,36 @@ export class BoardgamesController {
   @Post(':id/add-to-wishlist')
   async addToWishlist(@Param('id') id: number, @Request() req) {
     return await this.boardgamesService.addToWishlist(+id, req.user.userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/score-boardgame')
+  async addScore(
+    @Param('id') id: number,
+    @Request() req,
+    @Body('score') score: number,
+  ) {
+    return await this.boardgamesService.addScore(+id, req.user.userId, score);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id/update-score')
+  async updateScore(
+    @Param('id') id: number,
+    @Request() req,
+    @Body('score') score: number,
+  ) {
+    return await this.boardgamesService.updateScore(
+      +id,
+      req.user.userId,
+      score,
+    );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id/remove-score')
+  async removeScore(@Param('id') id: number, @Request() req) {
+    return await this.boardgamesService.removeScore(+id, req.user.userId);
   }
 
   @UseGuards(JwtAuthGuard)

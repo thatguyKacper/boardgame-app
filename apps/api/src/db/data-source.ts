@@ -5,6 +5,7 @@ import { Boardgames } from 'src/modules/boardgames/entities/boardgames.entity';
 import { InitialMigration1687361085225 } from './migrations/1687361085225-migrations';
 import { PopulateGamesMigration1687422490595 } from './migrations/1687422490595-migrations';
 import { join } from 'path';
+import { UsersScoredBoardgames } from 'src/modules/boardgames/entities/score.entity';
 
 config({
   path: join(__dirname, '../../../..', '.env'),
@@ -18,7 +19,7 @@ export const dataSourceOptions: DataSourceOptions = {
   username: process.env.PGUSER,
   password: process.env.PGPASSWORD,
   database: process.env.PGDATABASE,
-  entities: [Users, Boardgames],
+  entities: [Users, Boardgames, UsersScoredBoardgames],
   synchronize: false,
   migrations: [
     InitialMigration1687361085225,

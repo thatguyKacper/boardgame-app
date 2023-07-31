@@ -1,7 +1,14 @@
 import { Expose, Type } from 'class-transformer';
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Users } from '../../users/entities/users.entity';
 import { UserDto } from '../../users/dtos/user.dto';
+import { UsersScoredBoardgames } from './score.entity';
 
 @Entity()
 export class Boardgames {
@@ -65,12 +72,9 @@ export class Boardgames {
   @Expose()
   userswanttoplay: Users[];
 
-  @ManyToMany(() => Users, (user) => user.scoredboardgames, {
-    nullable: true,
-  })
-  @Type(() => UserDto)
+  @OneToMany(() => UsersScoredBoardgames, (score) => score.boardgame)
   @Expose()
-  usersscored: Users[];
+  score: UsersScoredBoardgames[];
 
   playedbyusersCount?: number;
   userswanttoplayCount?: number;

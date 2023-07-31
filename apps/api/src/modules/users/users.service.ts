@@ -15,8 +15,8 @@ export class UsersService {
   private getUsersBaseQuery() {
     return this.usersRepository
       .createQueryBuilder('u')
+      .loadRelationCountAndMap('u.usersscoredCount', 'u.score')
       .loadRelationCountAndMap('u.playedboardgamesCount', 'u.playedboardgames')
-      .loadRelationCountAndMap('u.scoredboardgamesCount', 'u.scoredboardgames')
       .loadRelationCountAndMap(
         'u.wanttoplayboardgamesCount',
         'u.wanttoplayboardgames',
@@ -25,12 +25,12 @@ export class UsersService {
 
   public async getUser(id: number): Promise<Users | undefined> {
     const query = this.getUsersBaseQuery()
+      .leftJoinAndSelect('u.score', 'score')
+      .leftJoinAndSelect('u.playedboardgames', 'playedboardgames')
+      .leftJoinAndSelect('u.wanttoplayboardgames', 'wanttoplayboardgames')
       .andWhere('u.id = :id', {
         id,
-      })
-      .leftJoinAndSelect('u.playedboardgames', 'playedboardgames')
-      .leftJoinAndSelect('u.scoredboardgames', 'scoredboardgames')
-      .leftJoinAndSelect('u.wanttoplayboardgames', 'wanttoplayboardgames');
+      });
 
     if (!query) {
       throw new NotFoundException(`User #${id} not found`);

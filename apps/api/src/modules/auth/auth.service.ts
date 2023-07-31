@@ -16,6 +16,8 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
+  // TO DO switch to query builder
+
   public async validateUser(email: string, password: string): Promise<any> {
     const user = await this.usersRepository.findOneBy({ email: email });
     const pass = await bcrypt.compare(password, user.password);

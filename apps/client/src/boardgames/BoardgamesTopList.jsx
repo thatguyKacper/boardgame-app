@@ -9,7 +9,7 @@ export default function BoardgameTopList({ boardgames, title }) {
             <th scope="col">Rank</th>
             <th scope="col">Name</th>
             <th scope="col">Number of users {title} this game</th>
-            {title.includes('score') ? <th scope="col">Total score</th> : null}
+            {/* {title.includes('score') ? <th scope="col">Total score</th> : null} */}
           </tr>
         </thead>
         <tbody>
