@@ -5,11 +5,13 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
   Query,
+  SerializeOptions,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UserDto } from './dtos/user.dto';
 
 @Controller('users')
+@SerializeOptions({ strategy: 'exposeAll' })
 @UseInterceptors(ClassSerializerInterceptor)
 export class UsersController {
   constructor(private usersService: UsersService) {}

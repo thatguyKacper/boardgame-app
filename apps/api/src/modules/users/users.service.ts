@@ -39,7 +39,7 @@ export class UsersService {
     return await query.getOne();
   }
 
-  public async getUsersFiltered(filter?: UserDto) {
+  public getUsersFiltered(filter?: UserDto) {
     let query = this.getUsersBaseQuery();
 
     if (!filter) {
@@ -59,9 +59,6 @@ export class UsersService {
     filter: UserDto,
     paginatorOptions: PaginatorOptions,
   ) {
-    return await paginate(
-      await this.getUsersFiltered(filter),
-      paginatorOptions,
-    );
+    return await paginate(this.getUsersFiltered(filter), paginatorOptions);
   }
 }

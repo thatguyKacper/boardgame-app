@@ -32,7 +32,7 @@ export default function User() {
                     </thead>
                     <tbody>
                       {user.score.map((boardgame) => (
-                        <tr key={boardgame.id}>
+                        <tr key={boardgame.boardgameId}>
                           <td>
                             <Link to={`/boardgames/${boardgame.boardgameId}`}>
                               {boardgame.boardgameId}

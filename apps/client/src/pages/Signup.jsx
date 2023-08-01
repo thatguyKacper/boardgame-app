@@ -49,7 +49,7 @@ export default function Signup() {
             <label htmlFor="floatingPassword">Password</label>
           </div>
           <button className="w-100 btn btn-lg btn-primary" type="submit">
-            Sign in
+            Sign up
           </button>
         </form>
       </main>

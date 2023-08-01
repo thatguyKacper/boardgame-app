@@ -6,8 +6,6 @@ import { CreateBoardgameDto } from './dtos/create-boardgame.dto';
 import { UpdateBoardgameDto } from './dtos/update-boardgame.dto';
 import { PaginatorOptions, paginate } from 'src/common/paginator';
 import { QueryBoardgamesDto } from './dtos/query-boardgames.dto';
-import { Users } from '../users/entities/users.entity';
-import { UsersScoredBoardgames } from './entities/score.entity';
 
 @Injectable()
 export class BoardgamesService {
@@ -16,10 +14,6 @@ export class BoardgamesService {
   constructor(
     @InjectRepository(Boardgames)
     private readonly boardgamesRepository: Repository<Boardgames>,
-    @InjectRepository(Users)
-    private readonly usersRepository: Repository<Users>,
-    @InjectRepository(UsersScoredBoardgames)
-    private userScoredBoardgameRepository: Repository<UsersScoredBoardgames>,
   ) {}
 
   private applySorting(
@@ -36,13 +30,12 @@ export class BoardgamesService {
   private getBoardgamesBaseQuery() {
     return this.boardgamesRepository
       .createQueryBuilder('bg')
+      .leftJoinAndSelect('bg.score', 'score')
+      .leftJoinAndSelect('bg.playedbyusers', 'playedbyusers')
+      .leftJoinAndSelect('bg.userswanttoplay', 'userswanttoplay')
       .loadRelationCountAndMap('bg.usersscoredCount', 'bg.score')
       .loadRelationCountAndMap('bg.playedbyusersCount', 'bg.playedbyusers')
       .loadRelationCountAndMap('bg.userswanttoplayCount', 'bg.userswanttoplay');
-  }
-
-  private getUsersBaseQuery() {
-    return this.usersRepository.createQueryBuilder('u');
   }
 
   public async createBoardgame(createBoardgameDto: CreateBoardgameDto) {
@@ -74,15 +67,9 @@ export class BoardgamesService {
   }
 
   public async getBoardgame(id: number): Promise<Boardgames | undefined> {
-    const query = this.getBoardgamesBaseQuery()
-      .leftJoinAndSelect('bg.score', 'score')
-      .leftJoinAndSelect('bg.playedbyusers', 'playedbyusers')
-      .leftJoinAndSelect('bg.userswanttoplay', 'userswanttoplay')
-      .andWhere('bg.id = :id', {
-        id,
-      });
-
-    // this.logger.debug(query.getSql());
+    const query = this.getBoardgamesBaseQuery().andWhere('bg.id = :id', {
+      id,
+    });
 
     if (!query) {
       throw new NotFoundException(`Boardgame #${id} not found`);
@@ -91,7 +78,7 @@ export class BoardgamesService {
     return await query.getOne();
   }
 
-  public async getBoardgamesFiltered(filter?: QueryBoardgamesDto) {
+  public getBoardgamesFiltered(filter?: QueryBoardgamesDto) {
     let query = this.getBoardgamesBaseQuery();
 
     if (!filter) {
@@ -164,38 +151,19 @@ export class BoardgamesService {
       });
     }
 
-    query = this.applySorting(query, filter.sortBy, filter.sortOrder);
-
-    return query;
-  }
-
-  public async getBoardgamesFilteredTop(filter?: QueryBoardgamesDto) {
-    let query = this.getBoardgamesBaseQuery();
-
-    if (!filter) {
-      return query;
-    }
-
     if (filter.score) {
-      query = query
-        .innerJoinAndSelect('bg.score', 'top')
-        .loadRelationCountAndMap('bg.usersscoredCount', 'bg.score');
+      query = query.innerJoinAndSelect('bg.score', 'scored');
     }
 
     if (filter.played) {
-      query = query
-        .innerJoinAndSelect('bg.playedbyusers', 'top')
-        .loadRelationCountAndMap('bg.playedbyusersCount', 'bg.playedbyusers');
+      query = query.innerJoinAndSelect('bg.playedbyusers', 'played');
     }
 
     if (filter.wishlist) {
-      query = query
-        .innerJoinAndSelect('bg.userswanttoplay', 'top')
-        .loadRelationCountAndMap(
-          'bg.userswanttoplayCount',
-          'bg.userswanttoplay',
-        );
+      query = query.innerJoinAndSelect('bg.userswanttoplay', 'wishlist');
     }
+
+    query = this.applySorting(query, filter.sortBy, filter.sortOrder);
 
     return query;
   }
@@ -204,109 +172,7 @@ export class BoardgamesService {
     filter: QueryBoardgamesDto,
     paginatorOptions: PaginatorOptions,
   ) {
-    return await paginate(
-      await this.getBoardgamesFiltered(filter),
-      paginatorOptions,
-    );
-  }
-
-  public async getBoardgamesFilteredTopPaginated(
-    filter: QueryBoardgamesDto,
-    paginatorOptions: PaginatorOptions,
-  ) {
-    return await paginate(
-      await this.getBoardgamesFilteredTop(filter),
-      paginatorOptions,
-    );
-  }
-
-  private async searchBoardgameAndUserQuery(gameId: number, userId: number) {
-    const game = await this.getBoardgamesBaseQuery()
-      .where('bg.id = :id', {
-        id: gameId,
-      })
-      .getOne();
-
-    const user = await this.getUsersBaseQuery()
-      .where('u.id = :id', {
-        id: userId,
-      })
-      .getOne();
-
-    return { game, user };
-  }
-
-  async addAsPlayed(gameId: number, userId: number) {
-    const query = await this.searchBoardgameAndUserQuery(gameId, userId);
-
-    return await this.getBoardgamesBaseQuery()
-      .relation(Boardgames, 'playedbyusers')
-      .of(query.game)
-      .add(query.user);
-  }
-
-  async addToWishlist(gameId: number, userId: number) {
-    const query = await this.searchBoardgameAndUserQuery(gameId, userId);
-
-    return await this.getBoardgamesBaseQuery()
-      .relation(Boardgames, 'userswanttoplay')
-      .of(query.game)
-      .add(query.user);
-  }
-
-  async addScore(boardgameId: number, userId: number, score: number) {
-    return await this.userScoredBoardgameRepository
-      .createQueryBuilder()
-      .insert()
-      .into(UsersScoredBoardgames)
-      .values({
-        boardgameId,
-        userId,
-        score,
-      })
-      .execute();
-  }
-
-  async updateScore(boardgameId: number, userId: number, score: number) {
-    return await this.userScoredBoardgameRepository
-      .createQueryBuilder()
-      .update(UsersScoredBoardgames)
-      .set({ score })
-      .where('userId = :userId AND boardgameId = :boardgameId', {
-        userId,
-        boardgameId,
-      })
-      .execute();
-  }
-
-  async removeScore(boardgameId: number, userId: number) {
-    return await this.userScoredBoardgameRepository
-      .createQueryBuilder()
-      .delete()
-      .from(UsersScoredBoardgames)
-      .where('userId = :userId AND boardgameId = :boardgameId', {
-        userId,
-        boardgameId,
-      })
-      .execute();
-  }
-
-  async removeFromAsPlayed(gameId: number, userId: number) {
-    const query = await this.searchBoardgameAndUserQuery(gameId, userId);
-
-    return await this.getBoardgamesBaseQuery()
-      .relation(Boardgames, 'playedbyusers')
-      .of(query.game)
-      .remove(query.user);
-  }
-
-  async removeFromWishlist(gameId: number, userId: number) {
-    const query = await this.searchBoardgameAndUserQuery(gameId, userId);
-
-    return await this.getBoardgamesBaseQuery()
-      .relation(Boardgames, 'userswanttoplay')
-      .of(query.game)
-      .remove(query.user);
+    return await paginate(this.getBoardgamesFiltered(filter), paginatorOptions);
   }
 
   public async getRandomBoardgame(): Promise<Boardgames | undefined> {

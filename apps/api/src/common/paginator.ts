@@ -71,7 +71,6 @@ export class PaginationResult<T> {
     Object.assign(this, partial);
   }
 
-  @Expose()
   meta: {
     curent_page: number;
     last_page: number;
@@ -81,7 +80,6 @@ export class PaginationResult<T> {
     total?: number;
   };
 
-  @Expose()
   data: T[];
 }
 

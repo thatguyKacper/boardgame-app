@@ -10,32 +10,28 @@ import {
   Patch,
   Post,
   Query,
-  Request,
+  SerializeOptions,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { BoardgamesService } from './boardgames.service';
 import { CreateBoardgameDto } from './dtos/create-boardgame.dto';
 import { UpdateBoardgameDto } from './dtos/update-boardgame.dto';
-import { SerializeInterceptor } from 'src/interceptors/serialize.interceptor';
 import { QueryBoardgamesDto } from './dtos/query-boardgames.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('boardgames')
+@SerializeOptions({ strategy: 'exposeAll' })
 @UseInterceptors(ClassSerializerInterceptor)
-// @UseInterceptors(new SerializeInterceptor(QueryBoardgamesDto))
 export class BoardgamesController {
   constructor(private readonly boardgamesService: BoardgamesService) {}
 
   @Get('/lists')
   async getMostPlayed(@Query() filter: QueryBoardgamesDto) {
-    return await this.boardgamesService.getBoardgamesFilteredTopPaginated(
-      filter,
-      {
-        currentPage: filter.page,
-        limit: 10,
-      },
-    );
+    return await this.boardgamesService.getBoardgamesFilteredPaginated(filter, {
+      currentPage: filter.page,
+      limit: 10,
+    });
   }
 
   @Get()
@@ -57,68 +53,7 @@ export class BoardgamesController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post(':id/add-as-played')
-  async addAsPlayed(@Param('id') id: number, @Request() req) {
-    return await this.boardgamesService.addAsPlayed(+id, req.user.userId);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Post(':id/add-to-wishlist')
-  async addToWishlist(@Param('id') id: number, @Request() req) {
-    return await this.boardgamesService.addToWishlist(+id, req.user.userId);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Post(':id/score-boardgame')
-  async addScore(
-    @Param('id') id: number,
-    @Request() req,
-    @Body('score') score: number,
-  ) {
-    return await this.boardgamesService.addScore(+id, req.user.userId, score);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Patch(':id/update-score')
-  async updateScore(
-    @Param('id') id: number,
-    @Request() req,
-    @Body('score') score: number,
-  ) {
-    return await this.boardgamesService.updateScore(
-      +id,
-      req.user.userId,
-      score,
-    );
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Delete(':id/remove-score')
-  async removeScore(@Param('id') id: number, @Request() req) {
-    return await this.boardgamesService.removeScore(+id, req.user.userId);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Delete(':id/remove-from-played')
-  async removeFromAsPlayed(@Param('id') id: number, @Request() req) {
-    return await this.boardgamesService.removeFromAsPlayed(
-      +id,
-      req.user.userId,
-    );
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Delete(':id/remove-from-wishlist')
-  async removeFromWishlist(@Param('id') id: number, @Request() req) {
-    return await this.boardgamesService.removeFromWishlist(
-      +id,
-      req.user.userId,
-    );
-  }
-
-  @UseGuards(JwtAuthGuard)
   @Post()
-  @UseInterceptors(new SerializeInterceptor(CreateBoardgameDto))
   async create(@Body() createBoardgameDto: CreateBoardgameDto) {
     return await this.boardgamesService.createBoardgame(createBoardgameDto);
   }

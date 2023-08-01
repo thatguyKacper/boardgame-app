@@ -8,8 +8,8 @@ export default function Score({ gameId }) {
 
   const { addScore } = useAddScore();
 
-  const handleClick = (num) => {
-    addScore({ gameId, token, num });
+  const handleClick = (score) => {
+    addScore({ gameId, token, score });
   };
 
   return (

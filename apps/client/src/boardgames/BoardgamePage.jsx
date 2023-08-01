@@ -33,7 +33,7 @@ export default function BoardgamePage() {
                 <h6 className="display-6 mt-5">Details</h6>
                 {session ? (
                   <div className="float-end">
-                    <AddTo rating={boardgame.score} />
+                    <AddTo gameId={boardgame.id} />
                   </div>
                 ) : null}
               </div>
@@ -106,7 +106,7 @@ export default function BoardgamePage() {
                     </thead>
                     <tbody>
                       {boardgame.score.map((user, i) => (
-                        <tr key={user.id}>
+                        <tr key={user.boardgameId}>
                           <td>{i + 1}</td>
                           <td>
                             <Link to={`/users/${user.userId}`}>
@@ -134,7 +134,7 @@ export default function BoardgamePage() {
                     </thead>
                     <tbody>
                       {boardgame.playedbyusers.map((user, i) => (
-                        <tr key={boardgame.id}>
+                        <tr key={user.id}>
                           <td>{i + 1}</td>
                           <td>
                             <Link to={`/users/${user.id}`}>{user.id}</Link>

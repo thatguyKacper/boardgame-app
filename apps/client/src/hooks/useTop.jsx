@@ -13,6 +13,5 @@ export default function useTop(query) {
   return useQuery({
     queryKey: ['top', query],
     queryFn: fetchTopBoardgames,
-    staleTime: 1 * 60 * 1000, //1m
   });
 }

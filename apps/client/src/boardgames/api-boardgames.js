@@ -68,7 +68,7 @@ const getTop = async (query) => {
 };
 
 const addAsPlayed = async (id, token) => {
-  const res = await fetch(`/api/boardgames/${id}/add-as-played`, {
+  const res = await fetch(`/api/boardgames/${id}/action/add-as-played`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -83,7 +83,7 @@ const addAsPlayed = async (id, token) => {
 };
 
 const addToWishlist = async (id, token) => {
-  const res = await fetch(`/api/boardgames/${id}/add-to-wishlist`, {
+  const res = await fetch(`/api/boardgames/${id}/action/add-to-wishlist`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -98,7 +98,7 @@ const addToWishlist = async (id, token) => {
 };
 
 const addScore = async (id, token, score) => {
-  const res = await fetch(`/api/boardgames/${id}/score-boardgame`, {
+  const res = await fetch(`/api/boardgames/${id}/score/add`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -114,8 +114,8 @@ const addScore = async (id, token, score) => {
 };
 
 const updateScore = async (id, token, score) => {
-  const res = await fetch(`/api/boardgames/${id}/score-boardgame`, {
-    method: 'POST',
+  const res = await fetch(`/api/boardgames/${id}/score/update`, {
+    method: 'PATCH',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -130,7 +130,7 @@ const updateScore = async (id, token, score) => {
 };
 
 const removeScore = async (id, token) => {
-  const res = await fetch(`/api/boardgames/${id}/remove-score`, {
+  const res = await fetch(`/api/boardgames/${id}/score/remove`, {
     method: 'DELETE',
     headers: {
       Accept: 'application/json',
@@ -145,7 +145,7 @@ const removeScore = async (id, token) => {
 };
 
 const removeFromPlayed = async (id, token) => {
-  const res = await fetch(`/api/boardgames/${id}/remove-from-played`, {
+  const res = await fetch(`/api/boardgames/${id}/action/remove-from-played`, {
     method: 'DELETE',
     headers: {
       Accept: 'application/json',
@@ -160,7 +160,7 @@ const removeFromPlayed = async (id, token) => {
 };
 
 const removeFromWishlist = async (id, token) => {
-  const res = await fetch(`/api/boardgames/${id}/remove-from-wishlist`, {
+  const res = await fetch(`/api/boardgames/${id}/action/remove-from-wishlist`, {
     method: 'DELETE',
     headers: {
       Accept: 'application/json',
