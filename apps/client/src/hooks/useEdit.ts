@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { editAccount as authApi } from '../auth/api-auth';
 import toast from 'react-hot-toast';
-import { UserEditAuth } from '../types/auth';
+import { UserEditAuth } from '../interfaces/auth';
 
 export default function useEdit() {
   const { mutate: edit, isLoading } = useMutation({

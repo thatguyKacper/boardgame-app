@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import useSearchStore from '../searchStore';
 import { isAuthenticated } from '../auth/auth-helper';
 import AddTo from '../components/AddTo';
-import { Boardgame } from '../types/boardgame';
+import { Boardgame } from '../interfaces/boardgame';
 
 // type guard
 function hasProperty(obj: object, key: string): key is keyof typeof obj {

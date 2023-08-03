@@ -1,18 +1,17 @@
-export type Auth = {
+export interface Auth {
   id: number;
   token: string;
 };
 
-export type UserAuth = {
+export interface UserAuth {
   email: string,
   password: string
 }
 
-export type UserEditAuth = {
+export interface UserEditAuth {
   id: number,
   token: string,
   password: string,
   retypedPassword: string
 }
 
-  

@@ -1,10 +1,14 @@
 import useSearchStore from '../searchStore';
-import { Meta } from '../types/meta';
+import { Meta } from '../interfaces/meta';
 
-export default function Pagination({ meta }: {meta?: Meta[]}) {
-  const { prev_page, next_page, curent_page, last_page } = meta;
-
+export default function Pagination({ meta }: {meta?: Meta}) {
+  
+  if (!meta) {
+    return;
+  }
+  
   const { handleSetPage } = useSearchStore();
+  const { prev_page, next_page, curent_page, last_page } = meta;
 
   return (
     <>
@@ -16,8 +20,8 @@ export default function Pagination({ meta }: {meta?: Meta[]}) {
                 <li className="page-item">
                   <button
                     className="page-link"
-                    disabled={prev_page < 1}
-                    onClick={() => handleSetPage(prev_page)}
+                    disabled={!prev_page}
+                    onClick={() => handleSetPage(prev_page as number)}
                   >
                     Previous
                   </button>
@@ -71,7 +75,7 @@ export default function Pagination({ meta }: {meta?: Meta[]}) {
                   <button
                     className="page-link"
                     disabled={curent_page === last_page}
-                    onClick={() => handleSetPage(next_page)}
+                    onClick={() => handleSetPage(next_page as number)}
                   >
                     Next
                   </button>

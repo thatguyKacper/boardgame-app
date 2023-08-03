@@ -6,7 +6,7 @@ import TopFeature from '../components/TopFeature';
 import Categories from '../components/Categories';
 import { ReactNode } from 'react';
 
-export default function MainPage({ children }: {children: ReactNode}) {
+export default function MainPage({ children }: {children?: ReactNode}) {
   const { pathname } = useLocation();
 
   return (

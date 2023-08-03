@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import App from './App.tsx';
 import './scss/styles.scss';
+// @ts-ignore
 import * as bootstrap from 'bootstrap';
 import { Toaster } from 'react-hot-toast';
 

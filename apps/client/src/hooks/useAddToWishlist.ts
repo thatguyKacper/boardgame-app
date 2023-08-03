@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { addToWishlist as wishlist } from '../boardgames/api-boardgames';
 import toast from 'react-hot-toast';
-import { Auth } from '../types/auth';
+import { Auth } from '../interfaces/auth';
 
 export default function useAddToWishlist() {
   const { mutate: addToWishlist, isLoading } = useMutation({

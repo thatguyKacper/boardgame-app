@@ -1,11 +1,34 @@
+import { useEffect } from 'react';
 import { isAuthenticated } from '../auth/auth-helper';
 import useDelete from '../hooks/useDelete';
+import { Auth } from '../interfaces/auth';
+import { ModalInterface } from '../interfaces/components';
+import { Modal as BootstrapModal } from 'bootstrap';
 
-export default function Modal( title: string, message: string, buttonColor: string, buttonText: string) {
-  const { token, id } = isAuthenticated();
+const Modal: React.FC<ModalInterface> = ({
+  title,
+  message,
+  buttonColor,
+  buttonText,
+}) => {
+  const session = isAuthenticated();
+
+  useEffect(() => {
+    const modalElement = document.getElementById('exampleModal');
+    if (modalElement) {
+      new BootstrapModal(modalElement);
+    }
+  }, []);
+
+  if (!session) {
+    return null;
+  }
+
+  const { id, token } = session as Auth;
+
   const { remove } = useDelete();
 
-  const handleDelete = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
 
     if (!token) {
@@ -19,7 +42,7 @@ export default function Modal( title: string, message: string, buttonColor: stri
     <div
       className="modal fade"
       id="exampleModal"
-      // tabIndex="-1"
+      tabIndex={-1}
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
@@ -57,4 +80,6 @@ export default function Modal( title: string, message: string, buttonColor: stri
       </div>
     </div>
   );
-}
+};
+
+export default Modal;

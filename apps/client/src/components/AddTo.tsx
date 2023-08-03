@@ -1,9 +1,16 @@
 import { isAuthenticated } from '../auth/auth-helper';
 import useAddAsPlayed from '../hooks/useAddAsPlayed';
 import useAddToWishlist from '../hooks/useAddToWishlist';
+import { Auth } from '../interfaces/auth';
 
 export default function AddTo({ id }: {id: number}) {
-  const { token } = isAuthenticated();
+  const session = isAuthenticated();
+
+  if(!session) {
+    return
+  }
+
+  const { token } = session as Auth;
 
   const { addAsPlayed } = useAddAsPlayed();
   const { addToWishlist } = useAddToWishlist();

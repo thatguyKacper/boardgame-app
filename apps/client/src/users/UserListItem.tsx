@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { User } from '../types/user';
+import { User } from '../interfaces/user';
 
 export default function UserListItem({ user }: {user: User}) {
   return (

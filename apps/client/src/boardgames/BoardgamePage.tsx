@@ -6,17 +6,22 @@ import AddTo from '../components/AddTo';
 import { isAuthenticated } from '../auth/auth-helper';
 import useFetchBoardgame from '../hooks/useFetchBoardgame';
 import Score from '../components/Score';
+import { Boardgame } from '../interfaces/boardgame';
 
 export default function BoardgamePage() {
   const session = isAuthenticated();
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
+
+  if (!id) {
+    return;
+  }
 
   const {
     isLoading,
     isSuccess,
     isError,
-    data: {data: boardgame} = {},
-  } = useFetchBoardgame(id);
+    data:  boardgame = {} as Boardgame,
+  } = useFetchBoardgame(parseInt(id));
 
   return (
     <MainPage>

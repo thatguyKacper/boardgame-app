@@ -1,4 +1,4 @@
-export type Boardgame = {
+export interface Boardgame {
     artist: string,
     bggurl: string,
     category: string,
@@ -30,8 +30,8 @@ export type Boardgame = {
     yearpublished: number
   }
 
-export type BoardgameScore = {
+export interface BoardgameAction {
   boardgameId: number,
   token: string,
-  score: number,
+  score?: number,
 }

@@ -1,11 +1,16 @@
-import { useState } from 'react';
 import { isAuthenticated } from '../auth/auth-helper';
 import useAddScore from '../hooks/useAddScore';
-import { BoardgameScore } from '../types/boardgame';
+import { Auth } from '../interfaces/auth';
 
-export default function Score( {boardgameId} : {boardgameId: number}) {
-  const [stars, setStars] = useState([1, 2, 3, 4, 5]);
-  const { id, token } = isAuthenticated();
+export default function Score({ boardgameId }: { boardgameId: number }) {
+  const stars = [1, 2, 3, 4, 5];
+  const session = isAuthenticated();
+
+  if (!session) {
+    return
+  }
+
+  const { token } = session as Auth;
 
   const { addScore } = useAddScore();
 

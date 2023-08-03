@@ -1,5 +1,5 @@
-import { Meta } from "../types/meta";
-import { User } from "../types/user";
+import { Meta } from "../interfaces/meta";
+import { User } from "../interfaces/user";
 
 const getAll = async (page: number) => {
   const res = await fetch(`/api/users?page=${page}`, {
@@ -10,7 +10,7 @@ const getAll = async (page: number) => {
     throw new Error('Could not get data!');
   }
 
-  const data = await res.json() as Promise<{data: User[], meta: Meta[]}>;
+  const data = await res.json() as Promise<{data: User[], meta: Meta}>;
 
   return data;
 };

@@ -7,37 +7,45 @@ import toast from 'react-hot-toast';
 import useRemoveFromPlayed from '../hooks/useRemoveFromAsPlayed';
 import useRemoveFromWishlist from '../hooks/useRemoveFromWishlist';
 import useRemoveScore from '../hooks/useRemoveScore';
+import { Auth } from '../interfaces/auth';
+import { User } from '../interfaces/user';
 
-export default function User() {
-  const { id, token } = isAuthenticated();
+export default function Dashboard() {
+  const session = isAuthenticated();
 
-  const { isLoading, isSuccess, isError, data: user = {} } = useFetchUser(id);
+  if(!session) {
+    return
+  }
+
+  const { id, token } = session as Auth;
+
+  const { isLoading, isSuccess, isError, data: user = {} as User } = useFetchUser(id);
   const { removeFromPlayed } = useRemoveFromPlayed();
   const { removeFromWishlist } = useRemoveFromWishlist();
   const { removeScore } = useRemoveScore();
 
-  const handleRemoveFromPlayed = (gameId: number) => {
-    if (!token || !gameId) {
+  const handleRemoveFromPlayed = (boardgameId: number) => {
+    if (!token || !boardgameId) {
       return;
     }
 
-    removeFromPlayed({ id, token });
+    removeFromPlayed({ boardgameId, token });
   };
 
-  const handleRemoveFromWishlist = (id: number) => {
-    if (!token || !id) {
+  const handleRemoveFromWishlist = (boardgameId: number) => {
+    if (!token || !boardgameId) {
       return;
     }
 
-    removeFromWishlist({ id, token });
+    removeFromWishlist({ boardgameId, token });
   };
 
-  const handleRemoveScore = (id: number) => {
-    if (!token || !id) {
+  const handleRemoveScore = (boardgameId: number) => {
+    if (!token || !boardgameId) {
       return;
     }
 
-    removeScore({ id, token });
+    removeScore({ boardgameId, token });
   };
 
   return (
@@ -48,7 +56,7 @@ export default function User() {
         <>
           <h1 className="pb-4 border-bottom">Dashboard</h1>
           <h2 className="pb-2 border-bottom">Scored Games:</h2>
-          {user.usersscoredCount ? (
+          {user?.usersscoredCount ? (
             <div className="table-responsive">
               <table className="table table-striped table-sm">
                 <thead>
@@ -58,7 +66,7 @@ export default function User() {
                   </tr>
                 </thead>
                 <tbody>
-                  {user.score.map((boardgame, i) => (
+                  {user.score?.map((boardgame) => (
                     <tr key={boardgame.boardgameId}>
                       <td>
                         <Link to={`/boardgames/${boardgame.boardgameId}`}>
@@ -96,7 +104,7 @@ export default function User() {
             '0'
           )}
           <h2 className="pb-2 border-bottom">Played Games:</h2>
-          {user.playedboardgamesCount ? (
+          {user?.playedboardgamesCount ? (
             <div className="table-responsive">
               <table className="table table-striped table-sm">
                 <thead>
@@ -106,7 +114,7 @@ export default function User() {
                   </tr>
                 </thead>
                 <tbody>
-                  {user.playedboardgames.map((boardgame) => (
+                  {user.playedboardgames?.map((boardgame) => (
                     <tr key={boardgame.id}>
                       <td>
                         <Link to={`/boardgames/${boardgame.id}`}>
@@ -146,7 +154,7 @@ export default function User() {
             '0'
           )}
           <h2 className="pb-2 border-bottom">Wishlist:</h2>
-          {user.wanttoplayboardgamesCount ? (
+          {user?.wanttoplayboardgamesCount ? (
             <div className="table-responsive">
               <table className="table table-striped table-sm">
                 <thead>
@@ -156,7 +164,7 @@ export default function User() {
                   </tr>
                 </thead>
                 <tbody>
-                  {user.wanttoplayboardgames.map((boardgame) => (
+                  {user.wanttoplayboardgames?.map((boardgame) => (
                     <tr key={boardgame.id}>
                       <td>
                         <Link to={`/boardgames/${boardgame.id}`}>

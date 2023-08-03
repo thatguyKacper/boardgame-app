@@ -1,7 +1,7 @@
-import { User } from '../types/user';
+import { User } from '../interfaces/user';
 import UserListItem from './UserListItem';
 
-export default function UserList({ users }: {users: User[]}) {
+export default function UserList({ users }: {users?: User[]}) {
   return (
     <>
       <div className="table-responsive">

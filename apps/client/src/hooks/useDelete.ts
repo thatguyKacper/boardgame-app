@@ -3,7 +3,7 @@ import { deleteAccount as authApi } from '../auth/api-auth';
 import { useNavigate } from 'react-router-dom';
 import { clearSession } from '../auth/auth-helper';
 import toast from 'react-hot-toast';
-import { Auth } from '../types/auth';
+import { Auth } from '../interfaces/auth';
 
 export default function useDelete() {
   const navigate = useNavigate();

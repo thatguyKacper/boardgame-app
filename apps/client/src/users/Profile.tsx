@@ -6,13 +6,20 @@ import useFetchUser from '../hooks/useFetchUser';
 import Loader from '../components/Loader';
 import toast from 'react-hot-toast';
 import Modal from '../components/Modal';
+import { Auth } from '../interfaces/auth';
 
 export default function Profile() {
   const [password, setPassword] = useState('');
   const [retypedPassword, setRetypedPassword] = useState('');
-  const { token, id } = isAuthenticated();
+  const session = isAuthenticated();
 
-  const { isLoading, isSuccess, isError, data } = useFetchUser(id);
+  if(!session) {
+    return
+  }
+
+  const { id, token } = session as Auth;
+
+  const { isLoading, isSuccess, isError } = useFetchUser(id);
 
   const { edit } = useEdit();
 
@@ -64,7 +71,7 @@ export default function Profile() {
           <div className="mb-3">
             <h4 className="pb-2 border-bottom mb-3">Delete account</h4>
             <button
-              type="submit"
+              type="button"
               className="btn btn-danger"
               data-bs-toggle="modal"
               data-bs-target="#exampleModal"
@@ -72,10 +79,10 @@ export default function Profile() {
               Delete
             </button>
             <Modal
-              title={'Delete Account'}
-              message={'Are you sure you want to delete your account?'}
-              buttonColor={'danger'}
-              buttonText={'Delete'}
+              title='Delete Account'
+              message='Are you sure you want to delete your account?'
+              buttonColor='danger'
+              buttonText='Delete'
             />
           </div>
         </>

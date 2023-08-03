@@ -1,4 +1,4 @@
-import { Auth } from "../types/auth";
+import { Auth } from "../interfaces/auth";
 
 const signin = async (email: string, password: string) => {
   const res = await fetch('api/auth/signin/', {

@@ -3,11 +3,16 @@ import MainPage from '../pages/MainPage';
 import useFetchUser from '../hooks/useFetchUser';
 import Loader from '../components/Loader';
 import toast from 'react-hot-toast';
+import { User } from '../interfaces/user';
 
 export default function UserPage() {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
 
-  const { isLoading, isSuccess, isError, data: {data: user} = {}} = useFetchUser(id);  
+  if (!id) {
+    return;
+  }
+
+  const { isLoading, isSuccess, isError, data: user = {} as User } = useFetchUser(parseInt(id));
 
   return (
     <MainPage>

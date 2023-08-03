@@ -1,7 +1,7 @@
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import { getAll } from '../boardgames/api-boardgames';
-import { Boardgame } from '../types/boardgame';
-import { Meta } from '../types/meta';
+import { Boardgame } from '../interfaces/boardgame';
+import { Meta } from '../interfaces/meta';
 
 export default function useFetchBoardgames(
   page: number,
@@ -9,7 +9,7 @@ export default function useFetchBoardgames(
   searchText: string,
   sortBy: string,
   sortOrder: string
-): UseQueryResult<{ data: Boardgame[], meta: Meta[] }> {
+): UseQueryResult<{ data: Boardgame[], meta: Meta }> {
   const fetchBoardgames = async () =>
     getAll(page, searchCategory, searchText, sortBy, sortOrder);
 

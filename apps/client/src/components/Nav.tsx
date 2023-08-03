@@ -1,4 +1,4 @@
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { clearSession, isAuthenticated } from '../auth/auth-helper';
 import useSearchStore from '../searchStore';
 import { getRandom } from '../boardgames/api-boardgames';

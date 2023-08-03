@@ -1,5 +1,5 @@
-import { Boardgame } from "../types/boardgame";
-import { Meta } from "../types/meta";
+import { Boardgame } from "../interfaces/boardgame";
+import { Meta } from "../interfaces/meta";
 
 const getAll = async (page: number, searchCategory: string, searchText: string, sortBy: string, sortOrder: string) => {
   const queryParams = new URLSearchParams({
@@ -23,7 +23,7 @@ const getAll = async (page: number, searchCategory: string, searchText: string, 
     throw new Error('Could not get data!');
   }
 
-  const data = await res.json() as Promise<{data: Boardgame[], meta: Meta[]}>;
+  const data = await res.json() as Promise<{data: Boardgame[], meta: Meta}>;
 
   return data;
 };
@@ -65,7 +65,7 @@ const getTop = async (query: string) => {
     throw new Error('Could not get data!');
   }
 
-  const data = await res.json() as Promise<{data: Boardgame[], meta: Meta[]}>;
+  const data = await res.json() as Promise<{data: Boardgame[], meta: Meta}>;
 
   return data;
 };
@@ -100,7 +100,7 @@ const addToWishlist = async (id: number, token: string) => {
   }
 };
 
-const addScore = async (id: number, token: string, score: number) => {
+const addScore = async (id: number, token: string, score?: number) => {
   const res = await fetch(`/api/boardgames/${id}/score/add`, {
     method: 'POST',
     headers: {

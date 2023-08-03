@@ -3,7 +3,7 @@ import { signup as signupApi } from '../auth/api-auth';
 import { useNavigate } from 'react-router-dom';
 import { authenticate } from '../auth/auth-helper';
 import toast from 'react-hot-toast';
-import { UserAuth } from '../types/auth';
+import { UserAuth } from '../interfaces/auth';
 
 export default function useSignup() {
   const navigate = useNavigate();

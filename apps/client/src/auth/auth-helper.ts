@@ -1,4 +1,4 @@
-import { Auth } from "../types/auth";
+import { Auth } from "../interfaces/auth";
 
 const isAuthenticated = (): Auth | false => {
   const userId = sessionStorage.getItem('userId');

@@ -1,8 +1,8 @@
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import { getOne } from '../boardgames/api-boardgames';
-import { Boardgame } from '../types/boardgame';
+import { Boardgame } from '../interfaces/boardgame';
 
-export default function useFetchBoardgame(id: number): UseQueryResult<{ data: Boardgame}> {
+export default function useFetchBoardgame(id: number): UseQueryResult<Boardgame> {
   const fetchBoardgame = async () => {
     if (!id) {
       return;

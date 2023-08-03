@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { removeFromPlayed as remove } from '../boardgames/api-boardgames';
 import toast from 'react-hot-toast';
-import { Auth } from '../types/auth';
+import { BoardgameAction } from '../interfaces/boardgame';
 
 export default function useRemoveFromPlayed() {
   const queryClient = useQueryClient();
 
   const { mutate: removeFromPlayed, isLoading } = useMutation({
-    mutationFn: (auth: Auth) => remove(auth.id, auth.token),
+    mutationFn: (auth: BoardgameAction) => remove(auth.boardgameId, auth.token),
     onSuccess: () => {
       toast.success('Boardgame removed from played');
       queryClient.invalidateQueries({

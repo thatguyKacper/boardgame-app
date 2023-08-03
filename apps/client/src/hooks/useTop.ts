@@ -1,9 +1,9 @@
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import { getTop } from '../boardgames/api-boardgames';
-import { Boardgame } from '../types/boardgame';
-import { Meta } from '../types/meta';
+import { Boardgame } from '../interfaces/boardgame';
+import { Meta } from '../interfaces/meta';
 
-export default function useTop(query: string): UseQueryResult<{ data: Boardgame[], meta: Meta[] }> {
+export default function useTop(query: string): UseQueryResult<{ data: Boardgame[], meta: Meta }> {
   const fetchTopBoardgames = async () => {
     if (!query) {
       return;

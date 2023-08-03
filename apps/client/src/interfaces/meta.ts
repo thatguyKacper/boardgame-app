@@ -1,4 +1,4 @@
-export type Meta = {
+export interface Meta {
     curent_page: number
     last_page: number,
     next_page: number | null,

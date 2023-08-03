@@ -15,8 +15,8 @@ import Dashboard from './pages/Dashboard';
 export default function MainRouter() {
   return (
     <Routes>
-      <Route index path="/" element={<MainPage />} />
-      <Route path="/boardgames" element={<Boardgames />}></Route>
+      <Route path="/" element={<MainPage />}/>
+      <Route path="/boardgames" element={<Boardgames />}/>
       <Route path="/boardgames/:id" element={<BoardgamePage />} />
       <Route path="/boardgames/lists" element={<BoardgamesTop />} />
       <Route path="/users" element={<Users />} />

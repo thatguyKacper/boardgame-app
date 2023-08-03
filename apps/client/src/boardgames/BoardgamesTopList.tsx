@@ -1,4 +1,4 @@
-import { Boardgame } from '../types/boardgame';
+import { Boardgame } from '../interfaces/boardgame';
 import BoardgameTopListItem from './BoardgamesTopListItem';
 
 export default function BoardgameTopList({ boardgames, title }: {boardgames: Boardgame[], title: string}) {

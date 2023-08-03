@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Boardgame } from '../types/boardgame';
+import { Boardgame } from '../interfaces/boardgame';
 
 export default function BoardgameTopListItem({ boardgame, title }: {boardgame: Boardgame, title: string}) {
   return (

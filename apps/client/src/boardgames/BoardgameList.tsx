@@ -3,12 +3,12 @@ import { isAuthenticated } from '../auth/auth-helper';
 import { capitalizeFirstLetter } from '../helpers/string-helper';
 import useSearchStore from '../searchStore';
 import BoardgameListItem from './BoardgameListItem';
-import { Boardgame } from '../types/boardgame';
+import { Boardgame } from '../interfaces/boardgame';
 
 
-export default function BoardgameList({ boardgames }: {boardgames: Boardgame[]}) {
+export default function BoardgameList({ boardgames }: { boardgames: Boardgame[] }) {
   const session = isAuthenticated();
-  const { searchCategory } = useSearchStore();  
+  const { searchCategory } = useSearchStore();
 
   const [sortOrder, setSortOrder] = useState('ASC');
 
