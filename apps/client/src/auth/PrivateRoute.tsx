@@ -2,10 +2,10 @@ import { Navigate } from 'react-router-dom';
 import Loader from '../components/Loader';
 import { isAuthenticated } from './auth-helper';
 import useFetchUser from '../hooks/useFetchUser';
-import { ReactNode } from 'react';
 import { Auth } from '../interfaces/auth';
+import { ChildrenInterface } from '../interfaces/components';
 
-export default function PrivateRoute({ children }: {children: ReactNode}) {
+export default function PrivateRoute({ children }: ChildrenInterface) {
   const session = isAuthenticated();
 
   if(!session) {

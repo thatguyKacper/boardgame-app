@@ -4,7 +4,7 @@ import { capitalizeFirstLetter } from '../helpers/string-helper';
 import useSearchStore from '../searchStore';
 import BoardgameListItem from './BoardgameListItem';
 import { Boardgame } from '../interfaces/boardgame';
-
+import Table from '../components/Table';
 
 export default function BoardgameList({ boardgames }: { boardgames: Boardgame[] }) {
   const session = isAuthenticated();
@@ -20,105 +20,50 @@ export default function BoardgameList({ boardgames }: { boardgames: Boardgame[] 
     handleSortOrder(sortOrder);
   };
 
+  const tableHeaders = ['id', 'name', 'minplayers', 'maxplayers', 'playingtime', 'category']
+
   return (
-    <div className="table">
-      <table className="table table-striped table-sm table-hover">
-        <thead>
-          <tr>
-            <th scope="col" role="button" onClick={() => handleClick('id')}>
-              #
-            </th>
-            <th scope="col" role="button" onClick={() => handleClick('name')}>
-              Name
-            </th>
-            {searchCategory && !session && (
-              <th
-                scope="col"
-                role="button"
-                onClick={() => handleClick(searchCategory)}
-              >
-                {capitalizeFirstLetter(searchCategory)}
+    <Table>
+      <thead>
+        <tr>
+          {session && searchCategory && (
+            tableHeaders.splice(2, 5, searchCategory, 'Actions'),
+            tableHeaders.map((th, i) => (
+              <th scope="col" role="button" key={i} onClick={() => handleClick(th)}>
+                {capitalizeFirstLetter(th)}
               </th>
-            )}
-            {searchCategory && session && (
-              <>
-                <th scope="col">{capitalizeFirstLetter(searchCategory)}</th>
-                <th scope="col">Actions</th>
-              </>
-            )}
-            {!searchCategory && session && (
-              <>
-                <th
-                  scope="col"
-                  role="button"
-                  onClick={() => handleClick('minplayers')}
-                >
-                  Min Players
-                </th>
-                <th
-                  scope="col"
-                  role="button"
-                  onClick={() => handleClick('maxplayers')}
-                >
-                  Max Players
-                </th>
-                <th
-                  scope="col"
-                  role="button"
-                  onClick={() => handleClick('playingtime')}
-                >
-                  Playing time
-                </th>
-                <th
-                  scope="col"
-                  role="button"
-                  onClick={() => handleClick('category')}
-                >
-                  Category
-                </th>
-                <th scope="col">Actions</th>
-              </>
-            )}
-            {!searchCategory && !session && (
-              <>
-                <th
-                  scope="col"
-                  role="button"
-                  onClick={() => handleClick('minplayers')}
-                >
-                  Min Players
-                </th>
-                <th
-                  scope="col"
-                  role="button"
-                  onClick={() => handleClick('maxplayers')}
-                >
-                  Max Players
-                </th>
-                <th
-                  scope="col"
-                  role="button"
-                  onClick={() => handleClick('playingtime')}
-                >
-                  Playing time
-                </th>
-                <th
-                  scope="col"
-                  role="button"
-                  onClick={() => handleClick('category')}
-                >
-                  Category
-                </th>
-              </>
-            )}
-          </tr>
-        </thead>
-        <tbody>
-          {boardgames?.map((boardgame) => (
-            <BoardgameListItem boardgame={boardgame} key={boardgame.id} />
-          ))}
-        </tbody>
-      </table>
-    </div>
+            ))
+          )}
+          {session && !searchCategory && (
+            tableHeaders.push('Actions'),
+            tableHeaders.map((th, i) => (
+              <th scope="col" role="button" key={i} onClick={() => handleClick(th)}>
+                {capitalizeFirstLetter(th)}
+              </th>
+            ))
+          )}
+          {!session && searchCategory && (
+            tableHeaders.splice(2, 5, searchCategory,),
+            tableHeaders.map((th, i) => (
+              <th scope="col" role="button" key={i} onClick={() => handleClick(th)}>
+                {capitalizeFirstLetter(th)}
+              </th>
+            ))
+          )}
+          {!session && !searchCategory && (
+            tableHeaders.map((th, i) => (
+              <th scope="col" role="button" key={i} onClick={() => handleClick(th)}>
+                {capitalizeFirstLetter(th)}
+              </th>
+            ))
+          )}
+        </tr>
+      </thead>
+      <tbody >
+        {boardgames?.map((boardgame) => (
+          <BoardgameListItem boardgame={boardgame} key={boardgame.id} />
+        ))}
+      </tbody>
+    </Table>
   );
 }

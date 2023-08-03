@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import './Sign.css';
 import MainPage from './MainPage';
 import Loader from '../components/Loader';
@@ -10,7 +10,7 @@ export default function Signup() {
 
   const { signup, isLoading } = useSignup();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     if (!email || !password) {

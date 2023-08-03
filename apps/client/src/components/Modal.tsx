@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
+import { FC, MouseEvent, useEffect } from 'react';
 import { isAuthenticated } from '../auth/auth-helper';
 import useDelete from '../hooks/useDelete';
 import { Auth } from '../interfaces/auth';
 import { ModalInterface } from '../interfaces/components';
 import { Modal as BootstrapModal } from 'bootstrap';
 
-const Modal: React.FC<ModalInterface> = ({
+const Modal: FC<ModalInterface> = ({
   title,
   message,
   buttonColor,
@@ -28,7 +28,7 @@ const Modal: React.FC<ModalInterface> = ({
 
   const { remove } = useDelete();
 
-  const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleDelete = (e: MouseEvent) => {
     e.preventDefault();
 
     if (!token) {

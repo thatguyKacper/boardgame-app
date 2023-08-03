@@ -20,7 +20,7 @@ export default function BoardgamesTop() {
 
   return (
     <MainPage>
-      <h2>Top 10 most {title}</h2>
+      <h1>Top 10 most {title}</h1>
       {isLoading && <Loader />}
       {isError && toast.error('Could not fetch boardgames')}
       {isSuccess && <BoardgameTopList boardgames={boardgames || []} title={title || ''} />}

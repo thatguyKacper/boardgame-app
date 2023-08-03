@@ -19,7 +19,7 @@ export default function Score({ boardgameId }: { boardgameId: number }) {
   };
 
   return (
-    <div className="form-group" id="rating-ability-wrapper">
+    <div className="form-group text-center" id="rating-ability-wrapper">
       {stars.map((i) => (
         <button
           key={i}

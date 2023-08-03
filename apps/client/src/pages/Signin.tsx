@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import './Sign.css';
 import MainPage from './MainPage';
 import { Link } from 'react-router-dom';
@@ -11,7 +11,7 @@ export default function Signin() {
 
   const { signin, isLoading } = useSignin();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     if (!email || !password) {

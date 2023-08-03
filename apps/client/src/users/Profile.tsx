@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import MainPage from '../pages/MainPage';
 import { isAuthenticated } from '../auth/auth-helper';
 import useEdit from '../hooks/useEdit';
@@ -23,7 +23,7 @@ export default function Profile() {
 
   const { edit } = useEdit();
 
-  const handleChangePassword = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleChangePassword = (e: FormEvent) => {
     e.preventDefault();
 
     if (!password || !retypedPassword) {
@@ -39,9 +39,10 @@ export default function Profile() {
       {isError && toast.error('Could not fetch user')}
       {isSuccess && (
         <>
+        <h1 className='pb-4 border-bottom'>Profile</h1>
           <form onSubmit={handleChangePassword} className="mb-3">
             <div className="mb-3">
-              <h4 className="pb-2 border-bottom">Change password</h4>
+              <h2 className="pb-2 border-bottom">Change password</h2>
               <label htmlFor="newPassword" className="form-label">
                 New password
               </label>
@@ -69,7 +70,7 @@ export default function Profile() {
             </button>
           </form>
           <div className="mb-3">
-            <h4 className="pb-2 border-bottom mb-3">Delete account</h4>
+            <h2 className="pb-2 border-bottom mb-3">Delete account</h2>
             <button
               type="button"
               className="btn btn-danger"

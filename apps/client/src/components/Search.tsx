@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import useSearchStore from '../searchStore';
+import { FormEvent } from 'react';
 
 export default function Search() {
   const [searchCategory, setSearchCategory] = useState('');
   const [searchInput, setSearchInput] = useState('');
   const { handleSearchCategory, handleSearchText } = useSearchStore();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
     handleSearchCategory(searchCategory);
