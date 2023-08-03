@@ -25,7 +25,7 @@ export default function CategoryItem({ category }: CategoryItemInterface) {
             onClick={() => handleClick(category)}
         >
             <div className="col d-flex flex-column align-items-center">
-                <img src={`/${category}.svg`} alt={category} />
+                <img src={`/${category}.svg`} alt={category} width={100} height={100}/>
                 <h3 className="fs-4 pt-2">{capitalizeFirstLetter(replaceCharacter(category, '_', ' '))}</h3>
             </div>
         </Link>

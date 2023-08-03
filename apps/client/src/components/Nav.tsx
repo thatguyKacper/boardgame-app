@@ -78,9 +78,9 @@ export default function Nav() {
                   </button>
                   <ul className="dropdown-menu dropdown-menu-dark">
                     <li>
-                      <a className="dropdown-item" onClick={handleRandom}>
+                      <button className="btn btn-link dropdown-item" onClick={handleRandom}>
                         Random Boardgame
-                      </a>
+                      </button>
                     </li>
                   </ul>
                 </div>

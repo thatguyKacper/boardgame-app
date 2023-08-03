@@ -5,7 +5,7 @@ import BoardgameTopListItem from './BoardgamesTopListItem';
 export default function BoardgameTopList({ boardgames, title }: { boardgames: Boardgame[], title: string }) {
   return (
     <Table>
-      <thead>
+      <thead className='text-center'>
         <tr>
           <th scope="col">Rank</th>
           <th scope="col">Name</th>
@@ -13,7 +13,7 @@ export default function BoardgameTopList({ boardgames, title }: { boardgames: Bo
           {/* {title.includes('score') ? <th scope="col">Total score</th> : null} */}
         </tr>
       </thead>
-      <tbody>
+      <tbody className='text-center'>
         {boardgames?.map((boardgame) => (
           <BoardgameTopListItem
             boardgame={boardgame}

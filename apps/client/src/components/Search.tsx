@@ -15,7 +15,7 @@ export default function Search() {
   };
 
   return (
-    <div className="py-2 border-bottom mb-3">
+    <div className="py-2 mb-3">
       <div className="container d-flex flex-wrap justify-content-center">
         <form onSubmit={handleSubmit}>
           <div className="input-group">

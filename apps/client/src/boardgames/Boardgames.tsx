@@ -24,7 +24,7 @@ export default function Boardgames() {
       {isError && toast.error('Could not fetch boardgames')}
       {isSuccess && (
         <>
-          <h1>Boardgames</h1>
+          <h1 className="pb-4 border-bottom">Boardgames</h1>
           <Search />
           {boardgames ? 
           <BoardgameList boardgames={boardgames} />

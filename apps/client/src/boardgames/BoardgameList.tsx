@@ -8,11 +8,10 @@ import Table from '../components/Table';
 
 export default function BoardgameList({ boardgames }: { boardgames: Boardgame[] }) {
   const session = isAuthenticated();
-  const { searchCategory } = useSearchStore();
+
+  const {searchCategory, handleSortBy, handleSortOrder } = useSearchStore();
 
   const [sortOrder, setSortOrder] = useState('ASC');
-
-  const { handleSortBy, handleSortOrder } = useSearchStore();
 
   const handleClick = (name: string) => {
     handleSortBy(name);
@@ -24,42 +23,50 @@ export default function BoardgameList({ boardgames }: { boardgames: Boardgame[] 
 
   return (
     <Table>
-      <thead>
+      <thead className='text-center'>
         <tr>
           {session && searchCategory && (
             tableHeaders.splice(2, 5, searchCategory, 'Actions'),
             tableHeaders.map((th, i) => (
-              <th scope="col" role="button" key={i} onClick={() => handleClick(th)}>
-                {capitalizeFirstLetter(th)}
+              <th scope="col">
+                <button className="btn btn-link text-dark" role="button" key={i} onClick={() => handleClick(th)}>
+                  {capitalizeFirstLetter(th)}
+                </button>
               </th>
             ))
           )}
           {session && !searchCategory && (
             tableHeaders.push('Actions'),
             tableHeaders.map((th, i) => (
-              <th scope="col" role="button" key={i} onClick={() => handleClick(th)}>
-                {capitalizeFirstLetter(th)}
+              <th scope="col">
+                <button className="btn btn-link text-dark" role="button" key={i} onClick={() => handleClick(th)}>
+                  {capitalizeFirstLetter(th)}
+                </button>
               </th>
             ))
           )}
           {!session && searchCategory && (
             tableHeaders.splice(2, 5, searchCategory,),
             tableHeaders.map((th, i) => (
-              <th scope="col" role="button" key={i} onClick={() => handleClick(th)}>
-                {capitalizeFirstLetter(th)}
+              <th scope="col">
+                <button className="btn btn-link text-dark" role="button" key={i} onClick={() => handleClick(th)}>
+                  {capitalizeFirstLetter(th)}
+                </button>
               </th>
             ))
           )}
           {!session && !searchCategory && (
             tableHeaders.map((th, i) => (
-              <th scope="col" role="button" key={i} onClick={() => handleClick(th)}>
-                {capitalizeFirstLetter(th)}
+              <th scope="col">
+                <button className="btn btn-link text-dark" role="button" key={i} onClick={() => handleClick(th)}>
+                  {capitalizeFirstLetter(th)}
+                </button>
               </th>
             ))
           )}
         </tr>
       </thead>
-      <tbody >
+      <tbody className='text-center'>
         {boardgames?.map((boardgame) => (
           <BoardgameListItem boardgame={boardgame} key={boardgame.id} />
         ))}

@@ -41,7 +41,7 @@ export default function BoardgamePage() {
             ) : null}
           </div>
           <Table>
-            <tbody>
+            <tbody >
               <tr>
                 <td>Name</td>
                 <td>{boardgame.name}</td>

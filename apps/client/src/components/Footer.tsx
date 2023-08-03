@@ -18,6 +18,7 @@ export default function Footer() {
               className="text-muted"
               href="https://github.com/thatguyKacper/boardgame-app"
               target="blank"
+              aria-label="github link"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -34,6 +35,7 @@ export default function Footer() {
               className="text-muted"
               href="https://pl.linkedin.com/in/kacper-wojtowicz"
               target="blank"
+              aria-label="linkedin link"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

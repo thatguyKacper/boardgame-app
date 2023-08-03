@@ -5,7 +5,7 @@ import UserListItem from './UserListItem';
 export default function UserList({ users }: { users?: User[] }) {
   return (
     <Table>
-      <thead>
+      <thead className='text-center'>
         <tr>
           <th scope="col">#</th>
           <th scope="col">Email</th>
@@ -14,7 +14,7 @@ export default function UserList({ users }: { users?: User[] }) {
           <th scope="col">Scored Games</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody className='text-center'>
         {users?.map((user) => (
           <UserListItem user={user} key={user.id} />
         ))}

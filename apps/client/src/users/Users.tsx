@@ -22,7 +22,7 @@ export default function Users() {
       {isError && toast.error('Could not fetch users')}
       {isSuccess && (
         <>
-          <h1>Users</h1>
+          <h1 className="pb-4">Users</h1>
           <UserList users={users} />
           <Pagination meta={meta} />
         </>

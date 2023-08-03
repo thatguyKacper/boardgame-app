@@ -56,16 +56,17 @@ export default function Dashboard() {
       {isSuccess && (
         <>
           <h1 className="pb-4 border-bottom">Dashboard</h1>
-          <h2 className="pb-2 border-bottom">Scored Games:</h2>
+          <h2 className="pb-2">Scored Games:</h2>
           {user?.usersscoredCount ? (
             <Table>
-              <thead>
+              <thead className='text-center'>
                 <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Score</th>
+                  <th scope="col" className='w-25'>#</th>
+                  <th scope="col" className='w-50'>Score</th>
+                  <th scope="col" className='w-25'>Actions</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className='text-center'>
                 {user.score?.map((boardgame) => (
                   <tr key={boardgame.boardgameId}>
                     <td>
@@ -77,7 +78,7 @@ export default function Dashboard() {
                     <td>
                       <button
                         type="button"
-                        className="btn btn-danger float-end"
+                        className="btn btn-danger"
                         onClick={() =>
                           handleRemoveScore(boardgame.boardgameId)
                         }
@@ -102,16 +103,17 @@ export default function Dashboard() {
           ) : (
             '0'
           )}
-          <h2 className="pb-2 border-bottom">Played Games:</h2>
+          <h2 className="pb-2">Played Games:</h2>
           {user?.playedboardgamesCount ? (
             <Table>
-              <thead>
+              <thead className='text-center'>
                 <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Name</th>
+                <th scope="col" className='w-25'>#</th>
+                  <th scope="col" className='w-50'>Name</th>
+                  <th scope="col" className='w-25'>Actions</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className='text-center'>
                 {user.playedboardgames?.map((boardgame) => (
                   <tr key={boardgame.id}>
                     <td>
@@ -127,7 +129,7 @@ export default function Dashboard() {
                     <td>
                       <button
                         type="button"
-                        className="btn btn-danger float-end"
+                        className="btn btn-danger"
                         onClick={() => handleRemoveFromPlayed(boardgame.id)}
                       >
                         <svg
@@ -150,16 +152,17 @@ export default function Dashboard() {
           ) : (
             '0'
           )}
-          <h2 className="pb-2 border-bottom">Wishlist:</h2>
+          <h2 className="pb-2">Wishlist:</h2>
           {user?.wanttoplayboardgamesCount ? (
             <Table>
-              <thead>
+              <thead className='text-center'>
                 <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Name</th>
+                <th scope="col" className='w-25'>#</th>
+                  <th scope="col" className='w-50'>Name</th>
+                  <th scope="col" className='w-25'>Actions</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className='text-center'>
                 {user.wanttoplayboardgames?.map((boardgame) => (
                   <tr key={boardgame.id}>
                     <td>
@@ -175,7 +178,7 @@ export default function Dashboard() {
                     <td>
                       <button
                         type="button"
-                        className="btn btn-danger float-end"
+                        className="btn btn-danger"
                         onClick={() => handleRemoveFromWishlist(boardgame.id)}
                       >
                         <svg

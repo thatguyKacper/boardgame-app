@@ -25,13 +25,13 @@ export default function UserPage() {
           <h2>Scored Games:</h2>
           {user.usersscoredCount ? (
             <Table>
-              <thead>
+              <thead className='text-center'>
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Score</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className='text-center'>
                 {user.score?.map((boardgame) => (
                   <tr key={boardgame.boardgameId}>
                     <td>
@@ -50,13 +50,13 @@ export default function UserPage() {
           <h2>Played Games:</h2>
           {user.playedboardgamesCount ? (
             <Table>
-              <thead>
+              <thead className='text-center'>
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Name</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className='text-center'>
                 {user.playedboardgames?.map((boardgame) => (
                   <tr key={boardgame.id}>
                     <td>
@@ -79,13 +79,13 @@ export default function UserPage() {
           <h2>Wishlist:</h2>
           {user.wanttoplayboardgamesCount ? (
             <Table>
-              <thead>
+              <thead className='text-center'>
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Name</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className='text-center'>
                 {user.wanttoplayboardgames?.map((boardgame) => (
                   <tr key={boardgame.id}>
                     <td>

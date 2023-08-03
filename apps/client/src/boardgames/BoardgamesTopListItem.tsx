@@ -10,9 +10,9 @@ export default function BoardgameTopListItem({ boardgame, title }: {boardgame: B
       <td>
         <Link to={`/boardgames/${boardgame.id}`}>{boardgame.name}</Link>
       </td>
-      {title.includes('played') && <td>{boardgame.playedbyusersCount}</td>}
-      {title.includes('wishlist') && <td>{boardgame.userswanttoplayCount}</td>}
-      {title.includes('score') && <td>{boardgame.usersscoredCount}</td>}
+      {title.includes('played') && <td className='w-50'>{boardgame.playedbyusersCount}</td>}
+      {title.includes('wishlist') && <td className='w-50'>{boardgame.userswanttoplayCount}</td>}
+      {title.includes('score') && <td className='w-50'>{boardgame.usersscoredCount}</td>}
     </tr>
   );
 }
