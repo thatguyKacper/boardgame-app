@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export class QueryBoardgamesDto {
@@ -55,7 +55,10 @@ export class QueryBoardgamesDto {
   @IsString()
   sortOrder?: 'ASC' | 'DESC';
   @IsOptional()
-  @IsString()
+  @IsNumber()
+  @Min(1)
+  @Max(10)
+  @Transform(({ value }) => parseInt(value))
   score?: string;
   @IsOptional()
   @IsString()
