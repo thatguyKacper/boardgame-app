@@ -1,26 +1,41 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from '../users/dtos/create-user.dto';
 import { UpdateUserDto } from '../users/dtos/update-user.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Users } from '../users/entities/users.entity';
-import { Repository } from 'typeorm';
 import { RequestDto } from './dtos/request.dto';
+import { UsersService } from '../users/users.service';
+import { UserDto } from '../users/dtos/user.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(Users)
-    private readonly usersRepository: Repository<Users>,
     private readonly jwtService: JwtService,
+    private readonly usersService: UsersService,
   ) {}
 
-  // TO DO switch to query builder
+  private async hashPassword(password: string): Promise<string> {
+    return await bcrypt.hash(password, 10);
+  }
 
-  public async validateUser(email: string, password: string): Promise<any> {
-    const user = await this.usersRepository.findOneBy({ email: email });
-    const pass = await bcrypt.compare(password, user.password);
+  public async validateUser(userDto: UserDto): Promise<any> {
+    const user = await this.usersService.getUserWithEmail(userDto.email);
+
+    if (!user) {
+      return;
+    }
+
+    const pass = await bcrypt.compare(userDto.password, user.password);
+
+    if (!pass) {
+      throw new ForbiddenException('Incorrect email or password!');
+    }
 
     if (user && pass) {
       const { ...result } = user;
@@ -30,92 +45,71 @@ export class AuthService {
     return null;
   }
 
-  public async signup(createUserDto: CreateUserDto): Promise<any> {
-    let user = new CreateUserDto();
-
-    const existingUser = await this.usersRepository.findOneBy({
-      email: createUserDto.email,
-    });
+  public async signup(createUserDto: CreateUserDto): Promise<RequestDto> {
+    const existingUser = await this.usersService.getUserWithEmail(
+      createUserDto.email,
+    );
 
     if (existingUser) {
       throw new BadRequestException('Email is already taken!');
     }
 
-    user.email = createUserDto.email;
-    user.password = await this.hashPassword(createUserDto.password);
+    const newUser = new CreateUserDto();
 
-    user = await this.usersRepository.save(user);
+    newUser.email = createUserDto.email;
+    newUser.password = await this.hashPassword(createUserDto.password);
 
-    const request = new RequestDto(user);
+    const user = await this.usersService.createUser(newUser);
 
-    const payload = { email: request.email, sub: request.id };
+    const payload = {
+      email: user.generatedMaps[0].email,
+      sub: user.generatedMaps[0].id,
+    };
 
-    return new RequestDto({
-      id: request.id,
+    return {
+      id: payload.sub,
       token: this.jwtService.sign(payload),
-    });
+    };
   }
 
-  public async signin(user: RequestDto) {
-    const payload = { email: user.email, sub: user.id };
+  public async signin(userDto: UserDto): Promise<RequestDto> {
+    if (!userDto) {
+      throw new NotFoundException();
+    }
 
-    // return {
-    //   token: this.jwtService.sign(payload),
-    // };
+    const payload = { email: userDto.email, sub: userDto.id };
 
-    return new RequestDto({
-      id: user.id,
+    return {
+      id: userDto.id,
       token: this.jwtService.sign(payload),
-    });
+    };
   }
 
-  public async get(req: any): Promise<any> {
-    const user = await this.usersRepository.findOneBy({ id: req.userId });
-
-    return user;
-  }
-
-  public async update(updateUserDto: UpdateUserDto, req: any): Promise<any> {
-    const updatedUser = new UpdateUserDto();
-
-    const user = await this.usersRepository.findOneBy({ id: req.userId });
-
-    // if (updateUserDto.email !== user.email) {
-    //   updatedUser.email = updateUserDto.email;
-    // }
+  public async update(
+    updateUserDto: UpdateUserDto,
+    user: RequestDto,
+    param: number,
+  ) {
+    if (user.id !== param) {
+      throw new UnauthorizedException();
+    }
 
     if (updateUserDto.password !== updateUserDto.retypedPassword) {
-      throw new BadRequestException();
+      throw new BadRequestException('Password are not identical!');
     }
+
+    const updatedUser = new UpdateUserDto();
 
     updatedUser.password = await this.hashPassword(updateUserDto.password);
 
-    Object.assign(user, updatedUser);
-
-    return await this.usersRepository.save(user);
+    return this.usersService.updateUser(updatedUser, user.id);
   }
 
-  async signout(req: any) {
-    const user = await this.usersRepository.findOneBy({ id: req.userId });
-
-    if (!user) {
-      throw new BadRequestException();
+  async remove(userDto: UserDto, param: number) {
+    if (userDto.id !== param) {
+      throw new UnauthorizedException();
     }
 
-    return;
-  }
-
-  async remove(req: any) {
-    const user = await this.usersRepository.findOneBy({ id: req.userId });
-
-    if (!user) {
-      throw new BadRequestException();
-    }
-
-    return this.usersRepository.remove(user);
-  }
-
-  private async hashPassword(password: string): Promise<string> {
-    return await bcrypt.hash(password, 10);
+    return this.usersService.removeUser(userDto.id);
   }
 }

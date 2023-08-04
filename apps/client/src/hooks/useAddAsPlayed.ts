@@ -11,7 +11,7 @@ export default function useAddAsPlayed() {
     },
     onError: (err) => {
       console.log(err);
-      toast.error('Could not add boardgame');
+      toast.error('Boardgame alredy on list');
     },
   });
 

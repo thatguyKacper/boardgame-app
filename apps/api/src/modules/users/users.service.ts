@@ -4,6 +4,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from './entities/users.entity';
 import { UserDto } from './dtos/user.dto';
 import { PaginatorOptions, paginate } from 'src/common/paginator';
+import { CreateUserDto } from './dtos/create-user.dto';
+import { UpdateUserDto } from './dtos/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -11,6 +13,35 @@ export class UsersService {
     @InjectRepository(Users)
     private readonly usersRepository: Repository<Users>,
   ) {}
+
+  public async createUser(createUserDto: CreateUserDto) {
+    return await this.usersRepository
+      .createQueryBuilder()
+      .insert()
+      .into(Users)
+      .values([
+        { email: createUserDto.email, password: createUserDto.password },
+      ])
+      .returning(['id', 'email'])
+      .execute();
+  }
+
+  public async updateUser(updateUserDto: UpdateUserDto, id: number) {
+    return await this.usersRepository
+      .createQueryBuilder()
+      .update(Users)
+      .set({ password: updateUserDto.password })
+      .where('id = :id', { id })
+      .execute();
+  }
+
+  public async removeUser(id: number) {
+    return await this.usersRepository
+      .createQueryBuilder()
+      .delete()
+      .where('id = :id', { id })
+      .execute();
+  }
 
   private getUsersBaseQuery() {
     return this.usersRepository
@@ -34,6 +65,20 @@ export class UsersService {
 
     if (!query) {
       throw new NotFoundException(`User #${id} not found`);
+    }
+
+    return await query.getOne();
+  }
+
+  public async getUserWithEmail(email: string): Promise<Users | undefined> {
+    const query = this.usersRepository
+      .createQueryBuilder('u')
+      .andWhere('u.email = :email', {
+        email,
+      });
+
+    if (!query) {
+      throw new NotFoundException(`User #${email} not found`);
     }
 
     return await query.getOne();

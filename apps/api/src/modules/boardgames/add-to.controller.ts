@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ClassSerializerInterceptor,
   Controller,
   Delete,
@@ -21,24 +22,40 @@ export class AddToController {
   @UseGuards(JwtAuthGuard)
   @Post('add-as-played')
   async addAsPlayed(@Param('id') id: number, @Request() req) {
-    return await this.addToService.addAsPlayed(+id, req.user.userId);
+    try {
+      return await this.addToService.addAsPlayed(+id, req.user.id);
+    } catch (error) {
+      throw new BadRequestException();
+    }
   }
 
   @UseGuards(JwtAuthGuard)
   @Post('add-to-wishlist')
   async addToWishlist(@Param('id') id: number, @Request() req) {
-    return await this.addToService.addToWishlist(+id, req.user.userId);
+    try {
+      return await this.addToService.addToWishlist(+id, req.user.id);
+    } catch (error) {
+      throw new BadRequestException();
+    }
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete('remove-from-played')
   async removeFromAsPlayed(@Param('id') id: number, @Request() req) {
-    return await this.addToService.removeFromAsPlayed(+id, req.user.userId);
+    try {
+      return await this.addToService.removeFromAsPlayed(+id, req.user.id);
+    } catch (error) {
+      throw new BadRequestException();
+    }
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete('remove-from-wishlist')
   async removeFromWishlist(@Param('id') id: number, @Request() req) {
-    return await this.addToService.removeFromWishlist(+id, req.user.userId);
+    try {
+      return await this.addToService.removeFromWishlist(+id, req.user.id);
+    } catch (error) {
+      throw new BadRequestException();
+    }
   }
 }

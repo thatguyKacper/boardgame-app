@@ -7,6 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
 import { Users } from '../users/entities/users.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UsersService } from '../users/users.service';
 
 @Module({
   imports: [
@@ -15,11 +16,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     JwtModule.registerAsync({
       useFactory: () => ({
         secret: process.env.JWTSECRET,
-        signOptions: { expiresIn: '60m' },
+        signOptions: { expiresIn: '3h' },
       }),
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy, UsersService],
   controllers: [AuthController],
   exports: [AuthService],
 })

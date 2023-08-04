@@ -1,14 +1,14 @@
-import { Exclude, Transform } from 'class-transformer';
-import { IsNumber, IsOptional } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsEmail, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class UserDto {
-  @IsOptional()
+  @IsNumber()
   id?: number;
 
-  @IsOptional()
-  email?: string;
+  @IsEmail()
+  email: string;
 
-  @Exclude()
+  @IsString()
   password: string;
 
   @IsOptional()

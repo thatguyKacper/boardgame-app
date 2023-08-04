@@ -27,7 +27,7 @@ export class ScoreController {
     @Request() req,
     @Body('score') score: number,
   ) {
-    return await this.scoreService.addScore(+id, req.user.userId, score);
+    return await this.scoreService.addScore(+id, req.user.id, score);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -37,12 +37,12 @@ export class ScoreController {
     @Request() req,
     @Body('score') score: number,
   ) {
-    return await this.scoreService.updateScore(+id, req.user.userId, score);
+    return await this.scoreService.updateScore(+id, req.user.id, score);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete('/remove')
   async removeScore(@Param('id') id: number, @Request() req) {
-    return await this.scoreService.removeScore(+id, req.user.userId);
+    return await this.scoreService.removeScore(+id, req.user.id);
   }
 }

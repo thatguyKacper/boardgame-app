@@ -3,12 +3,13 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Delete,
-  Get,
   HttpCode,
+  InternalServerErrorException,
   Param,
   Patch,
   Post,
   Request,
+  SerializeOptions,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -19,6 +20,7 @@ import { CreateUserDto } from '../users/dtos/create-user.dto';
 import { UpdateUserDto } from '../users/dtos/update-user.dto';
 
 @Controller()
+@SerializeOptions({ strategy: 'exposeAll' })
 @UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -30,33 +32,29 @@ export class AuthController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('/profile/:id')
-  async getProfile(@Request() req, @Param('id') id: number) {
-    return this.authService.get(req.user);
-  }
-
-  @UseGuards(JwtAuthGuard)
+  @HttpCode(204)
   @Patch('/profile/:id')
   async editProfile(
     @Request() req,
     @Body() updateUserDto: UpdateUserDto,
     @Param('id') id: number,
   ) {
-    return this.authService.update(updateUserDto, req.user);
-  }
+    const result = await this.authService.update(updateUserDto, req.user, id);
 
-  @UseGuards(JwtAuthGuard)
-  @HttpCode(204)
-  @Post('/signout')
-  async signout(@Request() req) {
-    return this.authService.signout(req.user);
+    if (result.affected !== 1) {
+      throw new InternalServerErrorException();
+    }
   }
 
   @UseGuards(JwtAuthGuard)
   @HttpCode(204)
   @Delete('/profile/:id')
   async deleteProfile(@Request() req, @Param('id') id: number) {
-    return this.authService.remove(req.user);
+    const result = await this.authService.remove(req.user, id);
+
+    if (result.affected !== 1) {
+      throw new InternalServerErrorException();
+    }
   }
 
   @Post('/signup')

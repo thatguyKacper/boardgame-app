@@ -1,16 +1,9 @@
-import { Exclude } from 'class-transformer';
+import { IsNumber, IsString } from 'class-validator';
 
 export class RequestDto {
+  @IsNumber()
   id: number;
 
-  email: string;
-
+  @IsString()
   token: string;
-
-  @Exclude()
-  password: string;
-
-  constructor(partial: Partial<RequestDto>) {
-    Object.assign(this, partial);
-  }
 }
