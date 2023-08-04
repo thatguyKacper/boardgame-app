@@ -55,10 +55,7 @@ export class QueryBoardgamesDto {
   @IsString()
   sortOrder?: 'ASC' | 'DESC';
   @IsOptional()
-  @IsNumber()
-  @Min(1)
-  @Max(10)
-  @Transform(({ value }) => parseInt(value))
+  @IsString()
   score?: string;
   @IsOptional()
   @IsString()
