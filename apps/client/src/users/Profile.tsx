@@ -1,5 +1,5 @@
 import { FormEvent, useState } from 'react';
-import MainPage from '../pages/MainPage';
+import MainLayout from '../components/MainLayout';
 import { isAuthenticated } from '../auth/auth-helper';
 import useEdit from '../hooks/useEdit';
 import useFetchUser from '../hooks/useFetchUser';
@@ -7,13 +7,15 @@ import Loader from '../components/Loader';
 import toast from 'react-hot-toast';
 import Modal from '../components/Modal';
 import { Auth } from '../interfaces/auth';
+import useDelete from '../hooks/useDelete';
 
 export default function Profile() {
   const [password, setPassword] = useState('');
   const [retypedPassword, setRetypedPassword] = useState('');
+  const [isVisible, setIsVisible] = useState(false)
   const session = isAuthenticated();
 
-  if(!session) {
+  if (!session) {
     return
   }
 
@@ -22,6 +24,7 @@ export default function Profile() {
   const { isLoading, isSuccess, isError } = useFetchUser(id);
 
   const { edit } = useEdit();
+  const { remove } = useDelete();
 
   const handleChangePassword = (e: FormEvent) => {
     e.preventDefault();
@@ -33,13 +36,22 @@ export default function Profile() {
     edit({ id, token, password, retypedPassword });
   };
 
+
+  const handleDelete = () => {
+    if (!token) {
+      return;
+    }
+
+    remove({ id, token });
+  };
+
   return (
-    <MainPage>
+    <MainLayout>
       {isLoading && <Loader />}
       {isError && toast.error('Could not fetch user')}
       {isSuccess && (
         <>
-        <h1 className='pb-4 border-bottom'>Profile</h1>
+          <h1 className='pb-4 border-bottom'>Profile</h1>
           <form onSubmit={handleChangePassword} className="mb-3">
             <div className="mb-3">
               <h2 className="pb-2 border-bottom">Change password</h2>
@@ -76,18 +88,24 @@ export default function Profile() {
               className="btn btn-danger"
               data-bs-toggle="modal"
               data-bs-target="#exampleModal"
+              onClick={() => setIsVisible(true)}
             >
               Delete
             </button>
-            <Modal
-              title='Delete Account'
-              message='Are you sure you want to delete your account?'
-              buttonColor='danger'
-              buttonText='Delete'
-            />
+            {isVisible &&
+              <Modal
+                title='Delete Account'
+                message='Are you sure you want to delete your account?'
+                buttonColor='danger'
+                buttonText='Delete'
+                show='show'
+                onClose={() => setIsVisible(false)}
+                onAction={() => handleDelete()}
+              />
+            }
           </div>
         </>
       )}
-    </MainPage>
+    </MainLayout>
   );
 }

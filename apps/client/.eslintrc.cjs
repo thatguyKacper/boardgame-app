@@ -1,20 +1,28 @@
 module.exports = {
   root: true,
-  env: { browser: true, es2020: true },
+  env: { browser: true, es2020: true, node: true, },
+  globals: {
+    React: true,
+    JSX: true,
+  },
   extends: [
     'eslint:recommended',
+    'airbnb',
+    'airbnb-typescript',
     'plugin:react/recommended',
     'plugin:react/jsx-runtime',
     'plugin:react-hooks/recommended',
     'plugin:import/recommended',
     'plugin:jsx-a11y/recommended',
+    "plugin:@typescript-eslint/eslint-recommended",
     'plugin:@typescript-eslint/recommended',
+    "prettier"
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
   parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
   settings: { react: { version: '18.2' } },
-  plugins: ['react-refresh', 'html', 'prettier'],
+  plugins: ['react-refresh', 'html', 'prettier', 'react-hooks', '@typescript-eslint'],
   rules: {
     'react-refresh/only-export-components': [
       'warn',
@@ -112,9 +120,11 @@ module.exports = {
     'prettier/prettier': [
       'error',
       {
+        semi: true,
         singleQuote: true,
         endOfLine: 'auto',
         trailingComma: 'es5',
+        printWidth: 80
       },
     ],
     'jsx-a11y/href-no-hash': 'off',
@@ -128,5 +138,25 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'warn',
     '@typescript-eslint/comma-dangle': ['off'],
     'react/jsx-props-no-spreading': 'off',
+    '@typescript-eslint/no-misused-promises': [
+      'error',
+      {
+        checksVoidReturn: false,
+      },
+    ],
+    '@typescript-eslint/no-explicit-any': 'off',
+    'no-unused-vars': 0,
+    '@typescript-eslint/no-unused-vars': [1, { ignoreRestSiblings: true }],
+    'no-redeclare': 'off',
+    '@typescript-eslint/no-redeclare': [
+      'warn',
+      {
+        ignoreDeclarationMerge: true,
+      },
+    ],
+    '@typescript-eslint/no-floating-promises': 'off',
+    '@typescript-eslint/no-use-before-define': 'off',
+    'no-undef': 'off',
+    'no-shadow': 'off',
   },
 };

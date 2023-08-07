@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import MainPage from './MainPage';
+import MainLayout from '../components/MainLayout';
 import useFetchUser from '../hooks/useFetchUser';
 import { isAuthenticated } from '../auth/auth-helper';
 import Loader from '../components/Loader';
@@ -10,6 +10,7 @@ import useRemoveScore from '../hooks/useRemoveScore';
 import { Auth } from '../interfaces/auth';
 import { User } from '../interfaces/user';
 import Table from '../components/Table';
+import Score from '../components/Score';
 
 export default function Dashboard() {
   const session = isAuthenticated();
@@ -50,7 +51,7 @@ export default function Dashboard() {
   };
 
   return (
-    <MainPage>
+    <MainLayout>
       {isLoading && <Loader />}
       {isError && toast.error('Could not fetch boardgames')}
       {isSuccess && (
@@ -74,7 +75,8 @@ export default function Dashboard() {
                         {boardgame.boardgameId}
                       </Link>
                     </td>
-                    <td>{boardgame.score}</td>
+                    {/* <td>{boardgame.score}</td> */}
+                    <td><Score boardgameId={boardgame.boardgameId} stars={boardgame.score}/></td>
                     <td>
                       <button
                         type="button"
@@ -203,6 +205,6 @@ export default function Dashboard() {
           )}
         </>
       )}
-    </MainPage>
+    </MainLayout>
   );
 }

@@ -14,28 +14,28 @@ const signin = async (email: string, password: string) => {
     throw new Error('Email or password incorrect!');
   }
 
-  const data = await res.json() as Auth;
+  const data = await res.json();
 
-  return data;
+  return data as Auth;
 };
 
 const signup = async (email: string, password: string) => {
-  const res = await fetch('api/signup/', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({email, password}),
-  });
-
-  if (!res.ok) {
-    throw new Error('Email already in use!');
-  }
-
-  const data = await res.json() as Auth;
-
-  return data;
+    const res = await fetch('api/signup/', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({email, password}),
+    });
+    
+    const data = await res.json();
+  
+    if (!res.ok) {
+      throw new Error(data.message);
+    }
+    
+    return data as Auth;
 };
 
 const getAccount = async (id: number, token: string) => {
@@ -52,9 +52,9 @@ const getAccount = async (id: number, token: string) => {
     throw new Error('Unathorized!');
   }
 
-  const data = await res.json() as Auth;
+  const data = await res.json();
 
-  return data;
+  return data as Auth;
 };
 
 const editAccount = async (id: number, token: string, password: string, retypedPassword: string) => {

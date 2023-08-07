@@ -13,6 +13,6 @@ export default function useFetchBoardgame(id: number): UseQueryResult<Boardgame>
   return useQuery({
     queryKey: ['boardgame', id],
     queryFn: fetchBoardgame,
-    staleTime: 5 * (60 * 1000), //5m
+    // staleTime: 5 * (60 * 1000), //5m
   });
 }

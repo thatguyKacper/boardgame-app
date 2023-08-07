@@ -1,5 +1,5 @@
 import BoardgameList from './BoardgameList';
-import MainPage from '../pages/MainPage';
+import MainLayout from '../components/MainLayout';
 import Loader from '../components/Loader';
 import useFetchBoardgames from '../hooks/useFetchBoardgames';
 import Pagination from '../components/Pagination';
@@ -19,7 +19,7 @@ export default function Boardgames() {
   } = useFetchBoardgames(page, searchCategory, searchText, sortBy, sortOrder);  
 
   return (
-    <MainPage>
+    <MainLayout>
       {isLoading && <Loader />}
       {isError && toast.error('Could not fetch boardgames')}
       {isSuccess && (
@@ -34,6 +34,6 @@ export default function Boardgames() {
           <Pagination meta={meta} />
         </>
       )}
-    </MainPage>
+    </MainLayout>
   );
 }

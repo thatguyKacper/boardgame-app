@@ -1,5 +1,5 @@
 import { useParams, Link } from 'react-router-dom';
-import MainPage from '../pages/MainPage';
+import MainLayout from '../components/MainLayout';
 import Loader from '../components/Loader';
 import toast from 'react-hot-toast';
 import AddTo from '../components/AddTo';
@@ -23,15 +23,23 @@ export default function BoardgamePage() {
     isError,
     data: boardgame = {} as Boardgame,
   } = useFetchBoardgame(parseInt(id));
+  
+  const checkScore = (userId: number) => {
+    if (boardgame.usersscoredCount) {
+      const userScore = boardgame.score?.find((user) => user.userId === userId);
+      return userScore ? userScore.score : 0;
+    }
+    return 0;
+  };  
 
   return (
-    <MainPage>
+    <MainLayout>
       {isLoading && <Loader />}
       {isError && toast.error('Could not fetch boardgame')}
       {isSuccess && boardgame && (
         <>
           <h1 className="display-5 fw-bold mb-5 text-center">{boardgame.name}</h1>
-          {session ? <Score boardgameId={boardgame.id} /> : null}
+          {session ? <Score boardgameId={boardgame.id} stars={checkScore(session.id)} /> : null}
           <div className="container px-0">
             <h6 className="display-6 mt-5">Details</h6>
             {session ? (
@@ -114,7 +122,7 @@ export default function BoardgamePage() {
                           {user.userId}
                         </Link>
                       </td>
-                      <td>{user.score}</td>
+                      <td>{user.score}</td>                
                     </tr>
                   ))}
                 </tbody>
@@ -169,6 +177,6 @@ export default function BoardgamePage() {
           ) : null}
         </>
       )}
-    </MainPage>
+    </MainLayout>
   );
 }

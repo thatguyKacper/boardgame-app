@@ -1,5 +1,5 @@
 import UserList from './UserList';
-import MainPage from '../pages/MainPage';
+import MainLayout from '../components/MainLayout';
 import Loader from '../components/Loader';
 import useFetchUsers from '../hooks/useFetchUsers';
 import toast from 'react-hot-toast';
@@ -17,7 +17,7 @@ export default function Users() {
   } = useFetchUsers(page);
 
   return (
-    <MainPage>
+    <MainLayout>
       {isLoading && <Loader />}
       {isError && toast.error('Could not fetch users')}
       {isSuccess && (
@@ -27,6 +27,6 @@ export default function Users() {
           <Pagination meta={meta} />
         </>
       )}
-    </MainPage>
+    </MainLayout>
   );
 }

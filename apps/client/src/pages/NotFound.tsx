@@ -1,9 +1,9 @@
-import MainPage from './MainPage';
+import MainLayout from '../components/MainLayout';
 
 export default function NotFound() {
   return (
-    <MainPage>
+    <MainLayout>
       <h2>404 Not Found</h2>
-    </MainPage>
+    </MainLayout>
   );
 }

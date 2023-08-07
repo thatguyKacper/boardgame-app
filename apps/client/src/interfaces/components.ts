@@ -4,6 +4,10 @@ export interface ModalInterface {
   message: string;
   buttonColor: string;
   buttonText: string;
+  show: string;
+  onClose?: () => void,
+  onAction?: () => void
+
 }
 export interface ChildrenInterface {
   children: ReactNode;
@@ -11,4 +15,9 @@ export interface ChildrenInterface {
 
 export interface CategoryItemInterface {
   category: string,
+}
+
+export interface StarInterface {
+  onScore: () => void,
+  full: boolean,
 }
