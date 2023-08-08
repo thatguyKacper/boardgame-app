@@ -75,7 +75,6 @@ export default function Dashboard() {
                         {boardgame.boardgameId}
                       </Link>
                     </td>
-                    {/* <td>{boardgame.score}</td> */}
                     <td><Score boardgameId={boardgame.boardgameId} stars={boardgame.score}/></td>
                     <td>
                       <button

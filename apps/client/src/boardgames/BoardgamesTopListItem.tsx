@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import { Boardgame } from '../interfaces/boardgame';
 
-export default function BoardgameTopListItem({ boardgame, title }: {boardgame: Boardgame, title: string}) {
+export default function BoardgameTopListItem({ boardgame, title, rank }: { boardgame: Boardgame, title: string, rank: number }) {
   return (
     <tr>
       <td>
-        <Link to={`/boardgames/${boardgame.id}`}>{boardgame.id}</Link>
+        {rank}
       </td>
       <td>
         <Link to={`/boardgames/${boardgame.id}`}>{boardgame.name}</Link>
