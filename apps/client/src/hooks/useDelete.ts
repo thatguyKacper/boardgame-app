@@ -15,8 +15,7 @@ export default function useDelete() {
       clearSession();
       navigate('/', { replace: true });
     },
-    onError: (err) => {
-      console.log(err);
+    onError: () => {
       toast.error('Could not delete account');
     },
   });

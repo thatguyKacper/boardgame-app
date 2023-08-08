@@ -1,32 +1,20 @@
-import { useLocation } from 'react-router-dom';
-import Footer from '../components/Footer';
-import Nav from '../components/Nav';
-import Jumbo from '../components/Jumbo';
-import TopFeature from '../components/TopFeature';
-import Categories from '../components/Categories';
-import { ReactNode } from 'react';
+import { Suspense, lazy } from 'react';
+import Loader from '../components/Loader';
+import MainLayout from '../components/MainLayout';
 
-export default function MainPage({ children }: {children?: ReactNode}) {
-  const { pathname } = useLocation();
+const Jumbo = lazy(() => import("../components/Jumbo"));
+const TopFeature = lazy(() => import("../components/TopFeature"));
+const Categories = lazy(() => import("../components/Categories"));
 
+
+export default function MainPage() {
   return (
-    <>
-      <Nav />
-      <main>
-        <div className="container mt-5 pt-5">
-          {pathname === '/' ? (
-            <>
-              <Jumbo />
-              <TopFeature />
-              <Categories />
-            </>
-          ) : (
-            children
-          )}
-          <hr className="featurette-divider" />
-        </div>
-      </main>
-      <Footer />
-    </>
+    <MainLayout>
+      <Suspense fallback={<Loader />}>
+        <Jumbo />
+        <TopFeature />
+        <Categories />
+      </Suspense>
+    </MainLayout>
   );
 }

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { authenticate } from '../auth/auth-helper';
 import toast from 'react-hot-toast';
 import { UserAuth } from '../interfaces/auth';
+import { capitalizeFirstLetter } from '../helpers/string-helper';
 
 export default function useSignup() {
   const navigate = useNavigate();
@@ -15,9 +16,8 @@ export default function useSignup() {
       authenticate(data);
       navigate('/', { replace: true });
     },
-    onError: (err) => {
-      console.log(err);
-      toast.error('Email already in use');
+    onError: (err: Error) => {
+      toast.error(capitalizeFirstLetter(err.message) + '!')
     },
   });
 

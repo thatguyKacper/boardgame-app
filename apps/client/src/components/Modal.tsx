@@ -1,18 +1,17 @@
-import { FC, MouseEvent, useEffect } from 'react';
-import { isAuthenticated } from '../auth/auth-helper';
-import useDelete from '../hooks/useDelete';
-import { Auth } from '../interfaces/auth';
+import { useEffect } from 'react';
 import { ModalInterface } from '../interfaces/components';
 import { Modal as BootstrapModal } from 'bootstrap';
 
-const Modal: FC<ModalInterface> = ({
+const Modal = ({
   title,
   message,
   buttonColor,
   buttonText,
-}) => {
-  const session = isAuthenticated();
+  onClose,
+  onAction
+}: ModalInterface) => {
 
+  // TO DO fix nav no clikable without this useeffect
   useEffect(() => {
     const modalElement = document.getElementById('exampleModal');
     if (modalElement) {
@@ -20,31 +19,13 @@ const Modal: FC<ModalInterface> = ({
     }
   }, []);
 
-  if (!session) {
-    return null;
-  }
-
-  const { id, token } = session as Auth;
-
-  const { remove } = useDelete();
-
-  const handleDelete = (e: MouseEvent) => {
-    e.preventDefault();
-
-    if (!token) {
-      return;
-    }
-
-    remove({ id, token });
-  };
-
   return (
     <div
-      className="modal fade"
-      id="exampleModal"
+      className='modal fade show'
       tabIndex={-1}
       aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
+      role='dialog'
+      style={{ display: 'block' }}
     >
       <div className="modal-dialog">
         <div className="modal-content">
@@ -53,8 +34,9 @@ const Modal: FC<ModalInterface> = ({
             <button
               type="button"
               className="btn-close"
-              data-bs-dismiss="modal"
               aria-label="Close"
+              data-bs-dismiss="modal"
+              onClick={onClose}
             ></button>
           </div>
           <div className="modal-body">
@@ -65,13 +47,14 @@ const Modal: FC<ModalInterface> = ({
               type="button"
               className="btn btn-secondary"
               data-bs-dismiss="modal"
+              onClick={onClose}
             >
               Close
             </button>
             <button
               type="button"
               className={`btn btn-${buttonColor}`}
-              onClick={handleDelete}
+              onClick={onAction}
             >
               {buttonText}
             </button>

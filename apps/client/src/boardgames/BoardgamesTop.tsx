@@ -1,4 +1,4 @@
-import MainPage from '../pages/MainPage';
+import MainLayout from '../components/MainLayout';
 import Loader from '../components/Loader';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import BoardgameTopList from './BoardgamesTopList';
@@ -19,11 +19,11 @@ export default function BoardgamesTop() {
   } = useTop(query);
 
   return (
-    <MainPage>
+    <MainLayout>
       <h1 className='pb-4'>Top 10 most {title}</h1>
       {isLoading && <Loader />}
       {isError && toast.error('Could not fetch boardgames')}
       {isSuccess && <BoardgameTopList boardgames={boardgames || []} title={title || ''} />}
-    </MainPage>
+    </MainLayout>
   );
 }

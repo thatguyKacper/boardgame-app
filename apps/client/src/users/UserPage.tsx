@@ -1,10 +1,11 @@
 import { Link, useParams } from 'react-router-dom';
-import MainPage from '../pages/MainPage';
+import MainLayout from '../components/MainLayout';
 import useFetchUser from '../hooks/useFetchUser';
 import Loader from '../components/Loader';
 import toast from 'react-hot-toast';
 import { User } from '../interfaces/user';
 import Table from '../components/Table';
+import Score from '../components/Score';
 
 export default function UserPage() {
   const { id } = useParams<{ id: string }>();
@@ -16,7 +17,7 @@ export default function UserPage() {
   const { isLoading, isSuccess, isError, data: user = {} as User } = useFetchUser(parseInt(id));
 
   return (
-    <MainPage>
+    <MainLayout>
       {isLoading && <Loader />}
       {isError && toast.error('Could not fetch user')}
       {isSuccess && user && (
@@ -39,7 +40,7 @@ export default function UserPage() {
                         {boardgame.boardgameId}
                       </Link>
                     </td>
-                    <td>{boardgame.score}</td>
+                    <td><Score boardgameId={boardgame.boardgameId} stars={boardgame.score}/></td>
                   </tr>
                 ))}
               </tbody>
@@ -107,6 +108,6 @@ export default function UserPage() {
           )}
         </>
       )}
-    </MainPage>
+    </MainLayout>
   );
 }

@@ -1,6 +1,6 @@
 import { FormEvent, useState } from 'react';
 import './Sign.css';
-import MainPage from './MainPage';
+import MainLayout from '../components/MainLayout';
 import { Link } from 'react-router-dom';
 import Loader from '../components/Loader';
 import useSignin from '../hooks/useSignin';
@@ -22,7 +22,7 @@ export default function Signin() {
   };
 
   return (
-    <MainPage>
+    <MainLayout>
       {isLoading && <Loader />}
       <main className="form-sign w-100 m-auto">
         <form onSubmit={handleSubmit}>
@@ -61,6 +61,6 @@ export default function Signin() {
           </button>
         </form>
       </main>
-    </MainPage>
+    </MainLayout>
   );
 }

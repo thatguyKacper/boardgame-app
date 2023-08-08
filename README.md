@@ -48,12 +48,11 @@
 List the ready features here:
 - Browse over list of 5000 boardgames all paginated!
 - View detail page for every boardgame
-- Create account
+- Create/delete account
 - Login/logout
 - Change password
-- Delete account
-- Add boardgames to your wishlist/played list
-- Remove boardgames from your lists
+- Add/remove boardgames from your wishlist/played lists
+- Add/remove boardgame score
 - View other users lists/profiles
 - Search boardgames by: name, max players, designer, category etc.
 - View top10 lists of boardgames
@@ -90,13 +89,12 @@ Room for improvement:
 
 To do:
 - Last viewed
-- Sorting
-- Scoring
 - Review/Opinion
 - Some image upload (for user avatar)
 - Dark mode
 - Graphical charts
+- Admin panel
 
 
 ## Contact
-Created by [Kacper Wójtowicz](www.linkedin.com/in/kacper-wojtowicz/) - feel free to contact me!
+Created by [Kacper Wójtowicz](https://www.linkedin.com/in/kacper-wojtowicz/) - feel free to contact me!

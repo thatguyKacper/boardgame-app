@@ -14,8 +14,7 @@ export default function useRemoveFromPlayed() {
         queryKey: ['user'],
       });
     },
-    onError: (err) => {
-      console.log(err);
+    onError: () => {
       toast.error('Could not remove boardgame');
     },
   });

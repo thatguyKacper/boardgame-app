@@ -10,10 +10,10 @@ export interface Boardgame {
     minplayers: number,
     name: string,
     playedbyusers?: [{
-      userId: number,
-      boardgameId: number,
+      id: number,
+      email: number,
     }],
-    playedbyusersCount: number,
+    playedbyusersCount?: number,
     playingtime: number,
     publisher: string,
     score?: [{
@@ -23,8 +23,8 @@ export interface Boardgame {
     }],
     usersscoredCount?: number,
     userswanttoplay?: [{
-      userId: number,
-      boardgameId: number,
+      id: number,
+      email: number,
     }],
     userswanttoplayCount?: number,
     yearpublished: number

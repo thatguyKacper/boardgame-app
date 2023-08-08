@@ -9,14 +9,14 @@ import Table from '../components/Table';
 export default function BoardgameList({ boardgames }: { boardgames: Boardgame[] }) {
   const session = isAuthenticated();
 
-  const {searchCategory, handleSortBy, handleSortOrder } = useSearchStore();
+  const {searchCategory, sortOrder, handleSortBy, handleSortOrder } = useSearchStore();
 
-  const [sortOrder, setSortOrder] = useState('ASC');
+  const [sort, setSort] = useState(sortOrder);
 
   const handleClick = (name: string) => {
     handleSortBy(name);
-    setSortOrder((prevOrder) => (prevOrder === 'ASC' ? 'DESC' : 'ASC'));
-    handleSortOrder(sortOrder);
+    setSort((prevOrder) => (prevOrder === 'ASC' ? 'DESC' : 'ASC'));
+    handleSortOrder(sort);
   };
 
   const tableHeaders = ['id', 'name', 'minplayers', 'maxplayers', 'playingtime', 'category']
@@ -28,8 +28,8 @@ export default function BoardgameList({ boardgames }: { boardgames: Boardgame[] 
           {session && searchCategory && (
             tableHeaders.splice(2, 5, searchCategory, 'Actions'),
             tableHeaders.map((th, i) => (
-              <th scope="col">
-                <button className="btn btn-link text-dark" role="button" key={i} onClick={() => handleClick(th)}>
+              <th scope="col" key={i}>
+                <button className="btn btn-link text-dark" role="button" onClick={() => handleClick(th)}>
                   {capitalizeFirstLetter(th)}
                 </button>
               </th>
@@ -38,8 +38,8 @@ export default function BoardgameList({ boardgames }: { boardgames: Boardgame[] 
           {session && !searchCategory && (
             tableHeaders.push('Actions'),
             tableHeaders.map((th, i) => (
-              <th scope="col">
-                <button className="btn btn-link text-dark" role="button" key={i} onClick={() => handleClick(th)}>
+              <th scope="col" key={i}>
+                <button className="btn btn-link text-dark" role="button"onClick={() => handleClick(th)}>
                   {capitalizeFirstLetter(th)}
                 </button>
               </th>
@@ -48,8 +48,8 @@ export default function BoardgameList({ boardgames }: { boardgames: Boardgame[] 
           {!session && searchCategory && (
             tableHeaders.splice(2, 5, searchCategory,),
             tableHeaders.map((th, i) => (
-              <th scope="col">
-                <button className="btn btn-link text-dark" role="button" key={i} onClick={() => handleClick(th)}>
+              <th scope="col" key={i}>
+                <button className="btn btn-link text-dark" role="button" onClick={() => handleClick(th)}>
                   {capitalizeFirstLetter(th)}
                 </button>
               </th>
@@ -57,8 +57,8 @@ export default function BoardgameList({ boardgames }: { boardgames: Boardgame[] 
           )}
           {!session && !searchCategory && (
             tableHeaders.map((th, i) => (
-              <th scope="col">
-                <button className="btn btn-link text-dark" role="button" key={i} onClick={() => handleClick(th)}>
+              <th scope="col" key={i}>
+                <button className="btn btn-link text-dark" role="button" onClick={() => handleClick(th)}>
                   {capitalizeFirstLetter(th)}
                 </button>
               </th>
