@@ -1,11 +1,5 @@
 import { Exclude } from 'class-transformer';
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  Unique,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Users } from '../../users/entities/users.entity';
 import { Boardgames } from './boardgames.entity';
 
@@ -13,7 +7,6 @@ import { Boardgames } from './boardgames.entity';
 export class UsersScoredBoardgames {
   @PrimaryGeneratedColumn()
   @Exclude()
-  @Unique(['id'])
   id: number;
 
   @Column()
