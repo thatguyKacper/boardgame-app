@@ -1,8 +1,17 @@
 import { Meta } from "../interfaces/meta";
 import { User } from "../interfaces/user";
 
-const getAll = async (page: number) => {
-  const res = await fetch(`/api/users?page=${page}`, {
+const getAll = async (page: number, sortBy: string, sortOrder: string) => {
+  const queryParams = new URLSearchParams({
+    page: page.toString(),
+  });
+
+  if (sortBy && sortOrder) {
+    queryParams.append('sortBy', sortBy);
+    queryParams.append('sortOrder', sortOrder);
+  }
+
+  const res = await fetch(`/api/users?${queryParams}`, {
     method: 'GET',
   });
 

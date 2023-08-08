@@ -14,8 +14,7 @@ export default function useRemoveFromWishlist() {
         queryKey: ['user'],
       });
     },
-    onError: (err) => {
-      console.log(err);
+    onError: () => {
       toast.error('Could not remove boardgame');
     },
   });

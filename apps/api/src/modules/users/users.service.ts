@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Repository, SelectQueryBuilder } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from './entities/users.entity';
 import { UserDto } from './dtos/user.dto';
@@ -13,6 +13,17 @@ export class UsersService {
     @InjectRepository(Users)
     private readonly usersRepository: Repository<Users>,
   ) {}
+
+  private applySorting(
+    query: SelectQueryBuilder<any>,
+    sortBy: string,
+    sortOrder: 'ASC' | 'DESC',
+  ) {
+    if (sortBy && sortOrder) {
+      query = query.orderBy(`u.${sortBy}`, sortOrder);
+    }
+    return query;
+  }
 
   public async createUser(createUserDto: CreateUserDto) {
     return await this.usersRepository
@@ -96,6 +107,8 @@ export class UsersService {
         email: filter.email,
       });
     }
+
+    query = this.applySorting(query, filter.sortBy, filter.sortOrder);
 
     return query;
   }

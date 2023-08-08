@@ -23,8 +23,8 @@ export default function Nav() {
     handleSetPage(1);
     handleSearchCategory('');
     handleSearchText('');
-    handleSortBy('');
-    handleSortOrder('');
+    handleSortBy('id');
+    handleSortOrder('ASC');
   };
 
   // TO DO fix double request (from this function and boardgame page)

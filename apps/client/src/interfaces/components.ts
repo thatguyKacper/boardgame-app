@@ -4,7 +4,6 @@ export interface ModalInterface {
   message: string;
   buttonColor: string;
   buttonText: string;
-  show: string;
   onClose?: () => void,
   onAction?: () => void
 

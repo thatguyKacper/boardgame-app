@@ -86,8 +86,6 @@ export default function Profile() {
             <button
               type="button"
               className="btn btn-danger"
-              data-bs-toggle="modal"
-              data-bs-target="#exampleModal"
               onClick={() => setIsVisible(true)}
             >
               Delete
@@ -98,7 +96,6 @@ export default function Profile() {
                 message='Are you sure you want to delete your account?'
                 buttonColor='danger'
                 buttonText='Delete'
-                show='show'
                 onClose={() => setIsVisible(false)}
                 onAction={() => handleDelete()}
               />

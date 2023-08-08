@@ -19,4 +19,11 @@ export class UserDto {
   @IsNumber()
   @Transform(({ value }) => parseInt(value))
   page?: number;
+
+  @IsOptional()
+  @IsString()
+  sortBy?: string;
+  @IsOptional()
+  @IsString()
+  sortOrder?: 'ASC' | 'DESC';
 }

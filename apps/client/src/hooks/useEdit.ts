@@ -10,8 +10,7 @@ export default function useEdit() {
     onSuccess: () => {
       toast.success('Password changed');
     },
-    onError: (err) => {
-      console.log(err);
+    onError: () => {
       toast.error('Passwords are not identical');
     },
   });

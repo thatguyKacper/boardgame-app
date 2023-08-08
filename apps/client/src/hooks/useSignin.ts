@@ -15,8 +15,7 @@ export default function useSignin() {
       authenticate(data);
       navigate('/', { replace: true });
     },
-    onError: (err) => {
-      console.log(err);
+    onError: () => {
       toast.error('Wrong email or password');
     },
   });

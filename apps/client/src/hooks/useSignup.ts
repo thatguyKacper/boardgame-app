@@ -17,7 +17,6 @@ export default function useSignup() {
       navigate('/', { replace: true });
     },
     onError: (err: Error) => {
-      console.log(err);
       toast.error(capitalizeFirstLetter(err.message) + '!')
     },
   });

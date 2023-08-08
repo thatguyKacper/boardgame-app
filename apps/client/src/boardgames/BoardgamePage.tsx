@@ -23,14 +23,14 @@ export default function BoardgamePage() {
     isError,
     data: boardgame = {} as Boardgame,
   } = useFetchBoardgame(parseInt(id));
-  
+
   const checkScore = (userId: number) => {
     if (boardgame.usersscoredCount) {
       const userScore = boardgame.score?.find((user) => user.userId === userId);
       return userScore ? userScore.score : 0;
     }
     return 0;
-  };  
+  };
 
   return (
     <MainLayout>
@@ -115,14 +115,18 @@ export default function BoardgamePage() {
                 </thead>
                 <tbody>
                   {boardgame.score?.map((user, i) => (
-                    <tr key={i + 1}>
-                      <td>{user.boardgameId}</td>
+                    <tr key={user.userId}>
+                      <td className='w-25'>
+                        {i + 1}
+                      </td>
                       <td>
                         <Link to={`/users/${user.userId}`}>
                           {user.userId}
                         </Link>
                       </td>
-                      <td>{user.score}</td>                
+                      <td  className='w-50'>
+                        <Score boardgameId={user.boardgameId} stars={user.score} />
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -141,10 +145,10 @@ export default function BoardgamePage() {
                 </thead>
                 <tbody>
                   {boardgame.playedbyusers?.map((user, i) => (
-                    <tr key={user.userId}>
-                      <td>{i + 1}</td>
+                    <tr key={user.id}>
+                      <td className='w-25'>{i + 1}</td>
                       <td>
-                        <Link to={`/users/${user.userId}`}>{user.userId}</Link>
+                        <Link to={`/users/${user.id}`}>{user.id}</Link>
                       </td>
                     </tr>
                   ))}
@@ -164,10 +168,10 @@ export default function BoardgamePage() {
                 </thead>
                 <tbody>
                   {boardgame.userswanttoplay?.map((user, i) => (
-                    <tr key={user.userId}>
-                      <td>{i + 1}</td>
+                    <tr key={user.id}>
+                      <td className='w-25'>{i + 1}</td>
                       <td>
-                        <Link to={`/users/${user.userId}`}>{user.userId}</Link>
+                        <Link to={`/users/${user.id}`}>{user.id}</Link>
                       </td>
                     </tr>
                   ))}
@@ -176,7 +180,8 @@ export default function BoardgamePage() {
             </>
           ) : null}
         </>
-      )}
-    </MainLayout>
+      )
+      }
+    </MainLayout >
   );
 }

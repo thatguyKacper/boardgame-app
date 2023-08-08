@@ -7,14 +7,14 @@ import useSearchStore from '../searchStore';
 import Pagination from '../components/Pagination';
 
 export default function Users() {
-  const { page } = useSearchStore();
+  const { page, sortBy, sortOrder  } = useSearchStore();
 
   const {
     isLoading,
     isSuccess,
     isError,
     data: { data: users, meta } = {},
-  } = useFetchUsers(page);
+  } = useFetchUsers(page, sortBy, sortOrder );
 
   return (
     <MainLayout>

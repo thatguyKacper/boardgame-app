@@ -3,6 +3,7 @@ import { isAuthenticated } from '../auth/auth-helper';
 import useAddScore from '../hooks/useAddScore';
 import { Auth } from '../interfaces/auth';
 import { StarInterface } from '../interfaces/components';
+import useUpdateScore from '../hooks/useUpdateScore';
 
 export default function Score({ boardgameId, stars = 0 }: { boardgameId: number, stars?: number }) {
   const [score, setScore] = useState(0);
@@ -11,18 +12,24 @@ export default function Score({ boardgameId, stars = 0 }: { boardgameId: number,
   const { token } = session as Auth;
 
   const { addScore } = useAddScore();
+  const { updateScore } = useUpdateScore();
 
   const handleScore = (score: number) => {
     if (!session) {
       return
     }
+    if (!stars) {
+      setScore(score);
+      return addScore({ boardgameId, token, score });
+    }
+
     setScore(score);
-    addScore({ boardgameId, token, score });
+    return updateScore({ boardgameId, token, score })
   };
 
-  function Star({ onScore, full}: StarInterface) {
+  function Star({ onScore, full }: StarInterface) {
     return (
-      <span className="btn btn-default" role='button' onClick={onScore}>
+      <button className="btn btn-default" style={{border: 'none'}} type='button' onClick={onScore} disabled={!session}>
         {full ? (
           <svg xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -45,7 +52,7 @@ export default function Score({ boardgameId, stars = 0 }: { boardgameId: number,
           </svg>
         )
         }
-      </span>
+      </button>
     )
   }
 

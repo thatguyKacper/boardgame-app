@@ -14,8 +14,8 @@ export default function CategoryItem({ category }: CategoryItemInterface) {
     const handleClick = (name: string) => {
         handleSearchCategory('category');
         handleSearchText(name);
-        handleSortBy('category');
-        handleSortOrder('DESC');
+        handleSortBy('id');
+        handleSortOrder('ASC');
     };
 
     return (
